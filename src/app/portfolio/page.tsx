@@ -11,17 +11,37 @@ import Footer from "../components/Footer";
 
 export default function PortfolioPage() {
   return (
-    <main className="min-h-screen flex flex-col gap-20 scroll-smooth">
-      <section id="bienvenidos"><Welcome /></section>
-      <section id="acercademi"><AboutMe /></section>
-      <section id="lenguajes"><Lenguajes /></section>
-      <section id="misproyectos"><Projects /></section>
-      <section id="testimonios"><Testimonials /></section>
-      <section id="cv"><CvSection /></section>
-      <section id="experiencia"><Experiencia /></section>
-      <section id="filosofia"><Filosofia /></section>
-      <section id="contacto"><Contact /></section>
-      <section id="PieDePágina"><Footer/></section>
+    <main className="min-h-screen w-full bg-black overflow-y-auto scroll-smooth">
+      <section id="bienvenidos" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Welcome />
+      </section>
+      <section id="acercademi" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <AboutMe />
+      </section>
+      <section id="lenguajes" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Lenguajes />
+      </section>
+      <section id="misproyectos" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Projects />
+      </section>
+      <section id="testimonios" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Testimonials />
+      </section>
+      <section id="cv" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <CvSection />
+      </section>
+      <section id="experiencia" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Experiencia />
+      </section>
+      <section id="filosofia" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Filosofia />
+      </section>
+      <section id="contacto" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Contact />
+      </section>
+      <section id="PieDePágina" className="border-[20px] border-[#d4af37] box-border m-0 p-0">
+        <Footer />
+      </section>
     </main>
   );
 }
