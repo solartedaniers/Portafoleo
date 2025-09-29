@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 const translations = {
   es: {
     brand: "Daniers Solarte",
-    quote: "El código es mi espada, la lógica mi escudo.",
+    quote: "El código es mi espada,<br />la lógica mi escudo.",
     view: "Ver Portafolio",
     language: "Idioma",
   },
   en: {
     brand: "Daniers Solarte",
-    quote: "The code is my sword, logic is my shield.",
+    quote: "The code is my sword,<br />logic is my shield.",
     view: "View Portfolio",
     language: "Language",
   },
@@ -57,39 +57,36 @@ export default function Hero() {
         }`}
       />
 
-      {/* 🔘 Botones individuales de idioma y tema */}
+      {/* 🔘 Botones de idioma y tema */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-[10px]">
         <button
           onClick={toggleTheme}
           aria-label="Cambiar tema"
-          className="transition-transform hover:scale-105 px-5 py-2.5 rounded-full border border-bloodRed hover:border-gold shadow-md bg-white/10 text-white"
+          className="transition-all duration-300 hover:scale-105 px-5 py-2.5 rounded-full border border-gold hover:border-red-600 shadow-md bg-white/10 text-white"
         >
-          {theme === "dark" ? "☀️ Claro" : "🌙 Oscuro"}
+          {theme === "dark" ? "🌙" : "☀️"}
         </button>
 
         <button
           onClick={toggleLang}
           aria-label="Cambiar idioma"
-          className="transition-transform hover:scale-105 px-5 py-2.5 rounded-full border border-bloodRed hover:border-gold shadow-md bg-white/10 text-white"
+          className="transition-all duration-300 hover:scale-105 px-5 py-2.5 rounded-full border border-gold hover:border-red-600 shadow-md bg-white/10 text-white"
         >
           🌐 {t.language}
         </button>
       </div>
 
-      {/* 🧍‍♂️ Contenido principal centrado */}
+      {/* 🧍‍♂️ Contenido principal */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 ml-[450px] mt-[150px]">
-        <h1 className="text-white text-5xl md:text-6xl mb-4 font-irish transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
+        <h1 className="text-white text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
           {t.brand}
         </h1>
 
         <p
           className="text-gray-300 text-xl md:text-2xl w-[90%] md:w-[500px] px-[60px] py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban"
-          style={{
-            textShadow: "0 0 10px rgba(255,255,255,0.3)",
-          }}
-        >
-          “El código es mi espada,<br />la lógica mi escudo.”
-        </p>
+          style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
+          dangerouslySetInnerHTML={{ __html: t.quote }}
+        />
 
         <button
           onClick={handleViewClick}
