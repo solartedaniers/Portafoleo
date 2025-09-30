@@ -3,33 +3,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useApp } from "./ThemeLangContext";
-import {
-  GiGraduateCap,
-  GiBookshelf,
-  GiFeather,
-  GiScrollUnfurled,
-  GiTalk,
-  GiOpenBook,
-  GiBrain,
-  GiQuillInk,
-  GiArchiveResearch,
-} from "react-icons/gi";
 import { FaVolumeUp } from "react-icons/fa";
 
 const translations = {
   es: {
     home: "Inicio",
-    menu: [
-      "Acerca de mí",
-      "Lenguajes",
-      "Mis Proyectos",
-      "Testimonios",
-      "CV",
-      "Experiencia Académica y Laboral",
-      "Mi Filosofía de Vida",
-      "Contacto",
-      "Pie de Página",
-    ],
     subtitle: "Ingeniero de Software",
     welcome: "Bienvenidos",
     description: [
@@ -40,17 +18,6 @@ const translations = {
   },
   en: {
     home: "Home",
-    menu: [
-      "About Me",
-      "Languages",
-      "My Projects",
-      "Testimonials",
-      "CV",
-      "Academic and Work Experience",
-      "My Life Philosophy",
-      "Contact",
-      "Footer",
-    ],
     subtitle: "Software Engineer",
     welcome: "Welcome",
     description: [
@@ -66,19 +33,6 @@ export default function Welcome() {
   const { lang } = useApp();
   const t = translations[lang];
   const [hovered, setHovered] = useState(false);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  const menuItems = [
-    { icon: <GiFeather className="text-black" />, id: "acercademi" },
-    { icon: <GiBookshelf className="text-black" />, id: "lenguajes" },
-    { icon: <GiScrollUnfurled className="text-black" />, id: "misproyectos" },
-    { icon: <GiTalk className="text-black" />, id: "testimonios" },
-    { icon: <GiOpenBook className="text-black" />, id: "cv" },
-    { icon: <GiGraduateCap className="text-black" />, id: "experiencia" },
-    { icon: <GiBrain className="text-black" />, id: "filosofia" },
-    { icon: <GiQuillInk className="text-black" />, id: "contacto" },
-    { icon: <GiArchiveResearch className="text-black" />, id: "PieDePágina" },
-  ];
 
   return (
     <section
@@ -103,25 +57,6 @@ export default function Welcome() {
         <span className="font-['Irish_Grover'] text-black text-lg drop-shadow-[0_0_1px_silver] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300">
           {t.home}
         </span>
-      </div>
-
-      {/* 🟨 Menú de navegación */}
-      <div className="grid grid-cols-9 gap-2 mt-16">
-        {menuItems.map((item, index) => (
-          <a
-            key={index}
-            href={`#${item.id}`}
-            onMouseEnter={() => setActiveIndex(index)}
-            onMouseLeave={() => setActiveIndex(null)}
-            className="flex flex-col items-center justify-center gap-1 bg-[#f5f5f5] px-3 py-2 rounded-xl border 
-            shadow-md hover:border-red-600 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            {activeIndex === index && <span className="text-xl">{item.icon}</span>}
-            <span className="font-['Irish_Grover'] text-black text-sm drop-shadow-[0_0_1px_gold]">
-              {t.menu[index]}
-            </span>
-          </a>
-        ))}
       </div>
 
       {/* 🖼️ Imagen de perfil */}

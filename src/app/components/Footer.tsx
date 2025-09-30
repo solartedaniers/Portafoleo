@@ -1,85 +1,59 @@
 "use client";
-import { useState } from "react";
-import {
-  FaLinkedin,
-  FaWhatsapp,
-  FaGithub,
-  FaSmile,
-} from "react-icons/fa";
-import {
-  GiFeather,
-  GiBookshelf,
-  GiScrollUnfurled,
-  GiTalk,
-  GiOpenBook,
-  GiGraduateCap,
-  GiBrain,
-  GiQuillInk,
-} from "react-icons/gi";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 
 export default function Footer() {
   const { lang } = useApp();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [time, setTime] = useState("");
+  const [showClock, setShowClock] = useState(false);
 
   const translations = {
     es: {
       title: "Pie de página",
-      menu: [
-        "Bienvenidos",
-        "Acerca de mí",
-        "Lenguajes",
-        "Mis Proyectos",
-        "Testimonios",
-        "CV",
-        "Experiencia Académica y Laboral",
-        "Mi Filosofía de Vida",
-        "Contacto",
-      ],
-      credits: "© 2025 Daniers Alexander Solarte Limas - Ingeniero de Software",
+      credits: "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
       rights: "Todos los derechos son reservados",
       phrase:
         "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
-      author: "Portafolio creado con pasión por Daniers Solarte – 2025",
+      author: "Portafolio creado con pasión por Damiers Solarte – 2026",
     },
     en: {
       title: "Footer",
-      menu: [
-        "Welcome",
-        "About Me",
-        "Languages",
-        "My Projects",
-        "Testimonials",
-        "Resume",
-        "Academic and Work Experience",
-        "My Life Philosophy",
-        "Contact",
-      ],
-      credits: "© 2025 Daniers Alexander Solarte Limas – Software Engineer",
+      credits: "© 2026 Damiers Alexander Solarte Limas – Software Engineer",
       rights: "All rights reserved",
       phrase:
         "“True greatness lies in growing without losing the principles that define us.”",
-      author: "Portfolio created with passion by Daniers Solarte – 2025",
+      author: "Portfolio created with passion by Damiers Solarte – 2026",
     },
   };
 
   const t = translations[lang];
 
-  const menuItems = [
-    { icon: <FaSmile />, id: "bienvenidos" },
-    { icon: <GiFeather />, id: "acercademi" },
-    { icon: <GiBookshelf />, id: "lenguajes" },
-    { icon: <GiScrollUnfurled />, id: "misproyectos" },
-    { icon: <GiTalk />, id: "testimonios" },
-    { icon: <GiOpenBook />, id: "cv" },
-    { icon: <GiGraduateCap />, id: "experiencia" },
-    { icon: <GiBrain />, id: "filosofia" },
-    { icon: <GiQuillInk />, id: "contacto" },
-  ];
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? "PM" : "AM";
+
+      hours = hours % 12 || 12;
+      setTime(
+        `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${ampm}`
+      );
+    };
+
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <footer
-      className="relative bg-cover bg-center text-center py-10"
+      className="relative bg-cover bg-center text-center py-10 z-0"
       style={{
         backgroundImage: "url('/images/wolf.jpg'), url('/images/samurai.jpg')",
         backgroundPosition: "left, right",
@@ -87,35 +61,61 @@ export default function Footer() {
         backgroundSize: "50% 100%, 50% 100%",
       }}
     >
-      <h2 className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-xl shadow-md 
-        transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black">
+      {/* 🔴 Título */}
+      <h2
+        className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-xl shadow-md 
+        transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black"
+      >
         {t.title}
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-2 mt-6 max-w-7xl mx-auto">
-        {menuItems.map((item, index) => (
-          <a
-            key={index}
-            href={`#${item.id}`}
-            onMouseEnter={() => setActiveIndex(index)}
-            onMouseLeave={() => setActiveIndex(null)}
-            className="flex flex-col items-center justify-center gap-1 bg-[#f5f5f5] px-3 py-2 rounded-xl border 
-            shadow-md hover:border-red-600 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            {activeIndex === index && <span className="text-xl">{item.icon}</span>}
-            <span className="font-['Irish_Grover'] text-black text-sm drop-shadow-[0_0_1px_gold]">
-              {t.menu[index]}
-            </span>
-          </a>
-        ))}
+      {/* 🕰 Zona del reloj debajo del título */}
+      <div className="mt-6 flex justify-center relative z-10">
+        <div
+          className="inline-block px-6 py-4"
+          onMouseEnter={() => setShowClock(true)}
+          onMouseLeave={() => setShowClock(false)}
+        >
+          <AnimatePresence>
+            {showClock && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="bg-[#f5f5f5] px-6 py-3 rounded-xl border border-black shadow-[0_0_20px_silver] inline-block z-20"
+              >
+                <span
+                  className="text-black font-['Esteban'] text-xl"
+                  style={{
+                    WebkitTextStroke: "0.5px #d4af37",
+                    textShadow: "0 0 4px #ffffff",
+                  }}
+                >
+                  {time.slice(0, -2)}
+                </span>
+                <span
+                  className="ml-2 text-red-600 font-bold text-xl"
+                  style={{
+                    textShadow: "0 0 4px #ffffff",
+                  }}
+                >
+                  {time.slice(-2)}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
+      {/* 📄 Créditos */}
       <div className="mt-8 text-lg font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105">
         {t.credits}
         <br />
         {t.rights}
       </div>
 
+      {/* 📜 Frase */}
       <p
         className="mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 
         hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105"
@@ -124,15 +124,14 @@ export default function Footer() {
         {t.phrase}
       </p>
 
-      <p
-        className="mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1"
-      >
+      <p className="mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1">
         {t.author}
       </p>
 
+      {/* 🔗 Redes sociales */}
       <div className="flex justify-center gap-6 mt-8">
         <a
-          href="https://www.linkedin.com/in/daniers-solarte-08716b381"
+          href="https://www.linkedin.com/in/damiers-solarte-08716b381"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold 
