@@ -24,13 +24,11 @@ export default function CvSection() {
 
   const translations = {
     es: {
-      title: "CV",
       view: "Ver CV",
       close: "Cerrar CV",
       download: "Descargar CV en PDF",
     },
     en: {
-      title: "Resume",
       view: "View CV",
       close: "Close CV",
       download: "Download CV as PDF",
@@ -44,10 +42,9 @@ export default function CvSection() {
       className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center"
       style={{ backgroundImage: "url('/images/background.jpeg')" }}
     >
-      {/* 🔴 Título */}
-      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
-           bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
-        {t.title}
+      {/* 🔴 Título fijo "CV" */}
+      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+        CV
       </h2>
 
       {/* 🎥 Video con hover para reproducir */}

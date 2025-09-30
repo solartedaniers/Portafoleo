@@ -6,8 +6,10 @@ import { useApp } from "./ThemeLangContext";
 
 export default function Footer() {
   const { lang } = useApp();
-  const [time, setTime] = useState("");
+  const [clockTime, setClockTime] = useState("");
+  const [clockPeriod, setClockPeriod] = useState("");
   const [showClock, setShowClock] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const translations = {
     es: {
@@ -30,6 +32,7 @@ export default function Footer() {
 
   const t = translations[lang];
 
+  // ⏰ Reloj en tiempo real
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -39,16 +42,29 @@ export default function Footer() {
       const ampm = hours >= 12 ? "PM" : "AM";
 
       hours = hours % 12 || 12;
-      setTime(
-        `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")} ${ampm}`
-      );
+      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
+      setClockTime(formattedTime);
+      setClockPeriod(ampm);
     };
 
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // 📱 Detectar si es móvil
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 640);
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
   return (
@@ -62,19 +78,17 @@ export default function Footer() {
       }}
     >
       {/* 🔴 Título */}
-      <h2
-        className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-xl shadow-md 
-        transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black"
-      >
+      <h2 className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-xl shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black">
         {t.title}
       </h2>
 
-      {/* 🕰 Zona del reloj debajo del título */}
+      {/* 🕰 Reloj */}
       <div className="mt-6 flex justify-center relative z-10">
         <div
-          className="inline-block px-6 py-4"
-          onMouseEnter={() => setShowClock(true)}
-          onMouseLeave={() => setShowClock(false)}
+          className="inline-block px-6 py-4 cursor-pointer select-none"
+          onClick={() => isMobile && setShowClock((prev) => !prev)} // 📱 Toggle con clic en móvil
+          onMouseEnter={() => !isMobile && setShowClock(true)}     // 💻 Mostrar en web al hover
+          onMouseLeave={() => !isMobile && setShowClock(false)}    // 💻 Ocultar en web al salir
         >
           <AnimatePresence>
             {showClock && (
@@ -88,19 +102,19 @@ export default function Footer() {
                 <span
                   className="text-black font-['Esteban'] text-xl"
                   style={{
-                    WebkitTextStroke: "0.5px #d4af37",
-                    textShadow: "0 0 4px #ffffff",
+                    WebkitTextStroke: "0.5px #d4af37", // 🔹 Borde dorado leve
+                    textShadow: "0 0 4px #ffffff",    // 🔹 Brillo blanco
                   }}
                 >
-                  {time.slice(0, -2)}
+                  {clockTime}
                 </span>
                 <span
                   className="ml-2 text-red-600 font-bold text-xl"
                   style={{
-                    textShadow: "0 0 4px #ffffff",
+                    textShadow: "0 0 4px #ffffff",    // 🔹 Brillo blanco al AM/PM
                   }}
                 >
-                  {time.slice(-2)}
+                  {clockPeriod}
                 </span>
               </motion.div>
             )}
@@ -117,8 +131,7 @@ export default function Footer() {
 
       {/* 📜 Frase */}
       <p
-        className="mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 
-        hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105"
+        className="mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105"
         style={{ WebkitTextStroke: "0.5px #c4af37" }}
       >
         {t.phrase}
@@ -129,13 +142,16 @@ export default function Footer() {
       </p>
 
       {/* 🔗 Redes sociales */}
-      <div className="flex justify-center gap-6 mt-8">
+      <div
+        className={`mt-8 flex ${
+          isMobile ? "flex-col items-center gap-4" : "flex-row justify-center gap-6"
+        }`}
+      >
         <a
           href="https://www.linkedin.com/in/damiers-solarte-08716b381"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold 
-          shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
+          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
@@ -147,8 +163,7 @@ export default function Footer() {
           href="https://wa.me/573167969206"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold 
-          shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
+          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
@@ -160,8 +175,7 @@ export default function Footer() {
           href="https://github.com/solartedaniers"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold 
-          shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
+          className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaGithub className="text-black text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">

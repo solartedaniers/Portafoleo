@@ -73,10 +73,10 @@ export default function AboutMe() {
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ backgroundImage: "url('/images/forest 2.jpg')" }}
         />
-        <div className="relative z-10 py-16 px-4 flex flex-col items-center">
+        <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           {/* 🔴 Título con hover dorado */}
           <h2
-            className="text-4xl text-center mb-10 px-6 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
+            className="text-2xl sm:text-4xl text-center mb-10 px-4 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
                        bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-irish"
             style={{ fontFamily: "'Irish Grover', cursive" }}
           >
@@ -88,7 +88,7 @@ export default function AboutMe() {
             {items.slice(0, 2).map((item, i) => (
               <div
                 key={i}
-                className="relative flex flex-col items-center p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
+                className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
                 style={{ boxShadow: "0px 4px 20px #c4af37" }}
               >
                 {/* 🔊 Icono bocina */}
@@ -96,7 +96,7 @@ export default function AboutMe() {
                   onClick={() => playAudio(item.audio)}
                   className="absolute top-2 right-2 text-gray-500 hover:text-blue-600 transition-all duration-300 cursor-pointer"
                 >
-                  <FaVolumeUp className="text-2xl" />
+                  <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
                 </div>
 
                 {/* 🖼️ Imagen */}
@@ -105,12 +105,12 @@ export default function AboutMe() {
                   alt={item.text[lang]}
                   width={110}
                   height={110}
-                  className="w-24 h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
                 />
 
                 {/* 📜 Texto */}
                 <p
-                  className="text-lg text-center mt-6"
+                  className="text-base sm:text-lg text-center mt-6"
                   style={{ fontFamily: "'Esteban', serif" }}
                 >
                   {item.text[lang]}
@@ -127,13 +127,13 @@ export default function AboutMe() {
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ backgroundImage: "url('/images/forest.jpg')" }}
         />
-        <div className="relative z-10 py-16 px-4 flex flex-col items-center">
+        <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           {/* 📌 Últimos 3 cuadros */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
             {items.slice(2).map((item, i) => (
               <div
                 key={i}
-                className="relative flex flex-col items-center p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
+                className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
                 style={{ boxShadow: "0px 4px 20px #c4af37" }}
               >
                 {/* 🔊 Icono bocina */}
@@ -141,7 +141,7 @@ export default function AboutMe() {
                   onClick={() => playAudio(item.audio)}
                   className="absolute top-2 right-2 text-gray-500 hover:text-blue-600 transition-all duration-300 cursor-pointer"
                 >
-                  <FaVolumeUp className="text-2xl" />
+                  <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
                 </div>
 
                 {/* 🖼️ Imagen */}
@@ -150,12 +150,12 @@ export default function AboutMe() {
                   alt={item.text[lang]}
                   width={110}
                   height={110}
-                  className="w-24 h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
                 />
 
                 {/* 📜 Texto */}
                 <p
-                  className="text-lg text-center mt-6"
+                  className="text-base sm:text-lg text-center mt-6"
                   style={{ fontFamily: "'Esteban', serif" }}
                 >
                   {item.text[lang]}

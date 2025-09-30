@@ -72,31 +72,23 @@ export default function Experiencia() {
       style={{ backgroundImage: "url('/images/city.jpg')" }}
     >
       {/* Título principal */}
-      <h2
-        className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
-           bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
-      >
+      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
         {t.title}
       </h2>
 
       {/* Experiencia Académica */}
-      <div
-        className="w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 transition-all duration-300 cursor-pointer
-        hover:shadow-[0_0_25px_#c4af37] hover:scale-105"
-      >
-        <div className="flex items-center justify-between mb-2 ">
+      <div className="w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
+        <div className="flex items-center justify-between mb-4">
           <Image
             src="/images/seminar.jpeg"
             alt="Seminario"
             width={48}
             height={48}
-            className="border-2 border-red-600 transition-all duration-300 
-            hover:scale-110 hover:border-[#c4af37] rounded"
+            className="border-2 border-red-600 rounded transition-all duration-300 hover:scale-110 hover:border-[#c4af37]"
           />
 
           <h3
-            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center
-            hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
+            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
             {t.academic}
@@ -110,10 +102,12 @@ export default function Experiencia() {
           </button>
         </div>
 
-        <p className="font-['Esteban'] text-[#5c4c4c] mb-3 mt-2">{t.academicText}</p>
+        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{t.academicText}</p>
 
-        <p className="font-['Esteban'] text-[#c4af37] font-bold">{t.academicProjects}</p>
-        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c]">
+        <p className="font-['Esteban'] text-[#c4af37] font-bold mb-2">
+          {t.academicProjects}
+        </p>
+        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
           {t.academicList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
@@ -121,18 +115,12 @@ export default function Experiencia() {
       </div>
 
       {/* Experiencia Laboral */}
-      <div
-        className="w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 transition-all duration-300 cursor-pointer
-        hover:shadow-[0_0_25px_#c4af37] hover:scale-105"
-      >
-        <div className="flex items-center justify-between mb-2">
-          <FaBriefcase
-            className="text-4xl text-red-600 transition-all duration-300 hover:scale-110 hover:text-[#c4af37]"
-          />
+      <div className="w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
+        <div className="flex items-center justify-between mb-4">
+          <FaBriefcase className="text-4xl text-red-600 transition-all duration-300 hover:scale-110 hover:text-[#c4af37]" />
 
           <h3
-            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center
-            hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
+            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
             {t.work}
@@ -146,7 +134,7 @@ export default function Experiencia() {
           </button>
         </div>
 
-        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] mt-2">
+        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
           {t.workList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}

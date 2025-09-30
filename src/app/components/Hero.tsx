@@ -58,11 +58,11 @@ export default function Hero() {
       />
 
       {/* 🔘 Botones de idioma y tema */}
-      <div className="absolute top-6 left-6 z-30 flex gap-4 ml-[10px]">
+      <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
         <button
           onClick={toggleTheme}
           aria-label="Cambiar tema"
-          className="transition-all duration-300 hover:scale-105 px-5 py-2.5 rounded-full border border-gold hover:border-red-600 shadow-md bg-white/10 text-white"
+          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-105 hover:border-red-600"
         >
           {theme === "dark" ? "🌙" : "☀️"}
         </button>
@@ -70,27 +70,27 @@ export default function Hero() {
         <button
           onClick={toggleLang}
           aria-label="Cambiar idioma"
-          className="transition-all duration-300 hover:scale-105 px-5 py-2.5 rounded-full border border-gold hover:border-red-600 shadow-md bg-white/10 text-white"
+          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-105 hover:border-red-600"
         >
           🌐 {t.language}
         </button>
       </div>
 
       {/* 🧍‍♂️ Contenido principal */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 ml-[450px] mt-[150px]">
-        <h1 className="text-white text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6">
+        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
           {t.brand}
         </h1>
 
         <p
-          className="text-gray-300 text-xl md:text-2xl w-[90%] md:w-[500px] px-[60px] py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban"
+          className="text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban"
           style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
           dangerouslySetInnerHTML={{ __html: t.quote }}
         />
 
         <button
           onClick={handleViewClick}
-          className="px-8 py-3 rounded-full border-[3px] font-bold text-lg transition-transform hover:scale-105 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
+          className="px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform hover:scale-105 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
         >
           {t.view}
         </button>
