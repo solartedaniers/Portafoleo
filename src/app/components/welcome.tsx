@@ -105,7 +105,7 @@ export default function Welcome() {
       >
         <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
           <Image
-            src="/images/fire.jpg"
+            src="/images/fire.webp"
             alt={t.home}
             width={32}
             height={32}

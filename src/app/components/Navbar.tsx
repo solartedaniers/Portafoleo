@@ -24,7 +24,7 @@ export default function Navbar() {
       menu: [
         "Bienvenidos",
         "Acerca de mí",
-        "Lenguajes",
+        "Tecnologías",
         "Mis Proyectos",
         "Testimonios",
         "CV",
@@ -38,7 +38,7 @@ export default function Navbar() {
       menu: [
         "Welcome",
         "About Me",
-        "Languages",
+        "Technologies",
         "My Projects",
         "Testimonials",
         "Resume",
@@ -55,7 +55,7 @@ export default function Navbar() {
   const menuItems = [
     { icon: <FaSmile />, id: "bienvenidos" },
     { icon: <GiFeather />, id: "acercademi" },
-    { icon: <GiBookshelf />, id: "lenguajes" },
+    { icon: <GiBookshelf />, id: "tecnologias" },
     { icon: <GiScrollUnfurled />, id: "misproyectos" },
     { icon: <GiTalk />, id: "testimonios" },
     { icon: <GiOpenBook />, id: "cv" },

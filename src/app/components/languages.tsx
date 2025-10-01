@@ -3,49 +3,47 @@ import { useState } from "react";
 import { useApp } from "./ThemeLangContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { SiPython, SiSharp } from "react-icons/si";
-import { DiJava } from "react-icons/di";
+import {
+  SiPython,
+  SiSharp,
+  SiMysql,
+  SiDjango,
+  SiAngular,
+  SiTailwindcss,
+  SiNextdotjs,
+  SiUnity,
+} from "react-icons/si";
+import { FaJava } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 
 const translations = {
   es: {
-    title: "Lenguajes",
-    quote: '"Cada lenguaje, una técnica que perfecciono cada día."',
-    upcoming: "Próximamente",
+    title: "Tecnologías",
+    quote: '"Cada tecnología, una herramienta que perfecciono cada día."',
   },
   en: {
-    title: "Languages",
-    quote: '"Each language, a technique I refine every day."',
-    upcoming: "Coming soon",
+    title: "Technologies",
+    quote: '"Each technology, a tool I refine every day."',
   },
 };
 
-const languages = [
-  { name: "Python", icon: "Python" },
-  { name: "Java", icon: "Java" },
-  { name: "C#", icon: "C#" },
-  { name: "upcoming", icon: null },
-  { name: "upcoming", icon: null },
+const techList = [
+  { name: "Angular", icon: <SiAngular size={60} className="text-[#dd0031]" /> },
+  { name: "Tailwind CSS", icon: <SiTailwindcss size={60} className="text-[#38bdf8]" /> },
+  { name: "Next.js", icon: <SiNextdotjs size={60} className="text-black dark:text-white" /> },
+  { name: "Django", icon: <SiDjango size={60} className="text-[#092e20]" /> },
+  { name: "Python", icon: <SiPython size={60} className="text-[#3776AB]" /> },
+  { name: "MySQL", icon: <SiMysql size={60} className="text-[#00758f]" /> },
+  { name: "Java", icon: <FaJava size={60} className="text-[#f89820]" /> },
+  { name: "C#", icon: <SiSharp size={60} className="text-[#9b4f96]" /> },
+  { name: "Unity", icon: <SiUnity size={60} className="text-black dark:text-white" /> },
 ];
 
-export default function Lenguajes() {
+export default function Tecnologias() {
   const { lang } = useApp();
   const t = translations[lang];
   const [hovered, setHovered] = useState<string | null>(null);
-
-  const renderIcon = (name: string) => {
-    switch (name) {
-      case "Python":
-        return <SiPython size={60} className="text-[#3776AB] transition-all duration-500" />;
-      case "Java":
-        return <DiJava size={60} className="text-[#1E90FF] transition-all duration-500" />;
-      case "C#":
-        return <SiSharp size={60} className="text-[#003366] transition-all duration-500" />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-[6px] sm:border-[8px] border-gold box-border">
@@ -59,9 +57,6 @@ export default function Lenguajes() {
         className="absolute inset-0 w-full h-full object-cover object-center scale-[0.9] z-0"
       />
 
-      {/* Overlay oscuro */}
-      <div className="absolute inset-0 bg-black/50 z-0" />
-
       {/* Contenido principal */}
       <div className="relative z-10 flex flex-col items-center w-full h-full pt-10 px-4 sm:px-6 gap-6">
         {/* 🎨 Título */}
@@ -74,10 +69,9 @@ export default function Lenguajes() {
           {t.quote}
         </p>
 
-        {/* 🌀 Carrusel con flechas superpuestas */}
-        <div className="relative w-full flex items-center justify-center px-2 sm:px-6">
-          {/* Carrusel */}
-          <div className="flex-grow max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
+        {/* 🌀 Carrusel */}
+        <div className="relative w-full flex items-center justify-center px-6 sm:px-10">
+          <div className="flex-grow max-w-[60%] sm:max-w-[80%] md:max-w-[70%]">
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -86,34 +80,34 @@ export default function Lenguajes() {
               }}
               loop={true}
               centeredSlides={true}
-              spaceBetween={20}
+              spaceBetween={40}
               breakpoints={{
-                0: { slidesPerView: 1 },
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
+                0: { slidesPerView: 1, spaceBetween: 50 }, // más espacio en móviles
+                640: { slidesPerView: 2, spaceBetween: 40 },
+                1024: { slidesPerView: 3, spaceBetween: 30 },
               }}
               className="mySwiper"
             >
-              {languages.map((lang, idx) => (
+              {techList.map((tech, idx) => (
                 <SwiperSlide key={idx}>
                   <div
-                    onMouseEnter={() => setHovered(lang.name)}
+                    onMouseEnter={() => setHovered(tech.name)}
                     onMouseLeave={() => setHovered(null)}
-                    className={`flex items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden ${
-                      hovered === lang.name
-                        ? "border-gold shadow-[0_0_25px_#c4af37]"
-                        : "border-red-600 shadow-[0_0_15px_#c4af37]"
-                    } bg-[#f5f5f5]`}
+                    onTouchStart={() => setHovered(tech.name)}
+                    onTouchEnd={() => setHovered(null)}
+                    className={`flex items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
+                      hovered === tech.name
+                        ? "border-gold shadow-[0_0_25px_#c4af37] rotate-[10deg]"
+                        : "border-red-600 shadow-[0_0_15px_#c4af37] rotate-0"
+                    }`}
                   >
-                    {lang.icon ? (
-                      <div className={`${hovered === lang.name ? "scale-110" : ""}`}>
-                        {renderIcon(lang.name)}
-                      </div>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-center text-black font-semibold text-base sm:text-lg">
-                        {t.upcoming}
-                      </div>
-                    )}
+                    <div
+                      className={`transition-transform duration-500 ${
+                        hovered === tech.name ? "rotate-[15deg] scale-110" : "rotate-0"
+                      }`}
+                    >
+                      {tech.icon}
+                    </div>
                   </div>
                 </SwiperSlide>
               ))}

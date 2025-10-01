@@ -30,7 +30,7 @@ export default function PortfolioPage() {
       <section id="acercademi" className="border-[15px] border-[#d4af37] p-4 box-border">
         <AboutMe />
       </section>
-      <section id="lenguajes" className="border-[15px] border-[#d4af37] p-4 box-border">
+      <section id="tecnologias" className="border-[15px] border-[#d4af37] p-4 box-border">
         <Lenguajes />
       </section>
       <section id="misproyectos" className="border-[15px] border-[#d4af37] p-4 box-border">
