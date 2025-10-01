@@ -41,7 +41,7 @@ export default function Hero() {
       {/* 🎥 Video de fondo */}
       <div className="absolute inset-0 z-0">
         <video
-          src="/videos/background video.mp4"
+          src="/videos/background-video.mp4"
           autoPlay
           muted
           loop
