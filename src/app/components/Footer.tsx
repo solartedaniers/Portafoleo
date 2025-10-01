@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
@@ -10,27 +10,26 @@ export default function Footer() {
   const [clockPeriod, setClockPeriod] = useState("");
   const [showClock, setShowClock] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const clockAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const translations = {
-    es: {
-      title: "Pie de página",
-      credits: "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
-      rights: "Todos los derechos son reservados",
-      phrase:
-        "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
-      author: "Portafolio creado con pasión por Damiers Solarte – 2026",
-    },
-    en: {
-      title: "Footer",
-      credits: "© 2026 Damiers Alexander Solarte Limas – Software Engineer",
-      rights: "All rights reserved",
-      phrase:
-        "“True greatness lies in growing without losing the principles that define us.”",
-      author: "Portfolio created with passion by Damiers Solarte – 2026",
-    },
+  // 🎵 Cargar el audio del reloj
+  useEffect(() => {
+    clockAudioRef.current = new Audio("/sounds/clock.mp3");
+    clockAudioRef.current.loop = true; // ⏳ Sonido continuo
+  }, []);
+
+  // 🔊 Manejo del sonido del reloj
+  const handleClockSound = (play: boolean) => {
+    if (clockAudioRef.current) {
+      if (play) {
+        clockAudioRef.current.currentTime = 0;
+        clockAudioRef.current.play();
+      } else {
+        clockAudioRef.current.pause();
+        clockAudioRef.current.currentTime = 0;
+      }
+    }
   };
-
-  const t = translations[lang];
 
   // ⏰ Reloj en tiempo real
   useEffect(() => {
@@ -67,6 +66,33 @@ export default function Footer() {
     }
   }, []);
 
+  // 🔊 Reproducir sonidos de botones sociales
+  const playSound = (file: string) => {
+    const audio = new Audio(`/sounds/${file}`);
+    audio.play();
+  };
+
+  const translations = {
+    es: {
+      title: "Pie de página",
+      credits: "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
+      rights: "Todos los derechos son reservados",
+      phrase:
+        "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
+      author: "Portafolio creado con pasión por Damiers Solarte – 2026",
+    },
+    en: {
+      title: "Footer",
+      credits: "© 2026 Damiers Alexander Solarte Limas – Software Engineer",
+      rights: "All rights reserved",
+      phrase:
+        "“True greatness lies in growing without losing the principles that define us.”",
+      author: "Portfolio created with passion by Damiers Solarte – 2026",
+    },
+  };
+
+  const t = translations[lang];
+
   return (
     <footer
       className="relative bg-cover bg-center text-center py-10 z-0"
@@ -86,9 +112,26 @@ export default function Footer() {
       <div className="mt-6 flex justify-center relative z-10">
         <div
           className="inline-block px-6 py-4 cursor-pointer select-none"
-          onClick={() => isMobile && setShowClock((prev) => !prev)} // 📱 Toggle con clic en móvil
-          onMouseEnter={() => !isMobile && setShowClock(true)}     // 💻 Mostrar en web al hover
-          onMouseLeave={() => !isMobile && setShowClock(false)}    // 💻 Ocultar en web al salir
+          onClick={() => {
+            if (isMobile) {
+              setShowClock((prev) => {
+                handleClockSound(!prev);
+                return !prev;
+              });
+            }
+          }}
+          onMouseEnter={() => {
+            if (!isMobile) {
+              setShowClock(true);
+              handleClockSound(true);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!isMobile) {
+              setShowClock(false);
+              handleClockSound(false);
+            }
+          }}
         >
           <AnimatePresence>
             {showClock && (
@@ -102,8 +145,8 @@ export default function Footer() {
                 <span
                   className="text-black font-['Esteban'] text-xl"
                   style={{
-                    WebkitTextStroke: "0.5px #d4af37", // 🔹 Borde dorado leve
-                    textShadow: "0 0 4px #ffffff",    // 🔹 Brillo blanco
+                    WebkitTextStroke: "0.5px #d4af37",
+                    textShadow: "0 0 4px #ffffff",
                   }}
                 >
                   {clockTime}
@@ -111,7 +154,7 @@ export default function Footer() {
                 <span
                   className="ml-2 text-red-600 font-bold text-xl"
                   style={{
-                    textShadow: "0 0 4px #ffffff",    // 🔹 Brillo blanco al AM/PM
+                    textShadow: "0 0 4px #ffffff",
                   }}
                 >
                   {clockPeriod}
@@ -147,10 +190,12 @@ export default function Footer() {
           isMobile ? "flex-col items-center gap-4" : "flex-row justify-center gap-6"
         }`}
       >
+        {/* 🔊 LinkedIn */}
         <a
           href="https://www.linkedin.com/in/damiers-solarte-08716b381"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => playSound("LinkedIn.mp3")}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
@@ -159,10 +204,12 @@ export default function Footer() {
           </span>
         </a>
 
+        {/* 🔊 WhatsApp */}
         <a
           href="https://wa.me/573167969206"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => playSound("whatsapp.mp3")}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
@@ -171,10 +218,12 @@ export default function Footer() {
           </span>
         </a>
 
+        {/* 🔊 GitHub */}
         <a
           href="https://github.com/solartedaniers"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => playSound("url.mp3")}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaGithub className="text-black text-2xl transition-all duration-300 hover:scale-125" />

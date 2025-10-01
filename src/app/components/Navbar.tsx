@@ -65,6 +65,12 @@ export default function Navbar() {
     { icon: <GiArchiveResearch />, id: "PieDePágina" },
   ];
 
+  // 🎵 Función para reproducir el sonido de menú
+  const playMenuSound = () => {
+    const audio = new Audio("/sounds/menu.mp3");
+    audio.play().catch((e) => console.error("Error al reproducir audio:", e));
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 shadow-lg bg-black">
       {/* 🔘 Menú móvil */}
@@ -89,6 +95,7 @@ export default function Navbar() {
               onClick={() => {
                 setSelectedIndex(index);
                 setMenuOpen(false);
+                playMenuSound(); // 🎵 Sonido al hacer clic
               }}
               className={`flex items-center gap-3 bg-[#f5f5f5] px-4 py-2 rounded-xl border transition-all duration-300 cursor-pointer ${
                 selectedIndex === index
@@ -107,7 +114,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* 🖥 Menú horizontal en escritorio sin bordes redondeados */}
+      {/* 🖥 Menú horizontal en escritorio */}
       <div className="hidden md:block md:px-2 md:pt-2">
         <div className="bg-[#d4af37] max-w-[99%] mx-auto px-4 py-2">
           <div className="grid grid-cols-10 gap-2 max-w-7xl mx-auto">
@@ -115,7 +122,10 @@ export default function Navbar() {
               <a
                 key={index}
                 href={`#${item.id}`}
-                onClick={() => setSelectedIndex(index)}
+                onClick={() => {
+                  setSelectedIndex(index);
+                  playMenuSound(); // 🎵 Sonido al hacer clic
+                }}
                 className={`flex flex-col items-center justify-center gap-1 bg-[#f5f5f5] px-3 py-1 rounded-xl border transition-all duration-300 cursor-pointer ${
                   selectedIndex === index
                     ? "border-red-600 shadow-[0_0_15px_rgba(0,0,0,0.8)] scale-105"

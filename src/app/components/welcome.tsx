@@ -34,6 +34,18 @@ export default function Welcome() {
   const t = translations[lang];
   const [hovered, setHovered] = useState(false);
 
+  // 🎵 Función para reproducir el sonido de "sword.mp3"
+  const playSwordSound = () => {
+    const audio = new Audio("/sounds/sword.mp3");
+    audio.play().catch((e) => console.error("Error al reproducir audio:", e));
+  };
+
+  // 🔘 Función al hacer clic en el botón Hogar
+  const handleHomeClick = () => {
+    playSwordSound();
+    router.push("/");
+  };
+
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10"
@@ -42,7 +54,7 @@ export default function Welcome() {
       {/* 🔺 Botón Inicio más pequeño y alineado */}
       <div
         className="absolute top-2 left-2 flex items-center gap-1 bg-[#f5f5f5] px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]"
-        onClick={() => router.push("/")}
+        onClick={handleHomeClick}
       >
         <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
           <Image
@@ -71,7 +83,9 @@ export default function Welcome() {
           alt="Perfil"
           width={256}
           height={256}
-          className={`w-full h-full object-cover ${hovered ? "animate-pulse" : ""}`}
+          className={`w-full h-full object-cover ${
+            hovered ? "animate-pulse" : ""
+          }`}
         />
       </div>
 

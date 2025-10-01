@@ -17,6 +17,18 @@ export default function Contact() {
   const [contenido, setContenido] = useState("");
   const [hovered, setHovered] = useState(false);
 
+  // 🎵 Sonidos
+  const playLinkedInSound = () => {
+    const audio = new Audio("/sounds/LinkedIn.mp3");
+    audio.play();
+  };
+
+  const playWhatsAppSound = () => {
+    const audio = new Audio("/sounds/whatsapp.mp3");
+    audio.play();
+  };
+
+  // 🌍 Traducciones
   const translations = {
     es: {
       title: "Contacto",
@@ -103,6 +115,7 @@ export default function Contact() {
                 href="https://www.linkedin.com/in/daniers-solarte-08716b381"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={playLinkedInSound}
                 className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
               >
                 LinkedIn
@@ -116,6 +129,7 @@ export default function Contact() {
                 href="https://wa.me/3167969206"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={playWhatsAppSound}
                 className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
               >
                 WhatsApp
@@ -175,6 +189,7 @@ export default function Contact() {
               required
             />
 
+            {/* ✅ Botón final corregido */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600  
