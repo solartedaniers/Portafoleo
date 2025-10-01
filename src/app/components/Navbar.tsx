@@ -15,7 +15,7 @@ import {
 import { useApp } from "./ThemeLangContext";
 
 export default function Navbar() {
-  const { lang } = useApp();
+  const { lang, theme } = useApp();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -65,23 +65,32 @@ export default function Navbar() {
     { icon: <GiArchiveResearch />, id: "PieDePágina" },
   ];
 
-  // 🎵 Función para reproducir el sonido de menú
+  // 🎵 Sonido menú
   const playMenuSound = () => {
     const audio = new Audio("/sounds/menu.mp3");
     audio.play().catch((e) => console.error("Error al reproducir audio:", e));
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 shadow-lg bg-black">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 shadow-lg transition-colors duration-300 
+        ${theme === "dark" ? "bg-black" : "bg-white"}`}
+    >
       {/* 🔘 Menú móvil */}
       <div
         className="flex items-center px-4 py-2 md:hidden cursor-pointer"
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        <span className="font-bold text-[#d4af37] text-lg">☰ Menú</span>
+        <span
+          className={`font-bold text-lg ${
+            theme === "dark" ? "text-[#d4af37]" : "text-black"
+          }`}
+        >
+          ☰ Menú
+        </span>
       </div>
 
-      {/* 🧭 Menú lateral móvil */}
+      {/* 🧭 Menú lateral móvil (fondo dorado siempre fijo) */}
       <div
         className={`fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-[#d4af37] shadow-lg z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -95,26 +104,22 @@ export default function Navbar() {
               onClick={() => {
                 setSelectedIndex(index);
                 setMenuOpen(false);
-                playMenuSound(); // 🎵 Sonido al hacer clic
+                playMenuSound();
               }}
-              className={`flex items-center gap-3 bg-[#f5f5f5] px-4 py-2 rounded-xl border transition-all duration-300 cursor-pointer ${
+              className={`flex items-center gap-3 px-4 py-2 rounded-xl border transition-all duration-300 cursor-pointer ${
                 selectedIndex === index
                   ? "border-red-600 shadow-[0_0_15px_rgba(0,0,0,0.8)] scale-105"
                   : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
-              }`}
+              } bg-[#f5f5f5] text-black`}
             >
-              {selectedIndex === index && (
-                <span className="text-lg">{item.icon}</span>
-              )}
-              <span className="font-['Irish_Grover'] text-black text-sm drop-shadow-[0_0_1px_gold]">
-                {t.menu[index]}
-              </span>
+              {selectedIndex === index && <span className="text-lg">{item.icon}</span>}
+              <span className="font-['Irish_Grover'] text-sm">{t.menu[index]}</span>
             </a>
           ))}
         </div>
       </div>
 
-      {/* 🖥 Menú horizontal en escritorio */}
+      {/* 🖥 Menú horizontal escritorio (fondo dorado siempre fijo) */}
       <div className="hidden md:block md:px-2 md:pt-2">
         <div className="bg-[#d4af37] max-w-[99%] mx-auto px-4 py-2">
           <div className="grid grid-cols-10 gap-2 max-w-7xl mx-auto">
@@ -124,18 +129,16 @@ export default function Navbar() {
                 href={`#${item.id}`}
                 onClick={() => {
                   setSelectedIndex(index);
-                  playMenuSound(); // 🎵 Sonido al hacer clic
+                  playMenuSound();
                 }}
-                className={`flex flex-col items-center justify-center gap-1 bg-[#f5f5f5] px-3 py-1 rounded-xl border transition-all duration-300 cursor-pointer ${
+                className={`flex flex-col items-center justify-center gap-1 px-3 py-1 rounded-xl border transition-all duration-300 cursor-pointer ${
                   selectedIndex === index
                     ? "border-red-600 shadow-[0_0_15px_rgba(0,0,0,0.8)] scale-105"
                     : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
-                }`}
+                } bg-[#f5f5f5] text-black`}
               >
-                {selectedIndex === index && (
-                  <span className="text-lg">{item.icon}</span>
-                )}
-                <span className="font-['Irish_Grover'] text-black text-xs sm:text-sm drop-shadow-[0_0_1px_gold]">
+                {selectedIndex === index && <span className="text-lg">{item.icon}</span>}
+                <span className="font-['Irish_Grover'] text-xs sm:text-sm">
                   {t.menu[index]}
                 </span>
               </a>

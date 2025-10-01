@@ -1,3 +1,5 @@
+"use client";
+import { useApp } from "../components/ThemeLangContext";
 import Navbar from "../components/Navbar";
 import Welcome from "../components/welcome";
 import AboutMe from "../components/AboutMe";
@@ -11,14 +13,18 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
 export default function PortfolioPage() {
+  const { theme } = useApp();
+
   return (
-    <main className="min-h-screen flex flex-col gap-10 scroll-smooth px-4 py-6 - pt-24 
-     bg-black">
+    <main
+      className={`min-h-screen flex flex-col gap-10 scroll-smooth px-4 py-6 pt-24 
+      ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+    >
       {/* ✅ Barra de navegación fija */}
       <Navbar />
 
-      {/* ✅ Secciones con margen interno y bordes dorados */}
-      <section id="bienvenidos" className=" scroll-mt-24 border-[15px] border-[#d4af37] p-4 box-border">
+      {/* ✅ Secciones con borde dorado */}
+      <section id="bienvenidos" className="scroll-mt-24 border-[15px] border-[#d4af37] p-4 box-border">
         <Welcome />
       </section>
       <section id="acercademi" className="border-[15px] border-[#d4af37] p-4 box-border">
