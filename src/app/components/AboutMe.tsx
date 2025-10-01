@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
@@ -13,6 +13,8 @@ interface AboutItem {
 export default function AboutMe() {
   const { lang } = useApp();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const items: AboutItem[] = [
     {
@@ -57,13 +59,43 @@ export default function AboutMe() {
     },
   ];
 
-  const playAudio = (src: string) => {
-    if (audioRef.current) {
-      audioRef.current.src = src;
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
+  const speakText = (text: string, index: number) => {
+    const synth = window.speechSynthesis;
+    if (synth.speaking) {
+      synth.cancel();
+      setSpeakingIndex(null);
+      return;
     }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = synth.getVoices();
+    const preferredLang = lang === "es" ? "es-ES" : "en-US";
+
+    const maleVoice = voices.find(
+      (v) =>
+        v.lang === preferredLang &&
+        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
+    );
+
+    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
+    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.lang = preferredLang;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    utterance.onstart = () => setSpeakingIndex(index);
+    utterance.onend = () => setSpeakingIndex(null);
+
+    synth.speak(utterance);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
 
   return (
     <section className="w-full text-black overflow-x-hidden">
@@ -74,7 +106,6 @@ export default function AboutMe() {
           style={{ backgroundImage: "url('/images/forest 2.jpg')" }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
-          {/* 🔴 Título con hover dorado */}
           <h2
             className="text-2xl sm:text-4xl text-center mb-10 px-4 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
                        bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-irish"
@@ -83,7 +114,7 @@ export default function AboutMe() {
             {lang === "es" ? "Acerca de mí" : "About Me"}
           </h2>
 
-          {/* 📌 Primeros 2 cuadros */}
+          {/* Los 2 primeros ítems */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
             {items.slice(0, 2).map((item, i) => (
               <div
@@ -91,15 +122,21 @@ export default function AboutMe() {
                 className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
                 style={{ boxShadow: "0px 4px 20px #c4af37" }}
               >
-                {/* 🔊 Icono bocina */}
+                {/* Icono de audio */}
                 <div
-                  onClick={() => playAudio(item.audio)}
-                  className="absolute top-2 right-2 text-gray-500 hover:text-blue-600 transition-all duration-300 cursor-pointer"
+                  onClick={() => speakText(item.text[lang], i)}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  className={`absolute top-2 right-2 cursor-pointer transition-all duration-300 ${
+                    speakingIndex === i || hoveredIndex === i
+                      ? "text-blue-600"
+                      : "text-gray-500"
+                  }`}
                 >
                   <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
                 </div>
 
-                {/* 🖼️ Imagen */}
+                {/* Imagen */}
                 <Image
                   src={item.img}
                   alt={item.text[lang]}
@@ -108,7 +145,7 @@ export default function AboutMe() {
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
                 />
 
-                {/* 📜 Texto */}
+                {/* Texto */}
                 <p
                   className="text-base sm:text-lg text-center mt-6"
                   style={{ fontFamily: "'Esteban', serif" }}
@@ -128,40 +165,49 @@ export default function AboutMe() {
           style={{ backgroundImage: "url('/images/forest.jpg')" }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
-          {/* 📌 Últimos 3 cuadros */}
+          {/* Los ítems restantes */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
-            {items.slice(2).map((item, i) => (
-              <div
-                key={i}
-                className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
-                style={{ boxShadow: "0px 4px 20px #c4af37" }}
-              >
-                {/* 🔊 Icono bocina */}
+            {items.slice(2).map((item, i) => {
+              const index = i + 2;
+              return (
                 <div
-                  onClick={() => playAudio(item.audio)}
-                  className="absolute top-2 right-2 text-gray-500 hover:text-blue-600 transition-all duration-300 cursor-pointer"
+                  key={index}
+                  className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
+                  style={{ boxShadow: "0px 4px 20px #c4af37" }}
                 >
-                  <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
+                  {/* Icono de audio */}
+                  <div
+                    onClick={() => speakText(item.text[lang], index)}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    className={`absolute top-2 right-2 cursor-pointer transition-all duration-300 ${
+                      speakingIndex === index || hoveredIndex === index
+                        ? "text-blue-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
+                  </div>
+
+                  {/* Imagen */}
+                  <Image
+                    src={item.img}
+                    alt={item.text[lang]}
+                    width={110}
+                    height={110}
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
+                  />
+
+                  {/* Texto */}
+                  <p
+                    className="text-base sm:text-lg text-center mt-6"
+                    style={{ fontFamily: "'Esteban', serif" }}
+                  >
+                    {item.text[lang]}
+                  </p>
                 </div>
-
-                {/* 🖼️ Imagen */}
-                <Image
-                  src={item.img}
-                  alt={item.text[lang]}
-                  width={110}
-                  height={110}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
-                />
-
-                {/* 📜 Texto */}
-                <p
-                  className="text-base sm:text-lg text-center mt-6"
-                  style={{ fontFamily: "'Esteban', serif" }}
-                >
-                  {item.text[lang]}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaVolumeUp, FaBriefcase } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
@@ -7,19 +7,8 @@ import { useApp } from "./ThemeLangContext";
 export default function Experiencia() {
   const { lang } = useApp();
 
-  const [audioAcademico] = useState(
-    typeof Audio !== "undefined" ? new Audio("/sounds/academico.mp3") : null
-  );
-  const [audioLaboral] = useState(
-    typeof Audio !== "undefined" ? new Audio("/sounds/laboral.mp3") : null
-  );
-
-  const playAudio = (audio: HTMLAudioElement | null) => {
-    if (audio) {
-      audio.currentTime = 0;
-      audio.play();
-    }
-  };
+  const [speaking, setSpeaking] = useState<"academico" | "laboral" | null>(null);
+  const [hovered, setHovered] = useState<"academico" | "laboral" | null>(null);
 
   const translations = {
     es: {
@@ -35,6 +24,8 @@ export default function Experiencia() {
         "Diseño y desarrollo de interfaces enfocadas en usabilidad y experiencia de usuario.",
       ],
       work: "Experiencia Laboral",
+      workText:
+        "He trabajado como cocinero, repartidor, vendedor y apoyo técnico. Cada experiencia me ha enseñado disciplina, trabajo en equipo y compromiso.",
       workList: [
         "Cocinero de comidas rápidas – Restaurante DMaíz.",
         "Repartidor de frutas en carro – Frutas Gómez.",
@@ -55,6 +46,8 @@ export default function Experiencia() {
         "Design and development of interfaces focused on usability and user experience.",
       ],
       work: "Work Experience",
+      workText:
+        "I’ve worked as a cook, delivery driver, store clerk, and technical assistant. Each role taught me discipline, teamwork, and commitment.",
       workList: [
         "Fast food cook – Restaurante DMaíz.",
         "Fruit delivery driver – Frutas Gómez.",
@@ -65,6 +58,44 @@ export default function Experiencia() {
   };
 
   const t = translations[lang];
+
+  const speakText = (text: string, type: "academico" | "laboral") => {
+    const synth = window.speechSynthesis;
+    if (synth.speaking) {
+      synth.cancel();
+      setSpeaking(null);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = synth.getVoices();
+    const preferredLang = lang === "es" ? "es-ES" : "en-US";
+
+    const maleVoice = voices.find(
+      (v) =>
+        v.lang === preferredLang &&
+        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
+    );
+
+    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
+    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.lang = preferredLang;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    utterance.onstart = () => setSpeaking(type);
+    utterance.onend = () => setSpeaking(null);
+
+    synth.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
 
   return (
     <section
@@ -95,8 +126,14 @@ export default function Experiencia() {
           </h3>
 
           <button
-            onClick={() => playAudio(audioAcademico)}
-            className="text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:text-blue-600 hover:shadow-md"
+            onClick={() => speakText(t.academicText, "academico")}
+            onMouseEnter={() => setHovered("academico")}
+            onMouseLeave={() => setHovered(null)}
+            className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
+              speaking === "academico" || hovered === "academico"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }`}
           >
             <FaVolumeUp />
           </button>
@@ -127,12 +164,20 @@ export default function Experiencia() {
           </h3>
 
           <button
-            onClick={() => playAudio(audioLaboral)}
-            className="text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:text-blue-600 hover:shadow-md"
+            onClick={() => speakText(t.workText, "laboral")}
+            onMouseEnter={() => setHovered("laboral")}
+            onMouseLeave={() => setHovered(null)}
+            className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
+              speaking === "laboral" || hovered === "laboral"
+                ? "text-blue-600"
+                : "text-gray-500"
+            }`}
           >
             <FaVolumeUp />
           </button>
         </div>
+
+        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{t.workText}</p>
 
         <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
           {t.workList.map((item, i) => (

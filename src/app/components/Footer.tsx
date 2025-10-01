@@ -104,7 +104,7 @@ export default function Footer() {
       }}
     >
       {/* 🔴 Título */}
-      <h2 className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-xl shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black">
+      <h2 className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-full shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black">
         {t.title}
       </h2>
 

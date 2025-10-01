@@ -1,21 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaVolumeUp } from "react-icons/fa";
 import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 
 export default function Filosofia() {
   const { lang } = useApp();
-  const [audio] = useState(
-    typeof Audio !== "undefined" ? new Audio("/sounds/filosofia.mp3") : null
-  );
-
-  const playAudio = () => {
-    if (audio) {
-      audio.currentTime = 0;
-      audio.play();
-    }
-  };
+  const [speaking, setSpeaking] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const translations = {
     es: {
@@ -47,14 +39,52 @@ I strive to help others and add value, because true greatness lies not in what w
     </p>
   ));
 
+  const speakText = () => {
+    const synth = window.speechSynthesis;
+    if (synth.speaking) {
+      synth.cancel();
+      setSpeaking(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(t.text);
+    const voices = synth.getVoices();
+    const preferredLang = lang === "es" ? "es-ES" : "en-US";
+
+    const maleVoice = voices.find(
+      (v) =>
+        v.lang === preferredLang &&
+        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
+    );
+
+    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
+    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.lang = preferredLang;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+
+    synth.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
+
   return (
     <section
       className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/images/path.jpg')" }}
     >
-      <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6">
+      <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5 ">
         {/* Título */}
-        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+        <h2 className="text-4xl text-center px-6 py-2  rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
           {t.title}
         </h2>
 
@@ -62,8 +92,12 @@ I strive to help others and add value, because true greatness lies not in what w
         <div className="relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 hover:scale-105 hover:border-red-600 hover:shadow-[0_0_30px_#c4af37] border-4 border-transparent">
           {/* Botón audio */}
           <button
-            onClick={playAudio}
-            className="absolute top-4 right-4 p-2 rounded-full text-black transition-all duration-300 hover:scale-110 hover:text-blue-600"
+            onClick={speakText}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
+              speaking || hovered ? "text-blue-600" : "text-gray-500"
+            }`}
           >
             <FaVolumeUp size={24} />
           </button>

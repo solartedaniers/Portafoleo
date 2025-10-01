@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useApp } from "./ThemeLangContext";
 import { FaVolumeUp } from "react-icons/fa";
 
@@ -33,25 +33,72 @@ export default function Welcome() {
   const { lang } = useApp();
   const t = translations[lang];
   const [hovered, setHovered] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // 🎵 Función para reproducir el sonido de "sword.mp3"
+  // 🎵 Sonido de espada
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword.mp3");
     audio.play().catch((e) => console.error("Error al reproducir audio:", e));
   };
 
-  // 🔘 Función al hacer clic en el botón Hogar
+  // 🔘 Navegar al inicio
   const handleHomeClick = () => {
     playSwordSound();
     router.push("/");
   };
+
+  // 🗣️ Narrar o detener el texto con voz masculina
+  const toggleSpeech = () => {
+    const synth = window.speechSynthesis;
+
+    if (synth.speaking) {
+      synth.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const text = t.description.map((d) => d.replace(/<br\s*\/?>/gi, "")).join(" ");
+    const utterance = new SpeechSynthesisUtterance(text);
+    utteranceRef.current = utterance;
+
+    const voices = synth.getVoices();
+    const preferredLang = lang === "es" ? "es-ES" : "en-US";
+
+    const maleVoice = voices.find(
+      (v) =>
+        v.lang === preferredLang &&
+        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
+    );
+
+    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
+    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.lang = preferredLang;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    synth.speak(utterance);
+    setIsSpeaking(true);
+  };
+
+  // 🗣️ Asegurar que las voces estén disponibles
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
 
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10"
       style={{ backgroundImage: "url('/images/temple.png')" }}
     >
-      {/* 🔺 Botón Inicio más pequeño y alineado */}
+      {/* 🔺 Botón Inicio */}
       <div
         className="absolute top-2 left-2 flex items-center gap-1 bg-[#f5f5f5] px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]"
         onClick={handleHomeClick}
@@ -83,21 +130,18 @@ export default function Welcome() {
           alt="Perfil"
           width={256}
           height={256}
-          className={`w-full h-full object-cover ${
-            hovered ? "animate-pulse" : ""
-          }`}
+          className={`w-full h-full object-cover ${hovered ? "animate-pulse" : ""}`}
         />
       </div>
 
-      {/* 🧑 Nombre con efecto */}
+      {/* 🧑 Nombre */}
       <h1 className="mt-6 font-['Irish_Grover'] text-2xl sm:text-3xl text-black drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer">
         Daniers Alexander Solarte Limas
       </h1>
 
-      {/* Línea decorativa */}
       <hr className="w-1/2 border-t-2 border-black mt-4" />
 
-      {/* 🧠 Subtítulo con efecto */}
+      {/* 🧠 Subtítulo */}
       <h2 className="mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] animate-pulse hover:animate-none hover:scale-105 transition-all duration-300 bg-white/60 px-1 py-1 rounded-xl text-stroke-silver text-center cursor-pointer">
         {t.subtitle}
       </h2>
@@ -107,9 +151,14 @@ export default function Welcome() {
         {t.welcome}
       </h3>
 
-      {/* 📜 Descripción con ícono de audio interactivo */}
+      {/* 📜 Descripción con narración */}
       <div className="bg-[#f5f5f5] p-4 sm:p-6 rounded-2xl shadow-md border mt-6 w-full max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-300">
-        <div className="absolute top-2 right-2 text-gray-500 hover:text-blue-600 transition-all duration-300 cursor-pointer">
+        <div
+          className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${
+            isSpeaking ? "text-blue-600" : "text-gray-500 hover:text-blue-600"
+          }`}
+          onClick={toggleSpeech}
+        >
           <FaVolumeUp className="text-xl hover:scale-125 transition-transform duration-300" />
         </div>
 
