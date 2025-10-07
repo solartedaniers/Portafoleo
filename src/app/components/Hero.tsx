@@ -77,7 +77,7 @@ export default function Hero() {
       </div>
 
       {/* 🧍‍♂️ Contenido principal */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6 translate-x-6 sm:translate-x-60">
         <h1 className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
           {t.brand}
         </h1>
