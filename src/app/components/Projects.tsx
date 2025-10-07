@@ -8,30 +8,22 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useApp } from "./ThemeLangContext";
 
-const PROJECT_COUNT = 6;
-const GIT_URL = "https://github.com/solartedaniers/software-Patrones.git";
 
-const translations = {
-  es: {
-    title: "Mis proyectos",
-    description:
-      "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad. Utiliza tecnologías web modernas para visualizar estos datos de forma gráfica, facilitando el control y la toma de decisiones durante el proceso.",
-    tools: "Lenguajes y herramientas",
-  },
-  en: {
-    title: "My Projects",
-    description:
-      "The Coffee Fermentation Monitoring System is an application designed to track critical parameters of the coffee fermentation process in real time, such as temperature, pH, and humidity. It uses modern web technologies to visualize this data graphically, making it easier to control and make decisions during the process.",
-    tools: "Languages and Tools",
-  },
+
+type Project = {
+  image: string;
+  title: { es: string; en: string };
+  description: { es: string; en: string };
+  tools: string[];
+  gitUrl: string;
 };
 
 export default function Projects() {
   const { lang } = useApp();
-  const t = translations[lang];
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const thunderRef = useRef<HTMLAudioElement | null>(null);
 
+  // reproducir sonido al abrir enlace (Git)
   const playUrlSound = () => {
     if (audioRef.current) {
       audioRef.current.src = "/sounds/url.mp3";
@@ -40,6 +32,7 @@ export default function Projects() {
     }
   };
 
+  // reproducir sonido al hacer hover/click en "tool" button
   const playThunderSound = () => {
     if (thunderRef.current) {
       thunderRef.current.src = "/sounds/thunder.mp3";
@@ -48,26 +41,82 @@ export default function Projects() {
     }
   };
 
-  const project = {
+  // proyectos (6 tarjetas). Las 5 y 6 repetirán la info base.
+  const baseProject: Project = {
     image: "/images/fermentation.webp",
-    title: "Fermentation Monitoring",
-    description: t.description,
+    title: {
+      es: "Fermentation Monitoring",
+      en: "Fermentation Monitoring",
+    },
+    description: {
+      es:
+        "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad. Utiliza tecnologías web modernas para visualizar estos datos de forma gráfica, facilitando el control y la toma de decisiones durante el proceso.",
+      en:
+        "The Coffee Fermentation Monitoring System is an application designed to track critical parameters of the coffee fermentation process in real time, such as temperature, pH, and humidity. It uses modern web technologies to visualize this data graphically, making it easier to control and make decisions during the process.",
+    },
     tools: ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+    gitUrl: "https://github.com/solartedaniers/software-Patrones.git",
   };
 
-  const cards = Array.from({ length: PROJECT_COUNT }).map((_, i) => ({
-    id: i,
-    ...project,
-  }));
+  // tarjeta 2: Coca-Cola Company
+  const project2: Project = {
+    image: "/images/fermentation.webp", // por ahora usas la misma foto
+    title: { es: "Coca-Cola Company", en: "Coca-Cola Company" },
+    description: {
+      es:
+        "Programa con interfaz gráfica que calcula los días de vacaciones a los que tiene derecho un trabajador según su puesto y antigüedad en la empresa. Permite ingresar datos del empleado y obtener el cálculo automático, incluyendo excepciones por categorías o convenios.",
+      en:
+        "A GUI program that calculates the vacation days an employee is entitled to based on their role and seniority. Users enter employee data and receive automatic calculations, including special rules for different categories or agreements.",
+    },
+    tools: ["Java"],
+    gitUrl: "https://github.com/solartedaniers/Coca-cola.git",
+  };
 
-  const renderCard = (c: typeof project & { id: number }) => (
+  // tarjeta 3: PlantSim
+  const project3: Project = {
+    image: "/images/fermentation.webp", // misma foto por ahora
+    title: { es: "PlantSim", en: "PlantSim" },
+    description: {
+      es:
+        "PlantSim es una aplicación web desarrollada como trabajo final para Estructura de Datos y Patrones de Software. Modela el crecimiento de plantas en función de variables ambientales (luz, humedad, temperatura), ofrece recomendaciones para el cuidado y una gestión interactiva del entorno vegetal simulado.",
+      en:
+        "PlantSim is an innovative web application developed as a final project for Data Structures and Software Patterns courses. It models plant growth based on environmental variables (light, humidity, temperature), provides care recommendations, and offers interactive management of the simulated plant environment.",
+    },
+    tools: ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Angular", "Node.js"],
+    gitUrl: "https://github.com/Pipemora1324/BigProyect.git",
+  };
+
+  // tarjeta 4: Interface
+  const project4: Project = {
+    image: "/images/interface.webp",
+    title: { es: "Interface", en: "Interface" },
+    description: {
+      es:
+        "Interfaz hecha en Next.js usando utilidades de Flex y Grid para un diseño responsivo y moderno. Incluye componentes reutilizables, optimización de imágenes y navegación accesible.",
+      en:
+        "Interface built with Next.js using Flex and Grid classes for a responsive, modern layout. Includes reusable components, image optimization and accessible navigation.",
+    },
+    tools: ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
+    gitUrl: "https://github.com/solartedaniers/interface.git",
+  };
+
+  // construir array final de 6 tarjetas
+  const projects: Project[] = [
+    baseProject,
+    project2,
+    project3,
+    project4,
+    baseProject, // 5
+    baseProject, // 6
+  ];
+
+  const renderCard = (c: Project, id: number) => (
     <article
-      key={c.id}
+      key={id}
       className="relative bg-[#f5f5f5] rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] mx-2"
       style={{
         border: "2px solid red",
-        boxShadow:
-          "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
       }}
     >
       <div className="p-6 flex flex-col items-center gap-4">
@@ -82,7 +131,7 @@ export default function Projects() {
           >
             <Image
               src={c.image}
-              alt={c.title}
+              alt={c.title[lang]}
               width={220}
               height={140}
               className="object-cover w-[220px] h-[140px] transition-all duration-300"
@@ -92,7 +141,7 @@ export default function Projects() {
 
         <div className="w-full flex justify-center px-2">
           <a
-            href={GIT_URL}
+            href={c.gitUrl}
             target="_blank"
             rel="noreferrer"
             onClick={playUrlSound}
@@ -114,14 +163,14 @@ export default function Projects() {
             letterSpacing: "0.2px",
           }}
         >
-          {c.title}
+          {c.title[lang]}
         </h3>
 
         <p
           className="text-sm text-gray-700 text-center px-2 transition-colors duration-300 hover:text-gray-900"
           style={{ fontFamily: "'Esteban', serif" }}
         >
-          {c.description}
+          {c.description[lang]}
         </p>
 
         <div className="w-full text-left mt-4">
@@ -133,14 +182,14 @@ export default function Projects() {
               WebkitTextStroke: "0.6px #c4af37",
             }}
           >
-            {t.tools}
+            {lang === "es" ? "Lenguajes y herramientas" : "Languages and Tools"}
           </span>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-3 justify-start w-full">
-          {c.tools.map((t) => (
+          {c.tools.map((tool) => (
             <button
-              key={t}
+              key={tool}
               onClick={playThunderSound}
               className="px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
               style={{
@@ -153,8 +202,7 @@ export default function Projects() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.border = "1px solid red";
                 e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.textShadow =
-                  "0 0 6px rgba(196,175,55,0.6)";
+                e.currentTarget.style.textShadow = "0 0 6px rgba(196,175,55,0.6)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.border = "1px solid #c4af37";
@@ -162,7 +210,7 @@ export default function Projects() {
                 e.currentTarget.style.textShadow = "none";
               }}
             >
-              <span style={{ WebkitTextStroke: "0.6px #c4af37" }}>{t}</span>
+              <span style={{ WebkitTextStroke: "0.6px #c4af37" }}>{tool}</span>
             </button>
           ))}
         </div>
@@ -184,7 +232,7 @@ export default function Projects() {
       <div className="relative z-10 w-[95%] max-w-6xl">
         <header className="w-full flex justify-center mb-8">
           <h2 className="text-4xl text-center px-6 py-3 rounded-full shadow-md transition-all duration-300 bg-red-600/60 text-white font-['Irish_Grover'] hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
-            {t.title}
+            {lang === "es" ? "Mis proyectos" : "My Projects"}
           </h2>
         </header>
 
@@ -198,15 +246,15 @@ export default function Projects() {
             loop
             className="mySwiper"
           >
-            {cards.map((c) => (
-              <SwiperSlide key={c.id}>{renderCard(c)}</SwiperSlide>
+            {projects.map((p, i) => (
+              <SwiperSlide key={i}>{renderCard(p, i)}</SwiperSlide>
             ))}
           </Swiper>
         </div>
 
         {/* Rejilla en escritorio */}
         <main className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-8">
-          {cards.map((c) => renderCard(c))}
+          {projects.map((p, i) => renderCard(p, i))}
         </main>
       </div>
 
