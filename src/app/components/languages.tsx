@@ -71,7 +71,7 @@ export default function Tecnologias() {
 
         {/* 🌀 Carrusel */}
         <div className="relative w-full flex items-center justify-center px-6 sm:px-10">
-          <div className="flex-grow max-w-[60%] sm:max-w-[80%] md:max-w-[70%]">
+          <div className="flex-grow max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
             <Swiper
               modules={[Navigation]}
               navigation={{
