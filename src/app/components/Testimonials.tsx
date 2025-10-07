@@ -32,7 +32,7 @@ export default function Testimonials() {
   const testimonials = Array(4).fill({
     name: t.name,
     text: t.text,
-    image: "/images/Daniel.jpg",
+    image: "/images/Daniel.webp", // ✅ cambiado a .webp
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function Testimonials() {
       }`}
       onClick={() => setSelected(selected === idx ? null : idx)}
     >
-      {/* Imagen circular más redondeada */}
+      {/* Imagen circular */}
       <div
         className={`relative w-24 h-24 rounded-full overflow-hidden border-[2.5px] transition-all duration-500 ${
           selected === idx
@@ -103,7 +103,7 @@ export default function Testimonials() {
     <section
       ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/parchment.jpg')" }}
+      style={{ backgroundImage: "url('/images/parchment.webp')" }} // ✅ cambiado a .webp
     >
       {/* 🔴 Título */}
       <h2 className="text-4xl text-center px-6 py-3 rounded-full shadow-md transition-all duration-300 bg-red-600/60 text-white font-['Irish_Grover'] hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">

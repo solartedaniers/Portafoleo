@@ -96,7 +96,7 @@ export default function Welcome() {
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10"
-      style={{ backgroundImage: "url('/images/temple.png')" }}
+      style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
       {/* 🔺 Botón Inicio */}
       <div
@@ -126,7 +126,7 @@ export default function Welcome() {
         onMouseLeave={() => setHovered(false)}
       >
         <Image
-          src="/images/profile.jpeg"
+          src="/images/profile.webp"
           alt="Perfil"
           width={256}
           height={256}

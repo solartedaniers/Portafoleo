@@ -61,17 +61,21 @@ export default function Contact() {
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
-      style={{ backgroundImage: "url('/images/village.jpg')" }}
+      style={{ backgroundImage: "url('/images/village.webp')" }}
     >
       {/* 🔴 Bloque centrado */}
       <div className="flex flex-col items-center text-center gap-4 w-full max-w-2xl mx-auto mb-12">
-        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
-                     bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+        <h2
+          className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
+                     bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
+        >
           {t.title}
         </h2>
 
-        <div className="bg-[#f5f5f5] p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-white
-                     transition-all duration-300 hover:scale-105 max-w-xl w-full">
+        <div
+          className="bg-[#f5f5f5] p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-white
+                     transition-all duration-300 hover:scale-105 max-w-xl w-full"
+        >
           <p
             className="font-['Esteban'] text-[#5c4c4c] text-lg drop-shadow-[0_0_1px_#d4af37]
                        leading-relaxed hover:scale-105 hover:shadow-md hover:shadow-gray-400 transition-all duration-300"
@@ -87,15 +91,13 @@ export default function Contact() {
           <div
             className={`rounded-full border-4 border-yellow-500 overflow-hidden w-90 h-90  
               transition-all duration-300 cursor-pointer ${
-                hovered
-                  ? "shadow-[0_0_30px_10px_gold] scale-110"
-                  : "shadow-lg"
+                hovered ? "shadow-[0_0_30px_10px_gold] scale-110" : "shadow-lg"
               }`}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
             <Image
-              src={hovered ? "/images/profile 2.jpeg" : "/images/profile 1.jpeg"}
+              src={hovered ? "/images/profile2.webp" : "/images/profile1.webp"}
               alt="Perfil"
               width={384}
               height={384}
@@ -108,8 +110,10 @@ export default function Contact() {
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full">
           {/* Redes sociales */}
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-            <div className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
-                hover:border-yellow-500 transition-all duration-300 hover:scale-105">
+            <div
+              className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
+                hover:border-yellow-500 transition-all duration-300 hover:scale-105"
+            >
               <FaLinkedin className="text-2xl text-blue-600 hover:scale-125 transition-all duration-300" />
               <a
                 href="https://www.linkedin.com/in/daniers-solarte-08716b381"
@@ -122,8 +126,10 @@ export default function Contact() {
               </a>
             </div>
 
-            <div className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
-                hover:border-yellow-500 transition-all duration-300 hover:scale-105">
+            <div
+              className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
+                hover:border-yellow-500 transition-all duration-300 hover:scale-105"
+            >
               <FaWhatsapp className="text-2xl text-green-600 hover:scale-125 transition-all duration-300" />
               <a
                 href="https://wa.me/3167969206"
@@ -147,8 +153,10 @@ export default function Contact() {
             <label className="font-['Esteban'] text-lg text-black drop-shadow-[0_0_1px_red]">
               {t.email}
             </label>
-            <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm  
-                hover:border-yellow-500 focus-within:border-yellow-500 transition-all duration-300">
+            <div
+              className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm  
+                hover:border-yellow-500 focus-within:border-yellow-500 transition-all duration-300"
+            >
               <FaEnvelope className="text-gray-500" />
               <input
                 type="email"
@@ -163,8 +171,10 @@ export default function Contact() {
             <label className="font-['Esteban'] text-lg text-black drop-shadow-[0_0_1px_red]">
               {t.name}
             </label>
-            <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm  
-                hover:border-yellow-500 focus-within:border-yellow-500 transition-all duration-300">
+            <div
+              className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm  
+                hover:border-yellow-500 focus-within:border-yellow-500 transition-all duration-300"
+            >
               <FaUser className="text-gray-500" />
               <input
                 type="text"
@@ -189,7 +199,7 @@ export default function Contact() {
               required
             />
 
-            {/* ✅ Botón final corregido */}
+            {/* ✅ Botón final */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600  

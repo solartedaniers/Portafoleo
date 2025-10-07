@@ -97,7 +97,8 @@ export default function Footer() {
     <footer
       className="relative bg-cover bg-center text-center py-10 z-0"
       style={{
-        backgroundImage: "url('/images/wolf.jpg'), url('/images/samurai.jpg')",
+        backgroundImage:
+          "url('/images/wolf.webp'), url('/images/samurai.webp')",
         backgroundPosition: "left, right",
         backgroundRepeat: "no-repeat, no-repeat",
         backgroundSize: "50% 100%, 50% 100%",

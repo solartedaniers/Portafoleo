@@ -18,7 +18,7 @@ export default function AboutMe() {
 
   const items: AboutItem[] = [
     {
-      img: "/images/family.jpeg",
+      img: "/images/family.webp",
       text: {
         es: "Me encanta salir a pasear con mi familia y pasar tiempo con mi hermana. A mi juicio, esos instantes simples son muy valiosos, ya que nos hacen recordar lo fundamental que es gozar de la compañía de aquellos a quienes más queremos",
         en: "I love going out with my family and spending time with my sister. In my view, those simple moments are very valuable, reminding us how important it is to enjoy the company of those we love most.",
@@ -26,7 +26,7 @@ export default function AboutMe() {
       audio: "/sounds/family.mp3",
     },
     {
-      img: "/images/motorcycle.jpeg",
+      img: "/images/motorcycle.webp",
       text: {
         es: "Me encanta viajar en moto, recorrer nuevos lugares. Porque cada viaje es una oportunidad para descubrir paisajes, culturas y formas de pensar que me enriquecen y me ayudan a crecer.",
         en: "I love traveling by motorcycle and exploring new places. Every trip is a chance to discover landscapes, cultures, and ways of thinking that enrich me and help me grow.",
@@ -34,7 +34,7 @@ export default function AboutMe() {
       audio: "/sounds/motorcycle.mp3",
     },
     {
-      img: "/images/group.jpeg",
+      img: "/images/group.webp",
       text: {
         es: "Me gusta jugar microfútbol con amigos, no en torneos, sino como un espacio para compartir, reír y desconectarme. También practico taekwondo, camino o corro con frecuencia, porque me gusta mantenerme activo y sentir la energía del movimiento.",
         en: "I enjoy playing soccer with friends—not in tournaments, but as a space to share, laugh, and disconnect. I also practice taekwondo, walk or run often, because I like staying active and feeling the energy of movement.",
@@ -42,7 +42,7 @@ export default function AboutMe() {
       audio: "/sounds/group.mp3",
     },
     {
-      img: "/images/paragliding.jpeg",
+      img: "/images/paragliding.webp",
       text: {
         es: "Las montañas y los deportes extremos me apasionan, porque ahí encuentro tanto paz como adrenalina. Me gusta sentir ese impulso de libertad y desafío que me recuerda que la vida también está hecha para atreverse.",
         en: "I'm passionate about mountains and extreme sports because they offer both peace and adrenaline. I love the feeling of freedom and challenge that reminds me life is also about daring.",
@@ -50,7 +50,7 @@ export default function AboutMe() {
       audio: "/sounds/paragliding.mp3",
     },
     {
-      img: "/images/Bible.jpg",
+      img: "/images/Bible.webp",
       text: {
         es: "Me gusta leer la Biblia, conversar y compartir con personas que me inspiran. Disfruto estar activo y ayudar a los demás, porque creo que crecer como persona es un camino que se construye con humildad y sabiendo escuchar.",
         en: "I enjoy reading the Bible, talking and sharing with people who inspire me. I like staying active and helping others, because I believe personal growth is built with humility and the ability to listen.",
@@ -103,7 +103,7 @@ export default function AboutMe() {
       <div className="relative w-full z-0">
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/forest 2.jpg')" }}
+          style={{ backgroundImage: "url('/images/forest-2.webp')" }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           <h2
@@ -162,7 +162,7 @@ export default function AboutMe() {
       <div className="relative w-full z-0">
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/forest.jpg')" }}
+          style={{ backgroundImage: "url('/images/forest.webp')" }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           {/* Los ítems restantes */}

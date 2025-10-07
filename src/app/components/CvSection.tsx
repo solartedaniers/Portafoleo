@@ -40,7 +40,8 @@ export default function CvSection() {
   return (
     <section
       className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/background.jpeg')" }}
+      // 🟢 Imagen de fondo convertida a formato .webp
+      style={{ backgroundImage: "url('/images/background.webp')" }}
     >
       {/* 🔴 Título fijo "CV" */}
       <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">

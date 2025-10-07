@@ -49,7 +49,7 @@ export default function Projects() {
   };
 
   const project = {
-    image: "/image/fermentation.png",
+    image: "/images/fermentation.webp",
     title: "Fermentation Monitoring",
     description: t.description,
     tools: ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
@@ -66,7 +66,8 @@ export default function Projects() {
       className="relative bg-[#f5f5f5] rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] mx-2"
       style={{
         border: "2px solid red",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
+        boxShadow:
+          "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
       }}
     >
       <div className="p-6 flex flex-col items-center gap-4">
@@ -173,7 +174,7 @@ export default function Projects() {
     <section
       className="relative w-full min-h-screen overflow-hidden flex items-start justify-center py-12"
       style={{
-        backgroundImage: `url(${encodeURI("/images/samuray car.jpg")})`,
+        backgroundImage: "url('/images/samuray-car.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

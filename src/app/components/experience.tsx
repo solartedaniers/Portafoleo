@@ -100,18 +100,19 @@ export default function Experiencia() {
   return (
     <section
       className="min-h-screen flex flex-col items-center justify-center px-6 py-10 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/city.jpg')" }}
+      // 🟢 Imagen de fondo convertida a formato .webp
+      style={{ backgroundImage: "url('/images/city.webp')" }}
     >
-      {/* Título principal */}
+      {/* 🏙️ Título principal */}
       <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
         {t.title}
       </h2>
 
-      {/* Experiencia Académica */}
+      {/* 🎓 Experiencia Académica */}
       <div className="w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
         <div className="flex items-center justify-between mb-4">
           <Image
-            src="/images/seminar.jpeg"
+            src="/images/seminar.webp"
             alt="Seminario"
             width={48}
             height={48}
@@ -151,7 +152,7 @@ export default function Experiencia() {
         </ul>
       </div>
 
-      {/* Experiencia Laboral */}
+      {/* 💼 Experiencia Laboral */}
       <div className="w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
         <div className="flex items-center justify-between mb-4">
           <FaBriefcase className="text-4xl text-red-600 transition-all duration-300 hover:scale-110 hover:text-[#c4af37]" />
