@@ -15,7 +15,9 @@ export default function Contact() {
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [contenido, setContenido] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hovered, setHovered] = useState(false);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // 🎵 Sonidos
   const playLinkedInSound = () => {
@@ -25,6 +27,11 @@ export default function Contact() {
 
   const playWhatsAppSound = () => {
     const audio = new Audio("/sounds/whatsapp.mp3");
+    audio.play();
+  };
+
+  const playSendSound = () => {
+    const audio = new Audio("/sounds/blow.mp3");
     audio.play();
   };
 
@@ -58,12 +65,72 @@ export default function Contact() {
 
   const t = translations[lang];
 
+  // 🧠 Validación
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    const emailRegex = /^[\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$/;
+
+    if (!email) {
+      newErrors.email = "Introduzca un correo válido.";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Introduzca un correo válido.";
+    }
+
+    if (!nombre) {
+      newErrors.nombre = "Solo se aceptan letras. Debe contener al menos 3 caracteres.";
+    } else if (!nameRegex.test(nombre)) {
+      if (/\d/.test(nombre)) {
+        newErrors.nombre = "Solo se aceptan letras, no números.";
+      } else {
+        newErrors.nombre = "En este espacio debe colocar al menos 3 caracteres.";
+      }
+    }
+
+    if (!contenido.trim()) {
+      newErrors.contenido = "Este espacio es obligatorio.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // 📬 Envío del formulario
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuccessMsg(null);
+
+    if (validateForm()) {
+      playSendSound();
+      try {
+        const res = await fetch("https://formsubmit.co/ajax/solartedaniers@gmail.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, nombre, contenido }),
+        });
+
+        if (res.ok) {
+          setSuccessMsg("✅ Su mensaje fue enviado exitosamente.");
+          setEmail("");
+          setNombre("");
+          setContenido("");
+        } else {
+          setSuccessMsg("❌ Su mensaje no se pudo mandar. Inténtelo nuevamente.");
+        }
+      } catch {
+        setSuccessMsg("❌ Su mensaje no se pudo mandar. Inténtelo nuevamente.");
+      }
+
+      setTimeout(() => setSuccessMsg(null), 4000);
+    }
+  };
+
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
       style={{ backgroundImage: "url('/images/village.webp')" }}
     >
-      {/* 🔴 Título (siempre visible) */}
+      {/* 🔴 Título */}
       <h2
         className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
                    bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] mb-6"
@@ -71,7 +138,7 @@ export default function Contact() {
         {t.title}
       </h2>
 
-      {/* 💬 Texto motivacional — solo visible en pantallas md y superiores */}
+      {/* 💬 Texto motivacional */}
       <div className="hidden md:block">
         <div
           className="bg-[#f5f5f5] p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-white
@@ -79,15 +146,15 @@ export default function Contact() {
         >
           <p
             className="font-['Esteban'] text-[#5c4c4c] text-lg drop-shadow-[0_0_1px_#d4af37]
-                       leading-relaxed hover:scale-105 hover:shadow-md hover:shadow-gray-400 transition-all duration-300"
+                       leading-relaxed transition-all duration-300"
             dangerouslySetInnerHTML={{ __html: t.message }}
           />
         </div>
       </div>
 
-      {/* 🟨 Contenido principal (imagen + formulario) */}
+      {/* 🟨 Contenido principal */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-7xl items-center">
-        {/* 👤 Imagen — solo en pantallas medianas y grandes */}
+        {/* 👤 Imagen */}
         <div className="hidden md:flex justify-center items-start mt-5">
           <div
             className={`rounded-full border-4 border-yellow-500 overflow-hidden w-80 h-80  
@@ -107,7 +174,7 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* 📨 Redes + formulario */}
+        {/* 📨 Redes + Formulario */}
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full">
           {/* 🌐 Redes sociales */}
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
@@ -146,12 +213,15 @@ export default function Contact() {
 
           {/* ✉️ Formulario */}
           <form
-            id="contact-form"
-            action="https://formsubmit.co/solartedaniers@gmail.com"
-            method="POST"
+            onSubmit={handleSubmit}
             className="flex flex-col gap-4 w-full max-w-md text-left"
           >
-            <label className="font-['Esteban'] text-lg text-black drop-shadow-[0_0_1px_red]">
+            {/* 📧 Email */}
+            <label
+              className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
+                errors.email ? "animate-pulse" : ""
+              }`}
+            >
               {t.email}
             </label>
             <div
@@ -168,8 +238,18 @@ export default function Contact() {
                 required
               />
             </div>
+            {errors.email && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.email}
+              </p>
+            )}
 
-            <label className="font-['Esteban'] text-lg text-black drop-shadow-[0_0_1px_red]">
+            {/* 👤 Nombre */}
+            <label
+              className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
+                errors.nombre ? "animate-pulse" : ""
+              }`}
+            >
               {t.name}
             </label>
             <div
@@ -186,8 +266,18 @@ export default function Contact() {
                 required
               />
             </div>
+            {errors.nombre && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.nombre}
+              </p>
+            )}
 
-            <label className="font-['Esteban'] text-lg text-black drop-shadow-[0_0_1px_red]">
+            {/* 📝 Contenido */}
+            <label
+              className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
+                errors.contenido ? "animate-pulse" : ""
+              }`}
+            >
               {t.content}
             </label>
             <textarea
@@ -199,8 +289,13 @@ export default function Contact() {
               onChange={(e) => setContenido(e.target.value)}
               required
             />
+            {errors.contenido && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.contenido}
+              </p>
+            )}
 
-            {/* ✅ Botón de envío */}
+            {/* ✅ Botón */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600  
@@ -211,6 +306,13 @@ export default function Contact() {
                 {t.send}
               </span>
             </button>
+
+            {/* 🟢 Mensaje de éxito o error */}
+            {successMsg && (
+              <p className="text-black text-base bg-gray-200 mt-3 py-2 px-3 rounded-md shadow-md animate-fadeIn">
+                {successMsg}
+              </p>
+            )}
           </form>
         </div>
       </div>
