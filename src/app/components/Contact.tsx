@@ -63,18 +63,19 @@ export default function Contact() {
       className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
       style={{ backgroundImage: "url('/images/village.webp')" }}
     >
-      {/* 🔴 Bloque centrado */}
-      <div className="flex flex-col items-center text-center gap-4 w-full max-w-2xl mx-auto mb-12">
-        <h2
-          className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
-                     bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
-        >
-          {t.title}
-        </h2>
+      {/* 🔴 Título (siempre visible) */}
+      <h2
+        className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
+                   bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] mb-6"
+      >
+        {t.title}
+      </h2>
 
+      {/* 💬 Texto motivacional — solo visible en pantallas md y superiores */}
+      <div className="hidden md:block">
         <div
           className="bg-[#f5f5f5] p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-white
-                     transition-all duration-300 hover:scale-105 max-w-xl w-full"
+                     transition-all duration-300 hover:scale-105 max-w-xl w-full mb-12"
         >
           <p
             className="font-['Esteban'] text-[#5c4c4c] text-lg drop-shadow-[0_0_1px_#d4af37]
@@ -84,12 +85,12 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* 🟨 Grid principal */}
+      {/* 🟨 Contenido principal (imagen + formulario) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-7xl items-center">
-        {/* Imagen */}
-        <div className="flex justify-center items-start mt-5">
+        {/* 👤 Imagen — solo en pantallas medianas y grandes */}
+        <div className="hidden md:flex justify-center items-start mt-5">
           <div
-            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-90 h-90  
+            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-80 h-80  
               transition-all duration-300 cursor-pointer ${
                 hovered ? "shadow-[0_0_30px_10px_gold] scale-110" : "shadow-lg"
               }`}
@@ -106,9 +107,9 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Redes y formulario */}
+        {/* 📨 Redes + formulario */}
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full">
-          {/* Redes sociales */}
+          {/* 🌐 Redes sociales */}
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
             <div
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
@@ -143,7 +144,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Formulario */}
+          {/* ✉️ Formulario */}
           <form
             id="contact-form"
             action="https://formsubmit.co/solartedaniers@gmail.com"
@@ -199,7 +200,7 @@ export default function Contact() {
               required
             />
 
-            {/* ✅ Botón final */}
+            {/* ✅ Botón de envío */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600  
