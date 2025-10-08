@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useApp } from "./ThemeLangContext";
 import { useRouter } from "next/navigation";
 
@@ -8,21 +8,42 @@ const translations = {
     brand: "Daniers Solarte",
     quote: "El código es mi espada,<br />la lógica mi escudo.",
     view: "Ver Portafolio",
-    language: "Inglés", // 👈 mostrará el idioma al que cambiarás
+    language: "Inglés",
   },
   en: {
     brand: "Daniers Solarte",
     quote: "The code is my sword,<br />logic is my shield.",
     view: "View Portfolio",
-    language: "Español", // 👈 mostrará el idioma al que cambiarás
+    language: "Español",
   },
 };
 
 export default function Hero() {
-  const { lang, toggleLang, theme, toggleTheme } = useApp();
+  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
   const t = translations[lang];
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // ✅ Detectar el modo del sistema al cargar
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+      // establecer tema inicial según el sistema
+      setTheme(systemDark.matches ? "dark" : "light");
+
+      // escuchar cambios en el tema del sistema
+      const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+        setTheme(e.matches ? "dark" : "light");
+      };
+
+      systemDark.addEventListener("change", handleSystemThemeChange);
+
+      return () => {
+        systemDark.removeEventListener("change", handleSystemThemeChange);
+      };
+    }
+  }, [setTheme]);
 
   const handleViewClick = async () => {
     if (audioRef.current) {
@@ -30,7 +51,7 @@ export default function Hero() {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
       } catch {
-        // ignorar autoplay
+        // ignorar autoplay bloqueado
       }
     }
     router.push("/portfolio");
@@ -57,7 +78,7 @@ export default function Hero() {
         }`}
       />
 
-      {/* 🔘 Botones de idioma y tema */}
+      {/* 🔘 Botones */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
         {/* Tema */}
         <button
@@ -78,7 +99,7 @@ export default function Hero() {
         </button>
       </div>
 
-      {/* 🧍‍♂️ Contenido principal */}
+      {/* 🧍‍♂️ Contenido */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6 translate-x-6 sm:translate-x-60">
         <h1 className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
           {t.brand}
