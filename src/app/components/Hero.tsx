@@ -8,13 +8,13 @@ const translations = {
     brand: "Daniers Solarte",
     quote: "El código es mi espada,<br />la lógica mi escudo.",
     view: "Ver Portafolio",
-    language: "Idioma",
+    language: "Inglés", // 👈 mostrará el idioma al que cambiarás
   },
   en: {
     brand: "Daniers Solarte",
     quote: "The code is my sword,<br />logic is my shield.",
     view: "View Portfolio",
-    language: "Language",
+    language: "Español", // 👈 mostrará el idioma al que cambiarás
   },
 };
 
@@ -59,6 +59,7 @@ export default function Hero() {
 
       {/* 🔘 Botones de idioma y tema */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
+        {/* Tema */}
         <button
           onClick={toggleTheme}
           aria-label="Cambiar tema"
@@ -67,6 +68,7 @@ export default function Hero() {
           {theme === "dark" ? "🌙" : "☀️"}
         </button>
 
+        {/* Idioma */}
         <button
           onClick={toggleLang}
           aria-label="Cambiar idioma"

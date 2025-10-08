@@ -34,24 +34,59 @@ export default function Welcome() {
   const t = translations[lang];
   const [hovered, setHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // 🎵 Sonido de espada
+  // ⚙️ Movimiento 3D con ratón y giroscopio
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { width, height, left, top } = container.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
+      setRotation({ x: y * 20, y: x * 20 });
+    };
+
+    const handleMouseLeave = () => setRotation({ x: 0, y: 0 });
+
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    // Giroscopio en móvil
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (event.gamma !== null && event.beta !== null) {
+        const x = event.gamma / 45; // izquierda-derecha
+        const y = event.beta / 45; // adelante-atrás
+        setRotation({ x: y * 10, y: x * 10 });
+      }
+    };
+    window.addEventListener("deviceorientation", handleOrientation);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("deviceorientation", handleOrientation);
+    };
+  }, []);
+
+  // 🔊 Sonido espada
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword.mp3");
     audio.play().catch((e) => console.error("Error al reproducir audio:", e));
   };
 
-  // 🔘 Navegar al inicio
+  // 🏠 Ir a inicio
   const handleHomeClick = () => {
     playSwordSound();
     router.push("/");
   };
 
-  // 🗣️ Narrar o detener el texto con voz masculina
+  // 🗣️ Narración con voz masculina
   const toggleSpeech = () => {
     const synth = window.speechSynthesis;
-
     if (synth.speaking) {
       synth.cancel();
       setIsSpeaking(false);
@@ -61,30 +96,24 @@ export default function Welcome() {
     const text = t.description.map((d) => d.replace(/<br\s*\/?>/gi, "")).join(" ");
     const utterance = new SpeechSynthesisUtterance(text);
     utteranceRef.current = utterance;
-
     const voices = synth.getVoices();
     const preferredLang = lang === "es" ? "es-ES" : "en-US";
-
     const maleVoice = voices.find(
       (v) =>
         v.lang === preferredLang &&
         /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
     );
-
-    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
-    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.voice = maleVoice ?? voices.find((v) => v.lang === preferredLang) ?? null;
     utterance.lang = preferredLang;
     utterance.rate = 1;
     utterance.pitch = 1;
-
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
-
     synth.speak(utterance);
     setIsSpeaking(true);
   };
 
-  // 🗣️ Asegurar que las voces estén disponibles
+  // 🗣️ Cargar voces
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -117,21 +146,30 @@ export default function Welcome() {
         </span>
       </div>
 
-      {/* 🖼️ Imagen de perfil */}
+      {/* 🖼️ Imagen de perfil con efecto 3D */}
       <div
-        className={`rounded-full border-4 overflow-hidden w-48 h-48 sm:w-64 sm:h-64 mt-8 transition-all duration-500 ${
-          hovered ? "scale-110 border-red-600" : "border-yellow-500"
-        }`}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        ref={containerRef}
+        className="relative mt-10 perspective-[1000px]"
+        style={{
+          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+          transition: "transform 0.1s ease-out",
+        }}
       >
-        <Image
-          src="/images/profile.webp"
-          alt="Perfil"
-          width={256}
-          height={256}
-          className={`w-full h-full object-cover ${hovered ? "animate-pulse" : ""}`}
-        />
+        <div
+          className={`rounded-full border-4 overflow-hidden w-48 h-48 sm:w-64 sm:h-64 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 ${
+            hovered ? "scale-110 border-red-600" : "border-yellow-500"
+          }`}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <Image
+            src="/images/profile.webp"
+            alt="Perfil"
+            width={256}
+            height={256}
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
 
       {/* 🧑 Nombre */}
@@ -151,7 +189,7 @@ export default function Welcome() {
         {t.welcome}
       </h3>
 
-      {/* 📜 Descripción con narración */}
+      {/* 📜 Descripción + narrador */}
       <div className="bg-[#f5f5f5] p-4 sm:p-6 rounded-2xl shadow-md border mt-6 w-full max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-300">
         <div
           className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${
