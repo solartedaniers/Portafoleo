@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useApp } from "./ThemeLangContext";
 import { useRouter } from "next/navigation";
 
@@ -23,25 +23,29 @@ export default function Hero() {
   const t = translations[lang];
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ✅ Detectar dispositivo (móvil o PC)
+  useEffect(() => {
+    const checkDevice = () => setIsMobile(window.innerWidth < 768);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   // ✅ Detectar el modo del sistema al cargar
   useEffect(() => {
     if (typeof window !== "undefined") {
       const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-      // establecer tema inicial según el sistema
       setTheme(systemDark.matches ? "dark" : "light");
 
-      // escuchar cambios en el tema del sistema
       const handleSystemThemeChange = (e: MediaQueryListEvent) => {
         setTheme(e.matches ? "dark" : "light");
       };
 
       systemDark.addEventListener("change", handleSystemThemeChange);
-
-      return () => {
+      return () =>
         systemDark.removeEventListener("change", handleSystemThemeChange);
-      };
     }
   }, [setTheme]);
 
@@ -51,10 +55,15 @@ export default function Hero() {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
       } catch {
-        // ignorar autoplay bloqueado
+        // Ignorar bloqueo de autoplay
       }
     }
     router.push("/portfolio");
+  };
+
+  // 🖱 Manejo universal de hover/tap
+  const handleTouchHover = (callback: () => void) => {
+    if (isMobile) callback();
   };
 
   return (
@@ -82,38 +91,66 @@ export default function Hero() {
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
         {/* Tema */}
         <button
-          onClick={toggleTheme}
+          onClick={() => {
+            toggleTheme();
+            handleTouchHover(() =>
+              alert(theme === "dark" ? "Modo claro" : "Modo oscuro")
+            );
+          }}
           aria-label="Cambiar tema"
-          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-105 hover:border-red-600"
+          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-110 hover:border-red-600"
         >
           {theme === "dark" ? "🌙" : "☀️"}
         </button>
 
         {/* Idioma */}
         <button
-          onClick={toggleLang}
+          onClick={() => {
+            toggleLang();
+            handleTouchHover(() =>
+              alert(lang === "es" ? "Language: English" : "Idioma: Español")
+            );
+          }}
           aria-label="Cambiar idioma"
-          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-105 hover:border-red-600"
+          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-110 hover:border-red-600"
         >
           🌐 {t.language}
         </button>
       </div>
 
-      {/* 🧍‍♂️ Contenido */}
+      {/* 🧍‍♂️ Contenido principal */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6 translate-x-6 sm:translate-x-60">
-        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-105 text-stroke-gold hover:text-stroke-red">
+        {/* Nombre */}
+        <h1
+          className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-110 text-stroke-gold hover:text-stroke-red"
+          onClick={() =>
+            handleTouchHover(() =>
+              alert(lang === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio")
+            )
+          }
+        >
           {t.brand}
         </h1>
 
+        {/* Frase */}
         <p
-          className="text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban"
+          className="text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban transition-transform hover:scale-105"
           style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
+          onClick={() =>
+            handleTouchHover(() =>
+              alert(lang === "es" ? "El código es mi espada, la lógica mi escudo." : "The code is my sword, logic is my shield.")
+            )
+          }
           dangerouslySetInnerHTML={{ __html: t.quote }}
         />
 
+        {/* Botón Ver Portafolio */}
         <button
           onClick={handleViewClick}
-          className="px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform hover:scale-105 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
+          onTouchStart={() =>
+            handleTouchHover(() => alert(t.view))
+          }
+          className="px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform hover:scale-110 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
         >
           {t.view}
         </button>

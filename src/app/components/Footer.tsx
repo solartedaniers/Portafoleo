@@ -12,13 +12,12 @@ export default function Footer() {
   const [isMobile, setIsMobile] = useState(false);
   const clockAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // 🎵 Cargar el audio del reloj
+  // 🎵 Cargar sonido del reloj
   useEffect(() => {
     clockAudioRef.current = new Audio("/sounds/clock.mp3");
-    clockAudioRef.current.loop = true; // ⏳ Sonido continuo
+    clockAudioRef.current.loop = true;
   }, []);
 
-  // 🔊 Manejo del sonido del reloj
   const handleClockSound = (play: boolean) => {
     if (clockAudioRef.current) {
       if (play) {
@@ -31,7 +30,7 @@ export default function Footer() {
     }
   };
 
-  // ⏰ Reloj en tiempo real
+  // ⏰ Reloj
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -39,39 +38,34 @@ export default function Footer() {
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
       const ampm = hours >= 12 ? "PM" : "AM";
-
       hours = hours % 12 || 12;
-      const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-      setClockTime(formattedTime);
+      setClockTime(
+        `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+      );
       setClockPeriod(ampm);
     };
-
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // 📱 Detectar si es móvil
+  // 📱 Detectar móvil
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth < 640);
-      };
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }
+    const checkDevice = () => setIsMobile(window.innerWidth < 768);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // 🔊 Reproducir sonidos de botones sociales
+  // 🔊 Sonido botones sociales
   const playSound = (file: string) => {
     const audio = new Audio(`/sounds/${file}`);
     audio.play();
   };
 
+  // 🌍 Traducción
   const translations = {
     es: {
       title: "Pie de página",
@@ -93,6 +87,11 @@ export default function Footer() {
 
   const t = translations[lang];
 
+  // 🖱 Control de hover/tap universal
+  const handleTouchHover = (callback: () => void) => {
+    if (isMobile) callback();
+  };
+
   return (
     <footer
       className="relative bg-cover bg-center text-center py-10 z-0"
@@ -105,7 +104,10 @@ export default function Footer() {
       }}
     >
       {/* 🔴 Título */}
-      <h2 className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-full shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black">
+      <h2
+        className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-full shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black"
+        onClick={() => handleTouchHover(() => alert(t.title))}
+      >
         {t.title}
       </h2>
 
@@ -114,12 +116,10 @@ export default function Footer() {
         <div
           className="inline-block px-6 py-4 cursor-pointer select-none"
           onClick={() => {
-            if (isMobile) {
-              setShowClock((prev) => {
-                handleClockSound(!prev);
-                return !prev;
-              });
-            }
+            setShowClock((prev) => {
+              handleClockSound(!prev);
+              return !prev;
+            });
           }}
           onMouseEnter={() => {
             if (!isMobile) {
@@ -141,7 +141,7 @@ export default function Footer() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.4 }}
-                className="bg-[#f5f5f5] px-6 py-3 rounded-xl border border-black shadow-[0_0_20px_silver] inline-block z-20"
+                className="bg-[#d9d9d9] px-6 py-3 rounded-xl border border-black shadow-[0_0_20px_silver] inline-block z-20"
               >
                 <span
                   className="text-black font-['Esteban'] text-xl"
@@ -167,7 +167,10 @@ export default function Footer() {
       </div>
 
       {/* 📄 Créditos */}
-      <div className="mt-8 text-lg font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105">
+      <div
+        className="mt-8 text-lg font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105"
+        onClick={() => handleTouchHover(() => alert(t.credits))}
+      >
         {t.credits}
         <br />
         {t.rights}
@@ -176,27 +179,36 @@ export default function Footer() {
       {/* 📜 Frase */}
       <p
         className="mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105"
+        onClick={() => handleTouchHover(() => alert(t.phrase))}
         style={{ WebkitTextStroke: "0.5px #c4af37" }}
       >
         {t.phrase}
       </p>
 
-      <p className="mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1">
+      <p
+        className="mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1"
+        onClick={() => handleTouchHover(() => alert(t.author))}
+      >
         {t.author}
       </p>
 
       {/* 🔗 Redes sociales */}
       <div
         className={`mt-8 flex ${
-          isMobile ? "flex-col items-center gap-4" : "flex-row justify-center gap-6"
+          isMobile
+            ? "flex-col items-center gap-4"
+            : "flex-row justify-center gap-6"
         }`}
       >
-        {/* 🔊 LinkedIn */}
+        {/* 🔗 LinkedIn */}
         <a
           href="https://www.linkedin.com/in/damiers-solarte-08716b381"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => playSound("LinkedIn.mp3")}
+          onClick={() => {
+            playSound("LinkedIn.mp3");
+            handleTouchHover(() => alert("Abriendo LinkedIn..."));
+          }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
@@ -205,12 +217,15 @@ export default function Footer() {
           </span>
         </a>
 
-        {/* 🔊 WhatsApp */}
+        {/* 🔗 WhatsApp */}
         <a
           href="https://wa.me/573167969206"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => playSound("whatsapp.mp3")}
+          onClick={() => {
+            playSound("whatsapp.mp3");
+            handleTouchHover(() => alert("Abriendo WhatsApp..."));
+          }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
@@ -219,12 +234,15 @@ export default function Footer() {
           </span>
         </a>
 
-        {/* 🔊 GitHub */}
+        {/* 🔗 GitHub */}
         <a
           href="https://github.com/solartedaniers"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => playSound("url.mp3")}
+          onClick={() => {
+            playSound("url.mp3");
+            handleTouchHover(() => alert("Abriendo GitHub..."));
+          }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaGithub className="text-black text-2xl transition-all duration-300 hover:scale-125" />

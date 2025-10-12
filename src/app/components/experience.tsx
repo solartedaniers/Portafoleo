@@ -9,13 +9,18 @@ export default function Experiencia() {
 
   const [speaking, setSpeaking] = useState<"academico" | "laboral" | null>(null);
   const [hovered, setHovered] = useState<"academico" | "laboral" | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia("(hover: none)").matches);
+  }, []);
 
   const translations = {
     es: {
       title: "Experiencia Académica y Laboral",
       academic: "Experiencia Académica",
       academicText:
-        "Soy estudiante de Ingeniería de Software Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
+        "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
       academicProjects: "Desarrollo de proyectos académicos:",
       academicList: [
         "Simulador de crecimiento de plantas.",
@@ -89,6 +94,14 @@ export default function Experiencia() {
     synth.speak(utterance);
   };
 
+  // Simular hover con toque en dispositivos táctiles
+  const handleTouchHover = (type: "academico" | "laboral") => {
+    if (isTouchDevice) {
+      setHovered(type);
+      setTimeout(() => setHovered(null), 800); // efecto corto de hover
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -100,16 +113,18 @@ export default function Experiencia() {
   return (
     <section
       className="min-h-screen flex flex-col items-center justify-center px-6 py-10 bg-cover bg-center"
-      // 🟢 Imagen de fondo convertida a formato .webp
       style={{ backgroundImage: "url('/images/city.webp')" }}
     >
-      {/* 🏙️ Título principal */}
       <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
         {t.title}
       </h2>
 
       {/* 🎓 Experiencia Académica */}
-      <div className="w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
+      <div
+        className={`w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 
+        ${hovered === "academico" ? "shadow-[0_0_25px_#c4af37] scale-105" : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"}`}
+        onTouchStart={() => handleTouchHover("academico")}
+      >
         <div className="flex items-center justify-between mb-4">
           <Image
             src="/images/seminar.webp"
@@ -130,6 +145,7 @@ export default function Experiencia() {
             onClick={() => speakText(t.academicText, "academico")}
             onMouseEnter={() => setHovered("academico")}
             onMouseLeave={() => setHovered(null)}
+            onTouchStart={() => handleTouchHover("academico")}
             className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
               speaking === "academico" || hovered === "academico"
                 ? "text-blue-600"
@@ -153,7 +169,11 @@ export default function Experiencia() {
       </div>
 
       {/* 💼 Experiencia Laboral */}
-      <div className="w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_25px_#c4af37] hover:scale-105">
+      <div
+        className={`w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 rounded-xl transition-all duration-300 
+        ${hovered === "laboral" ? "shadow-[0_0_25px_#c4af37] scale-105" : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"}`}
+        onTouchStart={() => handleTouchHover("laboral")}
+      >
         <div className="flex items-center justify-between mb-4">
           <FaBriefcase className="text-4xl text-red-600 transition-all duration-300 hover:scale-110 hover:text-[#c4af37]" />
 
@@ -168,6 +188,7 @@ export default function Experiencia() {
             onClick={() => speakText(t.workText, "laboral")}
             onMouseEnter={() => setHovered("laboral")}
             onMouseLeave={() => setHovered(null)}
+            onTouchStart={() => handleTouchHover("laboral")}
             className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
               speaking === "laboral" || hovered === "laboral"
                 ? "text-blue-600"

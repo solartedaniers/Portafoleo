@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApp } from "./ThemeLangContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -44,6 +44,25 @@ export default function Tecnologias() {
   const { lang } = useApp();
   const t = translations[lang];
   const [hovered, setHovered] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ✅ Detectar si es móvil o no
+  useEffect(() => {
+    const checkDevice = () => setIsMobile(window.innerWidth < 768);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
+
+  // 🖱 Función universal hover/tap
+  const handleHover = (name: string) => {
+    if (isMobile) {
+      setHovered(name);
+      setTimeout(() => setHovered(null), 800);
+    } else {
+      setHovered(name);
+    }
+  };
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-[6px] sm:border-[8px] border-gold box-border">
@@ -60,14 +79,12 @@ export default function Tecnologias() {
       {/* Contenido principal */}
       <div className="relative z-10 flex flex-col items-center w-full h-full pt-10 px-4 sm:px-6 gap-6">
         {/* 🎨 Título */}
-        <h2 className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+        <h2
+          className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
+          onTouchStart={() => isMobile && handleHover("title")}
+        >
           {t.title}
         </h2>
-
-        {/* 💬 Frase motivadora solo en móviles */}
-        <p className="block sm:hidden text-center italic text-base px-4 py-2 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md">
-          {t.quote}
-        </p>
 
         {/* 🌀 Carrusel */}
         <div className="relative w-full flex items-center justify-center px-6 sm:px-10">
@@ -82,7 +99,7 @@ export default function Tecnologias() {
               centeredSlides={true}
               spaceBetween={40}
               breakpoints={{
-                0: { slidesPerView: 1, spaceBetween: 50 }, // más espacio en móviles
+                0: { slidesPerView: 1, spaceBetween: 50 },
                 640: { slidesPerView: 2, spaceBetween: 40 },
                 1024: { slidesPerView: 3, spaceBetween: 30 },
               }}
@@ -91,19 +108,18 @@ export default function Tecnologias() {
               {techList.map((tech, idx) => (
                 <SwiperSlide key={idx}>
                   <div
-                    onMouseEnter={() => setHovered(tech.name)}
-                    onMouseLeave={() => setHovered(null)}
-                    onTouchStart={() => setHovered(tech.name)}
-                    onTouchEnd={() => setHovered(null)}
+                    onMouseEnter={() => !isMobile && setHovered(tech.name)}
+                    onMouseLeave={() => !isMobile && setHovered(null)}
+                    onTouchStart={() => handleHover(tech.name)}
                     className={`flex items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
                       hovered === tech.name
-                        ? "border-gold shadow-[0_0_25px_#c4af37] rotate-[10deg]"
-                        : "border-red-600 shadow-[0_0_15px_#c4af37] rotate-0"
+                        ? "border-gold shadow-[0_0_25px_#c4af37] rotate-[10deg] scale-110"
+                        : "border-red-600 shadow-[0_0_15px_#c4af37] rotate-0 scale-100"
                     }`}
                   >
                     <div
                       className={`transition-transform duration-500 ${
-                        hovered === tech.name ? "rotate-[15deg] scale-110" : "rotate-0"
+                        hovered === tech.name ? "rotate-[15deg] scale-110" : "rotate-0 scale-100"
                       }`}
                     >
                       {tech.icon}
@@ -122,7 +138,7 @@ export default function Tecnologias() {
         </div>
 
         {/* 💬 Frase motivadora solo en escritorio */}
-        <p className="hidden sm:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md transition-all duration-500 hover:scale-105 hover:text-gold hover:border-gold hover:shadow-[0_0_25px_#c4af37] text-center">
+        <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md transition-all duration-500 hover:scale-105 hover:text-gold hover:border-gold hover:shadow-[0_0_25px_#c4af37] text-center">
           {t.quote}
         </p>
       </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   FaLinkedin,
@@ -18,22 +18,19 @@ export default function Contact() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [hovered, setHovered] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [hasHover, setHasHover] = useState(true); // Detectar hover
+
+  // 🧩 Detectar si el dispositivo soporta hover
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasHover(window.matchMedia("(hover: hover)").matches);
+    }
+  }, []);
 
   // 🎵 Sonidos
-  const playLinkedInSound = () => {
-    const audio = new Audio("/sounds/LinkedIn.mp3");
-    audio.play();
-  };
-
-  const playWhatsAppSound = () => {
-    const audio = new Audio("/sounds/whatsapp.mp3");
-    audio.play();
-  };
-
-  const playSendSound = () => {
-    const audio = new Audio("/sounds/blow.mp3");
-    audio.play();
-  };
+  const playLinkedInSound = () => new Audio("/sounds/LinkedIn.mp3").play();
+  const playWhatsAppSound = () => new Audio("/sounds/whatsapp.mp3").play();
+  const playSendSound = () => new Audio("/sounds/blow.mp3").play();
 
   // 🌍 Traducciones
   const translations = {
@@ -71,25 +68,17 @@ export default function Contact() {
     const emailRegex = /^[\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$/;
 
-    if (!email) {
-      newErrors.email = "Introduzca un correo válido.";
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = "Introduzca un correo válido.";
-    }
+    if (!email) newErrors.email = "Introduzca un correo válido.";
+    else if (!emailRegex.test(email)) newErrors.email = "Introduzca un correo válido.";
 
     if (!nombre) {
       newErrors.nombre = "Solo se aceptan letras. Debe contener al menos 3 caracteres.";
     } else if (!nameRegex.test(nombre)) {
-      if (/\d/.test(nombre)) {
-        newErrors.nombre = "Solo se aceptan letras, no números.";
-      } else {
-        newErrors.nombre = "En este espacio debe colocar al menos 3 caracteres.";
-      }
+      if (/\d/.test(nombre)) newErrors.nombre = "Solo se aceptan letras, no números.";
+      else newErrors.nombre = "En este espacio debe colocar al menos 3 caracteres.";
     }
 
-    if (!contenido.trim()) {
-      newErrors.contenido = "Este espacio es obligatorio.";
-    }
+    if (!contenido.trim()) newErrors.contenido = "Este espacio es obligatorio.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -125,6 +114,14 @@ export default function Contact() {
     }
   };
 
+  // 💡 Efecto hover simulado en móviles
+  const handleHoverToggle = () => {
+    if (!hasHover) {
+      setHovered((prev) => !prev);
+      setTimeout(() => setHovered(false), 1200);
+    }
+  };
+
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
@@ -157,12 +154,13 @@ export default function Contact() {
         {/* 👤 Imagen */}
         <div className="hidden md:flex justify-center items-start mt-5">
           <div
-            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-80 h-80  
+            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-80 h-80 
               transition-all duration-300 cursor-pointer ${
                 hovered ? "shadow-[0_0_30px_10px_gold] scale-110" : "shadow-lg"
               }`}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={() => hasHover && setHovered(true)}
+            onMouseLeave={() => hasHover && setHovered(false)}
+            onTouchStart={handleHoverToggle}
           >
             <Image
               src={hovered ? "/images/profile2.webp" : "/images/profile1.webp"}
@@ -178,6 +176,7 @@ export default function Contact() {
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full">
           {/* 🌐 Redes sociales */}
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+            {/* LinkedIn */}
             <div
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
                 hover:border-yellow-500 transition-all duration-300 hover:scale-105"
@@ -194,6 +193,7 @@ export default function Contact() {
               </a>
             </div>
 
+            {/* WhatsApp */}
             <div
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
                 hover:border-yellow-500 transition-all duration-300 hover:scale-105"
@@ -212,11 +212,8 @@ export default function Contact() {
           </div>
 
           {/* ✉️ Formulario */}
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full max-w-md text-left"
-          >
-            {/* 📧 Email */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md text-left">
+            {/* Email */}
             <label
               className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
                 errors.email ? "animate-pulse" : ""
@@ -238,13 +235,9 @@ export default function Contact() {
                 required
               />
             </div>
-            {errors.email && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
-                {errors.email}
-              </p>
-            )}
+            {errors.email && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.email}</p>}
 
-            {/* 👤 Nombre */}
+            {/* Nombre */}
             <label
               className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
                 errors.nombre ? "animate-pulse" : ""
@@ -266,13 +259,9 @@ export default function Contact() {
                 required
               />
             </div>
-            {errors.nombre && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
-                {errors.nombre}
-              </p>
-            )}
+            {errors.nombre && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.nombre}</p>}
 
-            {/* 📝 Contenido */}
+            {/* Contenido */}
             <label
               className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold transition-all duration-300 ${
                 errors.contenido ? "animate-pulse" : ""
@@ -290,12 +279,10 @@ export default function Contact() {
               required
             />
             {errors.contenido && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
-                {errors.contenido}
-              </p>
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.contenido}</p>
             )}
 
-            {/* ✅ Botón */}
+            {/* Botón */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600  
@@ -307,7 +294,7 @@ export default function Contact() {
               </span>
             </button>
 
-            {/* 🟢 Mensaje de éxito o error */}
+            {/* Mensaje de éxito */}
             {successMsg && (
               <p className="text-black text-base bg-gray-200 mt-3 py-2 px-3 rounded-md shadow-md animate-fadeIn">
                 {successMsg}
