@@ -32,45 +32,50 @@ export default function Testimonials() {
   const testimonials = Array(4).fill({
     name: t.name,
     text: t.text,
-    image: "/images/Daniel.webp", // ✅ cambiado a .webp
+    image: "/images/Daniel.webp",
   });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 640);
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
 
   const renderCard = (testimonial: typeof testimonials[0], idx: number) => (
     <div
       key={idx}
-      className={`bg-[#f5f5f5] rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer ${
+      className={`bg-[#f5f5f5] rounded-2xl p-6 flex items-center gap-6 border-2 transition-all duration-500 cursor-pointer ${
         selected === idx
           ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-gold"
           : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"
       }`}
       onClick={() => setSelected(selected === idx ? null : idx)}
     >
-      {/* Imagen circular */}
-      <div
-        className={`relative w-24 h-24 rounded-full overflow-hidden border-[2.5px] transition-all duration-500 ${
-          selected === idx
-            ? "border-red-600 scale-110"
-            : "border-[#c4af37] hover:scale-105 hover:border-red-600"
-        }`}
-      >
-        <Image
-          src={testimonial.image}
-          alt={testimonial.name}
-          fill
-          className="object-cover"
-        />
-      </div>
+      {/* Imagen circular visible solo en pantallas grandes */}
+      {!isMobile && (
+        <div
+          className={`relative w-24 h-24 min-w-[96px] rounded-full overflow-hidden border-[3px] flex-shrink-0 transition-all duration-500 ${
+            selected === idx
+              ? "border-red-600 scale-110"
+              : "border-[#c4af37] hover:scale-105 hover:border-red-600"
+          }`}
+        >
+          <Image
+            src={testimonial.image}
+            alt={testimonial.name}
+            fill
+            className="object-cover rounded-full"
+          />
+        </div>
+      )}
 
-      {/* Contenido */}
+      {/* Contenido del testimonio */}
       <div className="flex flex-col">
         <h3
-          className="font-irishgrover text-2xl text-black transition-all duration-300 hover:text-[#c4af37] cursor-pointer animate-pulse"
+          className="font-irishgrover text-2xl text-black transition-all duration-300 hover:text-[#c4af37] cursor-pointer"
           style={{
             WebkitTextStroke: "1px #c4af37",
           }}
@@ -103,7 +108,7 @@ export default function Testimonials() {
     <section
       ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/parchment.webp')" }} // ✅ cambiado a .webp
+      style={{ backgroundImage: "url('/images/parchment.webp')" }}
     >
       {/* 🔴 Título */}
       <h2 className="text-4xl text-center px-6 py-3 rounded-full shadow-md transition-all duration-300 bg-red-600/60 text-white font-['Irish_Grover'] hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
@@ -117,7 +122,7 @@ export default function Testimonials() {
         )}
       </div>
 
-      {/* 🟦 Botones Ver más / Ver menos en móviles */}
+      {/* 🟦 Botones Ver más / Ver menos solo en móviles */}
       {isMobile && (
         <div className="mt-10">
           {!showAll ? (
