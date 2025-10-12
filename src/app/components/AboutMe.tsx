@@ -15,6 +15,15 @@ export default function AboutMe() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hasHover, setHasHover] = useState(true);
+
+  // ✅ Detectar si el dispositivo tiene hover real
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const mq = window.matchMedia("(hover: hover)");
+      setHasHover(mq.matches);
+    }
+  }, []);
 
   const items: AboutItem[] = [
     {
@@ -59,6 +68,7 @@ export default function AboutMe() {
     },
   ];
 
+  // 🎙️ Voz
   const speakText = (text: string, index: number) => {
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -97,6 +107,14 @@ export default function AboutMe() {
     }
   }, []);
 
+  // 🧠 Función para activar "hover simulado" en móviles
+  const handleTouch = (index: number) => {
+    if (!hasHover) {
+      setHoveredIndex(index);
+      setTimeout(() => setHoveredIndex(null), 1200);
+    }
+  };
+
   return (
     <section className="w-full text-black overflow-x-hidden">
       {/* 🌲 Fondo superior */}
@@ -108,18 +126,22 @@ export default function AboutMe() {
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           <h2
             className="text-2xl sm:text-4xl text-center mb-10 px-4 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
-                       bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-irish"
-            style={{ fontFamily: "'Irish Grover', cursive" }}
+                       bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-['Irish_Grover']"
           >
             {lang === "es" ? "Acerca de mí" : "About Me"}
           </h2>
 
-          {/* Los 2 primeros ítems */}
+          {/* Primeros 2 ítems */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
             {items.slice(0, 2).map((item, i) => (
               <div
                 key={i}
-                className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
+                onTouchStart={() => handleTouch(i)}
+                className={`relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 w-full shadow-lg ${
+                  hoveredIndex === i
+                    ? "scale-105 border-2 border-[#c4af37]"
+                    : "hover:scale-105"
+                }`}
                 style={{ boxShadow: "0px 4px 20px #c4af37" }}
               >
                 {/* Icono de audio */}
@@ -129,11 +151,11 @@ export default function AboutMe() {
                   onMouseLeave={() => setHoveredIndex(null)}
                   className={`absolute top-2 right-2 cursor-pointer transition-all duration-300 ${
                     speakingIndex === i || hoveredIndex === i
-                      ? "text-blue-600"
+                      ? "text-blue-600 scale-125"
                       : "text-gray-500"
                   }`}
                 >
-                  <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
+                  <FaVolumeUp className="text-xl sm:text-2xl transition-transform duration-300" />
                 </div>
 
                 {/* Imagen */}
@@ -142,7 +164,11 @@ export default function AboutMe() {
                   alt={item.text[lang]}
                   width={110}
                   height={110}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
+                  className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 shadow-md transition-all duration-500 ${
+                    hoveredIndex === i
+                      ? "border-[#c4af37] scale-110"
+                      : "border-red-600 hover:border-[#c4af37]"
+                  }`}
                 />
 
                 {/* Texto */}
@@ -165,14 +191,18 @@ export default function AboutMe() {
           style={{ backgroundImage: "url('/images/forest.webp')" }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
-          {/* Los ítems restantes */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
             {items.slice(2).map((item, i) => {
               const index = i + 2;
               return (
                 <div
                   key={index}
-                  className="relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 hover:scale-105 w-full shadow-lg"
+                  onTouchStart={() => handleTouch(index)}
+                  className={`relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 w-full shadow-lg ${
+                    hoveredIndex === index
+                      ? "scale-105 border-2 border-[#c4af37]"
+                      : "hover:scale-105"
+                  }`}
                   style={{ boxShadow: "0px 4px 20px #c4af37" }}
                 >
                   {/* Icono de audio */}
@@ -182,11 +212,11 @@ export default function AboutMe() {
                     onMouseLeave={() => setHoveredIndex(null)}
                     className={`absolute top-2 right-2 cursor-pointer transition-all duration-300 ${
                       speakingIndex === index || hoveredIndex === index
-                        ? "text-blue-600"
+                        ? "text-blue-600 scale-125"
                         : "text-gray-500"
                     }`}
                   >
-                    <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
+                    <FaVolumeUp className="text-xl sm:text-2xl transition-transform duration-300" />
                   </div>
 
                   {/* Imagen */}
@@ -195,7 +225,11 @@ export default function AboutMe() {
                     alt={item.text[lang]}
                     width={110}
                     height={110}
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-red-600 shadow-md transition-all duration-500 hover:border-[#c4af37] hover:scale-110"
+                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 shadow-md transition-all duration-500 ${
+                      hoveredIndex === index
+                        ? "border-[#c4af37] scale-110"
+                        : "border-red-600 hover:border-[#c4af37]"
+                    }`}
                   />
 
                   {/* Texto */}
@@ -212,7 +246,7 @@ export default function AboutMe() {
         </div>
       </div>
 
-      {/* 🎵 Reproductor de audio oculto */}
+      {/* 🎵 Reproductor oculto */}
       <audio ref={audioRef} preload="auto" />
     </section>
   );
