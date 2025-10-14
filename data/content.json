@@ -16,7 +16,6 @@
       ]
     }
   },
-
   "about": {
     "title": { "es": "Acerca de mí", "en": "About Me" },
     "items": [
@@ -62,34 +61,34 @@
       }
     ]
   },
-
   "technologies": {
-    "title": { "es": "Tecnologías", "en": "Technologies" },
+    "title": {
+      "es": "Tecnologías y Herramientas",
+      "en": "Technologies and Tools"
+    },
     "quote": {
-      "es": "Cada tecnología, una herramienta que perfecciono cada día.",
-      "en": "Each technology, a tool I refine every day."
+      "es": "El código es poesía escrita con lógica.",
+      "en": "Code is poetry written with logic."
     },
     "list": [
       { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
-      { "name": "Tailwind CSS", "icon": "SiTailwindcss", "color": "#38bdf8" },
-      { "name": "Next.js", "icon": "SiNextdotjs", "color": "auto" },
+      { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
+      { "name": "Next.js", "icon": "SiNextdotjs", "color": "#000000" },
       { "name": "Django", "icon": "SiDjango", "color": "#092e20" },
       { "name": "Python", "icon": "SiPython", "color": "#3776AB" },
       { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
       { "name": "Java", "icon": "FaJava", "color": "#f89820" },
       { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
-      { "name": "Unity", "icon": "SiUnity", "color": "auto" }
+      { "name": "Unity", "icon": "SiUnity", "color": "#000000" }
     ]
   },
-  "projects": {
-  "title": { "es": "Mis proyectos", "en": "My Projects" },
-  "list": [
+  "projects": [
     {
       "image": "/images/fermentation.webp",
       "title": { "es": "Fermentation Monitoring", "en": "Fermentation Monitoring" },
       "description": {
-        "es": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café.",
-        "en": "The Coffee Fermentation Monitoring System tracks critical parameters of the coffee fermentation process in real time."
+        "es": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad.",
+        "en": "The Coffee Fermentation Monitoring System tracks critical parameters of the coffee fermentation process in real time, such as temperature, pH, and humidity."
       },
       "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
       "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
@@ -123,8 +122,129 @@
       },
       "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
       "gitUrl": "https://github.com/solartedaniers/interface.git"
+    },
+    {
+      "image": "/images/fermentation.webp",
+      "title": { "es": "Fermentation Monitoring", "en": "Fermentation Monitoring" },
+      "description": {
+        "es": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café.",
+        "en": "The Coffee Fermentation Monitoring System tracks critical parameters of the coffee fermentation process in real time."
+      },
+      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
+    },
+    {
+      "image": "/images/fermentation.webp",
+      "title": { "es": "Fermentation Monitoring", "en": "Fermentation Monitoring" },
+      "description": {
+        "es": "Repetición intencional para pruebas futuras.",
+        "en": "Intentional repetition for future tests."
+      },
+      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
     }
-  ]
- }
-
+  ],
+  "testimonials": {
+    "title": { "es": "Testimonios", "en": "Testimonials" },
+    "list": [
+      {
+        "name": "Danier Fernando",
+        "text": {
+          "es": "Trabajar con Daniers Solarte ha sido una experiencia inspiradora. Su pasión por la tecnología, su compromiso con la calidad y su capacidad para convertir ideas en soluciones innovadoras lo convierten en un profesional excepcional.",
+          "en": "Working with Daniers Solarte has been an inspiring experience. His passion for technology, commitment to quality, and ability to turn ideas into innovative solutions make him an exceptional professional."
+        },
+        "image": "/images/Daniel.webp"
+      },
+      {
+        "name": "Danier Fernando",
+        "text": {
+          "es": "Trabajar con Daniers Solarte ha sido una experiencia inspiradora...",
+          "en": "Working with Daniers Solarte has been an inspiring experience..."
+        },
+        "image": "/images/Daniel.webp"
+      },
+      {
+        "name": "Danier Fernando",
+        "text": {
+          "es": "Repetición intencional para mantener estructura uniforme.",
+          "en": "Intentional repetition to keep uniform structure."
+        },
+        "image": "/images/Daniel.webp"
+      },
+      {
+        "name": "Danier Fernando",
+        "text": {
+          "es": "Otro testimonio repetido para pruebas futuras.",
+          "en": "Another repeated testimonial for future editing tests."
+        },
+        "image": "/images/Daniel.webp"
+      }
+    ]
+  },
+  "contact": {
+    "background": "/images/village.webp",
+    "title": { "es": "Contacto", "en": "Contact" },
+    "message": {
+      "es": "“Si quieres construir algo increíble, no dudes en escribirme.<br />Siempre estoy dispuesto a aprender y aportar,<br />así que escríbeme y demos el primer paso.”",
+      "en": "“If you want to build something amazing, don’t hesitate to write to me.<br />I’m always eager to learn and contribute,<br />so reach out and let’s take the first step.”"
+    },
+    "profile": {
+      "default": "/images/profile1.webp",
+      "hover": "/images/profile2.webp"
+    },
+    "social": {
+      "linkedin": {
+        "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
+        "label": { "es": "LinkedIn", "en": "LinkedIn" }
+      },
+      "whatsapp": {
+        "url": "https://wa.me/3167969206",
+        "label": { "es": "WhatsApp", "en": "WhatsApp" }
+      }
+    },
+    "fields": {
+      "email": {
+        "label": { "es": "Email*", "en": "Email*" },
+        "placeholder": { "es": "Ejemplo@gmail.com", "en": "Example@gmail.com" }
+      },
+      "name": {
+        "label": { "es": "Nombre*", "en": "Name*" },
+        "placeholder": { "es": "Xavier", "en": "Xavier" }
+      },
+      "content": {
+        "label": { "es": "Contenido*", "en": "Message*" },
+        "placeholder": {
+          "es": "Escriba aquí el motivo de su mensaje",
+          "en": "Write your message here"
+        }
+      },
+      "send": { "es": "Enviar", "en": "Send" }
+    },
+    "errors": {
+      "email": {
+        "es": "Introduzca un correo válido.",
+        "en": "Please enter a valid email."
+      },
+      "nombre": {
+        "es": "Solo se aceptan letras. Debe contener al menos 3 caracteres.",
+        "en": "Only letters are allowed. Must be at least 3 characters."
+      },
+      "onlyLetters": {
+        "es": "Solo se aceptan letras, no números.",
+        "en": "Only letters, no numbers."
+      },
+      "contenido": {
+        "es": "Este espacio es obligatorio.",
+        "en": "This field is required."
+      }
+    },
+    "success": {
+      "es": "✅ Su mensaje fue enviado exitosamente.",
+      "en": "✅ Your message was sent successfully."
+    },
+    "error": {
+      "es": "❌ Su mensaje no se pudo mandar. Inténtelo nuevamente.",
+      "en": "❌ Your message could not be sent. Please try again."
+    }
+  }
 }
