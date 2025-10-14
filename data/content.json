@@ -80,5 +80,51 @@
       { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
       { "name": "Unity", "icon": "SiUnity", "color": "auto" }
     ]
-  }
+  },
+  "projects": {
+  "title": { "es": "Mis proyectos", "en": "My Projects" },
+  "list": [
+    {
+      "image": "/images/fermentation.webp",
+      "title": { "es": "Fermentation Monitoring", "en": "Fermentation Monitoring" },
+      "description": {
+        "es": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café.",
+        "en": "The Coffee Fermentation Monitoring System tracks critical parameters of the coffee fermentation process in real time."
+      },
+      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
+    },
+    {
+      "image": "/images/fermentation.webp",
+      "title": { "es": "Coca-Cola Company", "en": "Coca-Cola Company" },
+      "description": {
+        "es": "Programa que calcula los días de vacaciones según puesto y antigüedad.",
+        "en": "Program that calculates vacation days based on role and seniority."
+      },
+      "tools": ["Java"],
+      "gitUrl": "https://github.com/solartedaniers/Coca-cola.git"
+    },
+    {
+      "image": "/images/fermentation.webp",
+      "title": { "es": "PlantSim", "en": "PlantSim" },
+      "description": {
+        "es": "PlantSim modela el crecimiento de plantas en función de variables ambientales.",
+        "en": "PlantSim models plant growth based on environmental variables."
+      },
+      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Angular", "Node.js"],
+      "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
+    },
+    {
+      "image": "/images/interface.webp",
+      "title": { "es": "Interface", "en": "Interface" },
+      "description": {
+        "es": "Interfaz hecha en Next.js usando Flex y Grid para un diseño moderno.",
+        "en": "Interface built in Next.js using Flex and Grid for a modern layout."
+      },
+      "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
+      "gitUrl": "https://github.com/solartedaniers/interface.git"
+    }
+  ]
+ }
+
 }
