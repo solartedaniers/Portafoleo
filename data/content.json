@@ -1,0 +1,28 @@
+{
+  "welcome": {
+    "home": {
+      "es": "Inicio",
+      "en": "Home"
+    },
+    "subtitle": {
+      "es": "Ingeniero de Software",
+      "en": "Software Engineer"
+    },
+    "welcomeTitle": {
+      "es": "Bienvenidos",
+      "en": "Welcome"
+    },
+    "description": {
+      "es": [
+        "Soy ingeniero de software y creo que la tecnología debe ir más allá de resolver problemas: debe transformar vidas.",
+        "Me especializo en backend con Node.js, Spring Boot, Python y Java, y también disfruto los desafíos del frontend con React, Angular, Next.js y Tailwind CSS. Me apasiona crear aplicaciones seguras, escalables e intuitivas.",
+        "Me inspiran la ciberseguridad, la inteligencia artificial y la realidad mixta, porque conectan lo digital con lo humano. <br />Te invito a explorar mi portafolio y descubrir cómo cada proyecto refleja mi pasión, mi aprendizaje y mi forma de ver el mundo del software."
+      ],
+      "en": [
+        "I am a software engineer and I believe technology should go beyond solving problems—it should transform lives.",
+        "I specialize in backend with Node.js, Spring Boot, Python, and Java, and I also enjoy frontend challenges with React, Angular, Next.js, and Tailwind CSS. I’m passionate about building secure, scalable, and intuitive applications.",
+        "I’m inspired by cybersecurity, artificial intelligence, and mixed reality because they connect the digital with the human. <br />I invite you to explore my portfolio and discover how each project reflects my passion, my learning, and my view of the software world."
+      ]
+    }
+  }
+}

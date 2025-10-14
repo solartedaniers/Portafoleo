@@ -3,42 +3,29 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
 import { FaVolumeUp } from "react-icons/fa";
 
-const translations = {
-  es: {
-    home: "Inicio",
-    subtitle: "Ingeniero de Software",
-    welcome: "Bienvenidos",
-    description: [
-      "Soy ingeniero de software y creo que la tecnología debe ir más allá de resolver problemas: debe transformar vidas.",
-      "Me especializo en backend con Node.js, Spring Boot, Python y Java, y también disfruto los desafíos del frontend con React, Angular, Next.js y Tailwind CSS. Me apasiona crear aplicaciones seguras, escalables e intuitivas.",
-      "Me inspiran la ciberseguridad, la inteligencia artificial y la realidad mixta, porque conectan lo digital con lo humano. <br />Te invito a explorar mi portafolio y descubrir cómo cada proyecto refleja mi pasión, mi aprendizaje y mi forma de ver el mundo del software.",
-    ],
-  },
-  en: {
-    home: "Home",
-    subtitle: "Software Engineer",
-    welcome: "Welcome",
-    description: [
-      "I am a software engineer and I believe technology should go beyond solving problems—it should transform lives.",
-      "I specialize in backend with Node.js, Spring Boot, Python, and Java, and I also enjoy frontend challenges with React, Angular, Next.js, and Tailwind CSS. I’m passionate about building secure, scalable, and intuitive applications.",
-      "I’m inspired by cybersecurity, artificial intelligence, and mixed reality because they connect the digital with the human. <br />I invite you to explore my portfolio and discover how each project reflects my passion, my learning, and my view of the software world.",
-    ],
-  },
+type WelcomeContent = {
+  home?: Record<string, string>;
+  subtitle?: Record<string, string>;
+  welcomeTitle?: Record<string, string>;
+  description?: Record<string, string[]>;
 };
 
 export default function Welcome() {
   const router = useRouter();
   const { lang } = useApp();
-  const t = translations[lang];
+  const { content, loading } = useContent();
+const t = content?.welcome as WelcomeContent | undefined;
+  const currentLang = lang === "en" ? "en" : "es";
+
   const [hovered, setHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  // ⚙️ Movimiento 3D con ratón y giroscopio
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -55,7 +42,6 @@ export default function Welcome() {
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
 
-    // Giroscopio móvil
     const handleOrientation = (event: DeviceOrientationEvent) => {
       if (event.gamma !== null && event.beta !== null) {
         const x = event.gamma / 45;
@@ -72,7 +58,6 @@ export default function Welcome() {
     };
   }, []);
 
-  // ⚔️ Sonido espada al volver a inicio
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword.mp3");
     audio.play().catch(() => {});
@@ -83,7 +68,6 @@ export default function Welcome() {
     router.push("/");
   };
 
-  // 🔊 Narrador
   const toggleSpeech = () => {
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -92,8 +76,10 @@ export default function Welcome() {
       return;
     }
 
-    const text = t.description.map((d) => d.replace(/<br\s*\/?>/gi, "")).join(" ");
-    const utterance = new SpeechSynthesisUtterance(text);
+    const text = t?.description?.[currentLang]
+      ?.map((d: string) => d.replace(/<br\s*\/?>/gi, ""))
+      .join(" ");
+    const utterance = new SpeechSynthesisUtterance(text || "");
     utteranceRef.current = utterance;
     const voices = synth.getVoices();
     const preferredLang = lang === "es" ? "es-ES" : "en-US";
@@ -112,7 +98,6 @@ export default function Welcome() {
     setIsSpeaking(true);
   };
 
-  // 🗣️ Cargar voces
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -121,12 +106,14 @@ export default function Welcome() {
     }
   }, []);
 
+  if (loading || !t) return <p>Cargando contenido...</p>;
+
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10"
       style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
-      {/* 🔺 Botón Inicio */}
+      {/* Botón Inicio */}
       <div
         className="absolute top-2 left-2 flex items-center gap-1 bg-[#f5f5f5] px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]"
         onClick={handleHomeClick}
@@ -134,18 +121,18 @@ export default function Welcome() {
         <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
           <Image
             src="/images/fire.webp"
-            alt={t.home}
+            alt={t.home?.[currentLang] ?? "Inicio"}
             width={32}
             height={32}
             className="object-cover w-full h-full"
           />
         </div>
         <span className="font-['Irish_Grover'] text-black text-sm drop-shadow-[0_0_1px_silver] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300">
-          {t.home}
+          {t.home?.[currentLang]}
         </span>
       </div>
 
-      {/* 🖼️ Imagen perfil con efecto 3D */}
+      {/* Imagen perfil */}
       <div
         ref={containerRef}
         className="relative mt-10 perspective-[1000px]"
@@ -161,9 +148,7 @@ export default function Welcome() {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onTouchStart={() => setHovered(true)}
-          onTouchEnd={() =>
-            setTimeout(() => setHovered(false), 400)
-          } // 🔹 mantiene el efecto un instante tras el tap
+          onTouchEnd={() => setTimeout(() => setHovered(false), 400)}
         >
           <Image
             src="/images/profile.webp"
@@ -175,39 +160,35 @@ export default function Welcome() {
         </div>
       </div>
 
-      {/* 🧑 Nombre */}
+      {/* Nombre */}
       <h1 className="mt-6 font-['Irish_Grover'] text-2xl sm:text-3xl text-black drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer">
         Daniers Alexander Solarte Limas
       </h1>
 
       <hr className="w-1/2 border-t-2 border-black mt-4" />
 
-      {/* 🧠 Subtítulo */}
+      {/* Subtítulo */}
       <h2 className="mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] animate-pulse hover:animate-none hover:scale-105 transition-all duration-300 bg-white/60 px-1 py-1 rounded-xl text-center cursor-pointer">
-        {t.subtitle}
+        {t.subtitle?.[currentLang]}
       </h2>
 
-      {/* 🎉 Bienvenida */}
+      {/* Bienvenida */}
       <h3 className="mt-6 font-['Irish_Grover'] text-2xl sm:text-4xl text-white bg-red-600/70 px-6 sm:px-10 py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center">
-        {t.welcome}
+        {t.welcomeTitle?.[currentLang]}
       </h3>
 
-      {/* 📜 Descripción + narrador */}
+      {/* Descripción + narrador */}
       <div className="bg-[#f5f5f5] p-4 sm:p-6 rounded-2xl shadow-md border mt-6 w-full max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-300">
         <div
           className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${
             isSpeaking ? "text-blue-600" : "text-gray-500 hover:text-blue-600"
           }`}
           onClick={toggleSpeech}
-          onTouchStart={() => setIsSpeaking(true)}
-          onTouchEnd={() =>
-            setTimeout(() => setIsSpeaking(false), 400)
-          }
         >
           <FaVolumeUp className="text-xl hover:scale-125 transition-transform duration-300" />
         </div>
 
-        {t.description.map((text, i) => (
+        {t.description?.[currentLang]?.map((text: string, i: number) => (
           <p
             key={i}
             className={`mt-${i === 0 ? "0" : "4"} font-['Esteban'] text-[#5c4c4c] text-base sm:text-lg leading-relaxed text-center`}
