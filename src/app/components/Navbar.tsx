@@ -50,7 +50,7 @@ export default function Navbar() {
         "Technologies",
         "My Projects",
         "Testimonials",
-        "Resume",
+        "CV",
         "Academic and Work Experience",
         "My Life Philosophy",
         "Contact",
