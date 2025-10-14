@@ -55,11 +55,11 @@ export default function Welcome() {
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
 
-    // Giroscopio en móvil
+    // Giroscopio móvil
     const handleOrientation = (event: DeviceOrientationEvent) => {
       if (event.gamma !== null && event.beta !== null) {
-        const x = event.gamma / 45; // izquierda-derecha
-        const y = event.beta / 45; // adelante-atrás
+        const x = event.gamma / 45;
+        const y = event.beta / 45;
         setRotation({ x: y * 10, y: x * 10 });
       }
     };
@@ -72,19 +72,18 @@ export default function Welcome() {
     };
   }, []);
 
-  // 🔊 Sonido espada
+  // ⚔️ Sonido espada al volver a inicio
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword.mp3");
-    audio.play().catch((e) => console.error("Error al reproducir audio:", e));
+    audio.play().catch(() => {});
   };
 
-  // 🏠 Ir a inicio
   const handleHomeClick = () => {
     playSwordSound();
     router.push("/");
   };
 
-  // 🗣️ Narración con voz masculina
+  // 🔊 Narrador
   const toggleSpeech = () => {
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -146,7 +145,7 @@ export default function Welcome() {
         </span>
       </div>
 
-      {/* 🖼️ Imagen de perfil con efecto 3D */}
+      {/* 🖼️ Imagen perfil con efecto 3D */}
       <div
         ref={containerRef}
         className="relative mt-10 perspective-[1000px]"
@@ -161,6 +160,10 @@ export default function Welcome() {
           }`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          onTouchStart={() => setHovered(true)}
+          onTouchEnd={() =>
+            setTimeout(() => setHovered(false), 400)
+          } // 🔹 mantiene el efecto un instante tras el tap
         >
           <Image
             src="/images/profile.webp"
@@ -180,7 +183,7 @@ export default function Welcome() {
       <hr className="w-1/2 border-t-2 border-black mt-4" />
 
       {/* 🧠 Subtítulo */}
-      <h2 className="mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] animate-pulse hover:animate-none hover:scale-105 transition-all duration-300 bg-white/60 px-1 py-1 rounded-xl text-stroke-silver text-center cursor-pointer">
+      <h2 className="mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] animate-pulse hover:animate-none hover:scale-105 transition-all duration-300 bg-white/60 px-1 py-1 rounded-xl text-center cursor-pointer">
         {t.subtitle}
       </h2>
 
@@ -196,6 +199,10 @@ export default function Welcome() {
             isSpeaking ? "text-blue-600" : "text-gray-500 hover:text-blue-600"
           }`}
           onClick={toggleSpeech}
+          onTouchStart={() => setIsSpeaking(true)}
+          onTouchEnd={() =>
+            setTimeout(() => setIsSpeaking(false), 400)
+          }
         >
           <FaVolumeUp className="text-xl hover:scale-125 transition-transform duration-300" />
         </div>

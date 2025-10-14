@@ -8,6 +8,7 @@ export default function Filosofia() {
   const { lang } = useApp();
   const [speaking, setSpeaking] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [iconHovered, setIconHovered] = useState(false); // 👈 Nuevo estado solo para el ícono
 
   const translations = {
     es: {
@@ -69,6 +70,7 @@ I strive to help others and add value, because true greatness lies not in what w
     synth.speak(utterance);
   };
 
+  // ⚙️ Inicializa voces
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -76,6 +78,18 @@ I strive to help others and add value, because true greatness lies not in what w
       };
     }
   }, []);
+
+  // 📱 Efecto tap general para móviles
+  const handleTouch = () => {
+    setHovered(true);
+    setTimeout(() => setHovered(false), 400);
+  };
+
+  // 📱 Efecto tap específico para el ícono de audio
+  const handleIconTouch = () => {
+    setIconHovered(true);
+    setTimeout(() => setIconHovered(false), 400);
+  };
 
   return (
     <section
@@ -89,21 +103,34 @@ I strive to help others and add value, because true greatness lies not in what w
         </h2>
 
         {/* 📜 Contenedor principal */}
-        <div className="relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 hover:scale-105 hover:border-red-600 hover:shadow-[0_0_30px_#c4af37] border-4 border-transparent">
+        <div
+          className={`relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
+            hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#c4af37]" : ""
+          }`}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onTouchStart={handleTouch}
+        >
           {/* 🔊 Botón audio */}
           <button
             onClick={speakText}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={() => setIconHovered(true)}
+            onMouseLeave={() => setIconHovered(false)}
+            onTouchStart={handleIconTouch}
             className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
-              speaking || hovered ? "text-blue-600" : "text-gray-500"
+              speaking || iconHovered ? "text-blue-600" : "text-gray-500"
             }`}
           >
             <FaVolumeUp size={24} />
           </button>
 
-          {/* 🖼 Imagen optimizada */}
-          <div className="flex justify-center mb-6">
+          {/* 🖼 Imagen */}
+          <div
+            className="flex justify-center mb-6"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onTouchStart={handleTouch}
+          >
             <Image
               src="/images/samurai-tiger.webp"
               alt="Filosofía"
