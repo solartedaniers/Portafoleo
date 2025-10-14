@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useApp } from "./ThemeLangContext";
+
+import React, { useState, useEffect } from "react";
+import { useContent } from "./ContentProvider"; 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import {
@@ -17,36 +18,25 @@ import { FaJava } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const translations = {
-  es: {
-    title: "Tecnologías",
-    quote: '"Cada tecnología, una herramienta que perfecciono cada día."',
-  },
-  en: {
-    title: "Technologies",
-    quote: '"Each technology, a tool I refine every day."',
-  },
-};
+// ✅ Tipos
+interface Technology {
+  name: string;
+  icon: string;
+  color: string;
+}
 
-const techList = [
-  { name: "Angular", icon: <SiAngular size={60} className="text-[#dd0031]" /> },
-  { name: "Tailwind CSS", icon: <SiTailwindcss size={60} className="text-[#38bdf8]" /> },
-  { name: "Next.js", icon: <SiNextdotjs size={60} className="text-black dark:text-white" /> },
-  { name: "Django", icon: <SiDjango size={60} className="text-[#092e20]" /> },
-  { name: "Python", icon: <SiPython size={60} className="text-[#3776AB]" /> },
-  { name: "MySQL", icon: <SiMysql size={60} className="text-[#00758f]" /> },
-  { name: "Java", icon: <FaJava size={60} className="text-[#f89820]" /> },
-  { name: "C#", icon: <SiSharp size={60} className="text-[#9b4f96]" /> },
-  { name: "Unity", icon: <SiUnity size={60} className="text-black dark:text-white" /> },
-];
+interface TechnologiesContent {
+  title: { es: string; en: string };
+  quote: { es: string; en: string };
+  list: Technology[];
+}
 
-export default function Tecnologias() {
-  const { lang } = useApp();
-  const t = translations[lang];
+export default function Languages() {
+  const { content } = useContent();
   const [hovered, setHovered] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // ✅ Detectar si es móvil o no
+  // ✅ Hook siempre llamado, sin condicionales
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -54,7 +44,35 @@ export default function Tecnologias() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // 🖱 Función universal hover/tap
+  // ✅ Verificación segura de contenido
+  if (!content?.technologies) return null;
+
+  const lang = "es"; // Puedes luego conectar esto con tu contexto de idioma
+  const techData = content.technologies as TechnologiesContent;
+
+  // ✅ Traducciones dinámicas
+  const title = techData.title[lang];
+  const quote = techData.quote[lang];
+
+  // ✅ Mapeo de íconos
+  const iconMap: Record<string, React.ReactNode> = {
+    SiAngular: <SiAngular size={60} className="text-[#dd0031]" />,
+    SiTailwindcss: <SiTailwindcss size={60} className="text-[#38bdf8]" />,
+    SiNextdotjs: <SiNextdotjs size={60} className="text-black dark:text-white" />,
+    SiDjango: <SiDjango size={60} className="text-[#092e20]" />,
+    SiPython: <SiPython size={60} className="text-[#3776AB]" />,
+    SiMysql: <SiMysql size={60} className="text-[#00758f]" />,
+    FaJava: <FaJava size={60} className="text-[#f89820]" />,
+    SiSharp: <SiSharp size={60} className="text-[#9b4f96]" />,
+    SiUnity: <SiUnity size={60} className="text-black dark:text-white" />,
+  };
+
+  // ✅ Lista de tecnologías segura
+  const techList = techData.list.map((tech) => ({
+    name: tech.name,
+    icon: iconMap[tech.icon] ?? <div className="text-gray-400">?</div>,
+  }));
+
   const handleHover = (name: string) => {
     if (isMobile) {
       setHovered(name);
@@ -66,7 +84,7 @@ export default function Tecnologias() {
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-[6px] sm:border-[8px] border-gold box-border">
-      {/* 🎥 Video de fondo */}
+      {/* 🎥 Fondo */}
       <video
         src="/videos/stellar-wolf.mp4"
         autoPlay
@@ -76,14 +94,14 @@ export default function Tecnologias() {
         className="absolute inset-0 w-full h-full object-cover object-center scale-[0.9] z-0"
       />
 
-      {/* Contenido principal */}
+      {/* Contenido */}
       <div className="relative z-10 flex flex-col items-center w-full h-full pt-10 px-4 sm:px-6 gap-6">
-        {/* 🎨 Título */}
+        {/* 🏷️ Título */}
         <h2
           className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
-          onTouchStart={() => isMobile && handleHover("title")}
+          onTouchStart={() => handleHover("title")}
         >
-          {t.title}
+          {title}
         </h2>
 
         {/* 🌀 Carrusel */}
@@ -95,20 +113,19 @@ export default function Tecnologias() {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
               }}
-              loop={true}
-              centeredSlides={true}
+              loop
+              centeredSlides
               spaceBetween={40}
               breakpoints={{
                 0: { slidesPerView: 1, spaceBetween: 50 },
                 640: { slidesPerView: 2, spaceBetween: 40 },
                 1024: { slidesPerView: 3, spaceBetween: 30 },
               }}
-              className="mySwiper"
             >
               {techList.map((tech, idx) => (
                 <SwiperSlide key={idx}>
                   <div
-                    onMouseEnter={() => !isMobile && setHovered(tech.name)}
+                    onMouseEnter={() => handleHover(tech.name)}
                     onMouseLeave={() => !isMobile && setHovered(null)}
                     onTouchStart={() => handleHover(tech.name)}
                     className={`flex items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
@@ -119,7 +136,9 @@ export default function Tecnologias() {
                   >
                     <div
                       className={`transition-transform duration-500 ${
-                        hovered === tech.name ? "rotate-[15deg] scale-110" : "rotate-0 scale-100"
+                        hovered === tech.name
+                          ? "rotate-[15deg] scale-110"
+                          : "rotate-0 scale-100"
                       }`}
                     >
                       {tech.icon}
@@ -130,16 +149,14 @@ export default function Tecnologias() {
             </Swiper>
           </div>
 
-          {/* Flecha izquierda */}
+          {/* Flechas */}
           <div className="swiper-button-prev absolute top-1/2 -translate-y-1/2 left-2 !text-white !w-10 !h-10 sm:!w-12 sm:!h-12 after:!text-2xl sm:after:!text-3xl bg-black/40 rounded-full border-2 border-gold shadow-md transition-all duration-300 hover:scale-110 hover:border-red-600 z-20" />
-
-          {/* Flecha derecha */}
           <div className="swiper-button-next absolute top-1/2 -translate-y-1/2 right-2 !text-white !w-10 !h-10 sm:!w-12 sm:!h-12 after:!text-2xl sm:after:!text-3xl bg-black/40 rounded-full border-2 border-gold shadow-md transition-all duration-300 hover:scale-110 hover:border-red-600 z-20" />
         </div>
 
-        {/* 💬 Frase motivadora solo en escritorio */}
+        {/* 💬 Frase motivadora */}
         <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md transition-all duration-500 hover:scale-105 hover:text-gold hover:border-gold hover:shadow-[0_0_25px_#c4af37] text-center">
-          {t.quote}
+          {quote}
         </p>
       </div>
     </section>

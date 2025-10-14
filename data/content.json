@@ -16,6 +16,7 @@
       ]
     }
   },
+
   "about": {
     "title": { "es": "Acerca de mí", "en": "About Me" },
     "items": [
@@ -23,42 +24,61 @@
         "img": "/images/family.webp",
         "audio": "/sounds/family.mp3",
         "text": {
-          "es": "Me encanta salir a pasear con mi familia y pasar tiempo con mi hermana. A mi juicio, esos instantes simples son muy valiosos, ya que nos hacen recordar lo fundamental que es gozar de la compañía de aquellos a quienes más queremos.",
-          "en": "I love going out with my family and spending time with my sister. In my view, those simple moments are very valuable, reminding us how important it is to enjoy the company of those we love most."
+          "es": "Me encanta salir a pasear con mi familia y compartir momentos que fortalecen nuestros lazos.",
+          "en": "I love going out with my family and sharing moments that strengthen our bonds."
         }
       },
       {
         "img": "/images/motorcycle.webp",
         "audio": "/sounds/motorcycle.mp3",
         "text": {
-          "es": "Me encanta viajar en moto, recorrer nuevos lugares. Porque cada viaje es una oportunidad para descubrir paisajes, culturas y formas de pensar que me enriquecen y me ayudan a crecer.",
-          "en": "I love traveling by motorcycle and exploring new places. Every trip is a chance to discover landscapes, cultures, and ways of thinking that enrich me and help me grow."
+          "es": "Me encanta viajar en moto y descubrir nuevos lugares, disfrutando de la libertad de la carretera.",
+          "en": "I love traveling by motorcycle and discovering new places, enjoying the freedom of the road."
         }
       },
       {
         "img": "/images/group.webp",
         "audio": "/sounds/group.mp3",
         "text": {
-          "es": "Me gusta jugar microfútbol con amigos, no en torneos, sino como un espacio para compartir, reír y desconectarme. También practico taekwondo, camino o corro con frecuencia, porque me gusta mantenerme activo y sentir la energía del movimiento.",
-          "en": "I enjoy playing soccer with friends—not in tournaments, but as a space to share, laugh, and disconnect. I also practice taekwondo, walk or run often, because I like staying active and feeling the energy of movement."
+          "es": "Me gusta jugar microfútbol con mis amigos, es una forma de liberar energía y mantenerme activo.",
+          "en": "I enjoy playing soccer with my friends, it’s a great way to stay active and have fun."
         }
       },
       {
         "img": "/images/paragliding.webp",
         "audio": "/sounds/paragliding.mp3",
         "text": {
-          "es": "Las montañas y los deportes extremos me apasionan, porque ahí encuentro tanto paz como adrenalina. Me gusta sentir ese impulso de libertad y desafío que me recuerda que la vida también está hecha para atreverse.",
-          "en": "I'm passionate about mountains and extreme sports because they offer both peace and adrenaline. I love the feeling of freedom and challenge that reminds me life is also about daring."
+          "es": "Las montañas y los deportes extremos me apasionan, me hacen sentir vivo y conectado con la naturaleza.",
+          "en": "I'm passionate about mountains and extreme sports; they make me feel alive and connected with nature."
         }
       },
       {
-        "img": "/images/Bible.webp",
+        "img": "/images/bible.webp",
         "audio": "/sounds/bible.mp3",
         "text": {
-          "es": "Me gusta leer la Biblia, conversar y compartir con personas que me inspiran. Disfruto estar activo y ayudar a los demás, porque creo que crecer como persona es un camino que se construye con humildad y sabiendo escuchar.",
-          "en": "I enjoy reading the Bible, talking and sharing with people who inspire me. I like staying active and helping others, because I believe personal growth is built with humility and the ability to listen."
+          "es": "Me gusta leer la Biblia, encuentro en ella sabiduría, guía y paz para mi día a día.",
+          "en": "I enjoy reading the Bible, finding wisdom, guidance, and peace for my everyday life."
         }
       }
+    ]
+  },
+
+  "technologies": {
+    "title": { "es": "Tecnologías", "en": "Technologies" },
+    "quote": {
+      "es": "Cada tecnología, una herramienta que perfecciono cada día.",
+      "en": "Each technology, a tool I refine every day."
+    },
+    "list": [
+      { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
+      { "name": "Tailwind CSS", "icon": "SiTailwindcss", "color": "#38bdf8" },
+      { "name": "Next.js", "icon": "SiNextdotjs", "color": "auto" },
+      { "name": "Django", "icon": "SiDjango", "color": "#092e20" },
+      { "name": "Python", "icon": "SiPython", "color": "#3776AB" },
+      { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
+      { "name": "Java", "icon": "FaJava", "color": "#f89820" },
+      { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
+      { "name": "Unity", "icon": "SiUnity", "color": "auto" }
     ]
   }
 }
