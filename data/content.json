@@ -23,47 +23,47 @@
         "img": "/images/family.webp",
         "audio": "/sounds/family.mp3",
         "text": {
-          "es": "Me encanta salir a pasear con mi familia y compartir momentos que fortalecen nuestros lazos.",
-          "en": "I love going out with my family and sharing moments that strengthen our bonds."
+          "es": "Me encanta salir a pasear con mi familia y pasar tiempo con mi hermana. A mi juicio, esos instantes simples son muy valiosos, ya que nos hacen recordar lo fundamental que es gozar de la compañía de aquellos a quienes más queremos.",
+          "en": "I love going out for walks with my family and spending time with my sister. In my opinion, those simple moments are very valuable, as they remind us of how important it is to enjoy the company of those we love the most."
         }
       },
       {
         "img": "/images/motorcycle.webp",
         "audio": "/sounds/motorcycle.mp3",
         "text": {
-          "es": "Me encanta viajar en moto y descubrir nuevos lugares, disfrutando de la libertad de la carretera.",
-          "en": "I love traveling by motorcycle and discovering new places, enjoying the freedom of the road."
+          "es": "Me encanta viajar en moto, recorrer nuevos lugares. Porque cada viaje es una oportunidad para descubrir paisajes, culturas y formas de pensar que me enriquecen y me ayudan a crecer.",
+          "en": "I love traveling by motorcycle, exploring new places. Because each trip is an opportunity to discover landscapes, cultures, and ways of thinking that enrich me and help me grow."
         }
       },
       {
         "img": "/images/group.webp",
         "audio": "/sounds/group.mp3",
         "text": {
-          "es": "Me gusta jugar microfútbol con mis amigos, es una forma de liberar energía y mantenerme activo.",
-          "en": "I enjoy playing soccer with my friends, it’s a great way to stay active and have fun."
+          "es": "Me gusta jugar microfútbol con amigos, no en torneos, sino como un espacio para compartir, reír y desconectarme. También practico taekwondo, camino o corro con frecuencia, porque me gusta mantenerme activo y sentir la energía del movimiento.",
+          "en": "I like playing futsal with friends, not in tournaments, but as a space to share, laugh, and disconnect. I also practice taekwondo, walk, or run frequently because I like to stay active and feel the energy of movement."
         }
       },
       {
         "img": "/images/paragliding.webp",
         "audio": "/sounds/paragliding.mp3",
         "text": {
-          "es": "Las montañas y los deportes extremos me apasionan, me hacen sentir vivo y conectado con la naturaleza.",
-          "en": "I'm passionate about mountains and extreme sports; they make me feel alive and connected with nature."
+          "es": "Las montañas y los deportes extremos me apasionan, porque ahí encuentro tanto paz como adrenalina. Me gusta sentir ese impulso de libertad y desafío que me recuerda que la vida también está hecha para atreverse.",
+          "en": "I am passionate about mountains and extreme sports because there I find both peace and adrenaline. I like to feel that rush of freedom and challenge that reminds me that life is also meant for taking risks."
         }
       },
       {
-        "img": "/images/bible.webp",
+        "img": "/images/Bible.webp",
         "audio": "/sounds/bible.mp3",
         "text": {
-          "es": "Me gusta leer la Biblia, encuentro en ella sabiduría, guía y paz para mi día a día.",
-          "en": "I enjoy reading the Bible, finding wisdom, guidance, and peace for my everyday life."
+          "es": "Me gusta leer la Biblia, conversar y compartir con personas que me inspiran. Disfruto estar activo y ayudar a los demás, porque creo que crecer como persona es un camino que se construye con humildad y sabiendo escuchar.",
+          "en": "I enjoy reading the Bible, having conversations, and sharing with people who inspire me. I like staying active and helping others because I believe that personal growth is a journey built with humility and the ability to listen."
         }
       }
     ]
   },
   "technologies": {
     "title": { "es": "Tecnologías y Herramientas", "en": "Technologies and Tools" },
-    "quote": { "es": "El código es poesía escrita con lógica.", "en": "Code is poetry written with logic." },
+    "quote": { "es": "“Cada lenguaje, una técnica que perfecciono cada día.”", "en": "“Each language, a technique that I perfect every day.”" },
     "list": [
       { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
       { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
