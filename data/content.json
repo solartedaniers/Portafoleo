@@ -62,14 +62,8 @@
     ]
   },
   "technologies": {
-    "title": {
-      "es": "Tecnologías y Herramientas",
-      "en": "Technologies and Tools"
-    },
-    "quote": {
-      "es": "El código es poesía escrita con lógica.",
-      "en": "Code is poetry written with logic."
-    },
+    "title": { "es": "Tecnologías y Herramientas", "en": "Technologies and Tools" },
+    "quote": { "es": "El código es poesía escrita con lógica.", "en": "Code is poetry written with logic." },
     "list": [
       { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
       { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
@@ -188,10 +182,7 @@
       "es": "“Si quieres construir algo increíble, no dudes en escribirme.<br />Siempre estoy dispuesto a aprender y aportar,<br />así que escríbeme y demos el primer paso.”",
       "en": "“If you want to build something amazing, don’t hesitate to write to me.<br />I’m always eager to learn and contribute,<br />so reach out and let’s take the first step.”"
     },
-    "profile": {
-      "default": "/images/profile1.webp",
-      "hover": "/images/profile2.webp"
-    },
+    "profile": { "default": "/images/profile1.webp", "hover": "/images/profile2.webp" },
     "social": {
       "linkedin": {
         "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
@@ -213,10 +204,7 @@
       },
       "content": {
         "label": { "es": "Contenido*", "en": "Message*" },
-        "placeholder": {
-          "es": "Escriba aquí el motivo de su mensaje",
-          "en": "Write your message here"
-        }
+        "placeholder": { "es": "Escriba aquí el motivo de su mensaje", "en": "Write your message here" }
       },
       "send": { "es": "Enviar", "en": "Send" }
     },
@@ -245,6 +233,59 @@
     "error": {
       "es": "❌ Su mensaje no se pudo mandar. Inténtelo nuevamente.",
       "en": "❌ Your message could not be sent. Please try again."
+    }
+  },
+  "cv": {
+    "background": "/images/background.webp",
+    "video": "/videos/parchment.mp4",
+    "pdf": "/docs/puerva.pdf",
+    "title": "CV",
+    "translations": {
+      "view": { "es": "Ver CV", "en": "View CV" },
+      "close": { "es": "Cerrar CV", "en": "Close CV" },
+      "download": { "es": "Descargar CV en PDF", "en": "Download CV as PDF" }
+    }
+  },
+  "experiencia": {
+    "es": {
+      "title": "Experiencia Académica y Laboral",
+      "academic": "Experiencia Académica",
+      "academicText": "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
+      "academicProjects": "Desarrollo de proyectos académicos:",
+      "academicList": [
+        "Simulador de crecimiento de plantas.",
+        "Sistema de monitoreo de café.",
+        "Aplicación para el cálculo de vacaciones de trabajadores según departamento y antigüedad.",
+        "Diseño y desarrollo de interfaces enfocadas en usabilidad y experiencia de usuario."
+      ],
+      "work": "Experiencia Laboral",
+      "workText": "He trabajado como cocinero, repartidor, vendedor y apoyo técnico. Cada experiencia me ha enseñado disciplina, trabajo en equipo y compromiso.",
+      "workList": [
+        "Cocinero de comidas rápidas – Restaurante DMaíz.",
+        "Repartidor de frutas en carro – Frutas Gómez.",
+        "Vendedor en tienda – Panadería Lima Pan.",
+        "Apoyo en instalación de postes y cuerdas de luz."
+      ]
+    },
+    "en": {
+      "title": "Academic and Work Experience",
+      "academic": "Academic Experience",
+      "academicText": "I am a Software Engineering student at Universidad Cooperativa de Colombia, Campus Pasto (currently in 5th semester). Participated in the First National Seminar on Software Engineering.",
+      "academicProjects": "Development of academic projects:",
+      "academicList": [
+        "Plant growth simulator.",
+        "Coffee monitoring system.",
+        "Application for calculating employee vacation based on department and seniority.",
+        "Design and development of interfaces focused on usability and user experience."
+      ],
+      "work": "Work Experience",
+      "workText": "I’ve worked as a cook, delivery driver, store clerk, and technical assistant. Each role taught me discipline, teamwork, and commitment.",
+      "workList": [
+        "Fast food cook – Restaurante DMaíz.",
+        "Fruit delivery driver – Frutas Gómez.",
+        "Store clerk – Panadería Lima Pan.",
+        "Support in installation of light poles and wiring."
+      ]
     }
   }
 }

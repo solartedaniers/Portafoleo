@@ -2,12 +2,31 @@
 import { useState, useRef } from "react";
 import { FaEye, FaEyeSlash, FaDownload } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
+
+// ✅ Tipo fuerte del contenido JSON
+type CvContent = {
+  background: string;
+  video: string;
+  pdf: string;
+  title: string;
+  translations: {
+    view: { es: string; en: string };
+    close: { es: string; en: string };
+    download: { es: string; en: string };
+  };
+};
 
 export default function CvSection() {
   const { lang } = useApp();
+  const { content } = useContent();
   const [showCv, setShowCv] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [hoverVideo, setHoverVideo] = useState(false);
+
+  // 🧠 Si el JSON no está cargado, no renderizamos nada
+  if (!content?.cv) return null;
+  const c = content.cv as CvContent;
 
   const handleMouseEnter = () => {
     setHoverVideo(true);
@@ -22,30 +41,20 @@ export default function CvSection() {
     }
   };
 
-  const translations = {
-    es: {
-      view: "Ver CV",
-      close: "Cerrar CV",
-      download: "Descargar CV en PDF",
-    },
-    en: {
-      view: "View CV",
-      close: "Close CV",
-      download: "Download CV as PDF",
-    },
+  const t = {
+    view: c.translations.view[lang],
+    close: c.translations.close[lang],
+    download: c.translations.download[lang],
   };
-
-  const t = translations[lang];
 
   return (
     <section
       className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center"
-      // 🟢 Imagen de fondo convertida a formato .webp
-      style={{ backgroundImage: "url('/images/background.webp')" }}
+      style={{ backgroundImage: `url('${c.background}')` }}
     >
       {/* 🔴 Título fijo "CV" */}
       <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
-        CV
+        {c.title}
       </h2>
 
       {/* 🎥 Video con hover para reproducir */}
@@ -58,7 +67,7 @@ export default function CvSection() {
       >
         <video
           ref={videoRef}
-          src="/videos/parchment.mp4"
+          src={c.video}
           muted
           loop
           playsInline
@@ -84,17 +93,13 @@ export default function CvSection() {
       {/* 📄 Ventana emergente para ver el CV */}
       {showCv && (
         <div className="mt-6 w-[90%] md:w-[60%] h-[500px] border-4 border-red-600 rounded-2xl shadow-[0_0_25px_#c4af37] overflow-hidden">
-          <iframe
-            src="/docs/puerva.pdf"
-            className="w-full h-full"
-            title="CV Preview"
-          />
+          <iframe src={c.pdf} className="w-full h-full" title="CV Preview" />
         </div>
       )}
 
       {/* ⬇️ Botón Descargar */}
       <a
-        href="/docs/puerva.pdf"
+        href={c.pdf}
         download="CV_Danier_Solarte.pdf"
         className="mt-6 flex items-center gap-3 px-6 py-3 rounded-full bg-[#f5f5f5] border-2 border-red-600 transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)]"
       >

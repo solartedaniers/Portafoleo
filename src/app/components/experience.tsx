@@ -2,9 +2,35 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaVolumeUp, FaBriefcase } from "react-icons/fa";
+import { useContent } from "./ContentProvider";
 import { useApp } from "./ThemeLangContext";
 
+// ✅ Tipado seguro
+interface ExperienciaData {
+  title: string;
+  academic: string;
+  academicText: string;
+  academicProjects: string;
+  academicList: string[];
+  work: string;
+  workText: string;
+  workList: string[];
+}
+
+type Lang = "es" | "en";
+
+// ✅ Type guard para validar estructura
+function isExperienciaContent(obj: unknown): obj is Record<Lang, ExperienciaData> {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "es" in obj &&
+    "en" in obj
+  );
+}
+
 export default function Experiencia() {
+  const { content } = useContent();
   const { lang } = useApp();
 
   const [speaking, setSpeaking] = useState<"academico" | "laboral" | null>(null);
@@ -15,54 +41,20 @@ export default function Experiencia() {
     setIsTouchDevice(window.matchMedia("(hover: none)").matches);
   }, []);
 
-  const translations = {
-    es: {
-      title: "Experiencia Académica y Laboral",
-      academic: "Experiencia Académica",
-      academicText:
-        "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
-      academicProjects: "Desarrollo de proyectos académicos:",
-      academicList: [
-        "Simulador de crecimiento de plantas.",
-        "Sistema de monitoreo de café.",
-        "Aplicación para el cálculo de vacaciones de trabajadores según departamento y antigüedad.",
-        "Diseño y desarrollo de interfaces enfocadas en usabilidad y experiencia de usuario.",
-      ],
-      work: "Experiencia Laboral",
-      workText:
-        "He trabajado como cocinero, repartidor, vendedor y apoyo técnico. Cada experiencia me ha enseñado disciplina, trabajo en equipo y compromiso.",
-      workList: [
-        "Cocinero de comidas rápidas – Restaurante DMaíz.",
-        "Repartidor de frutas en carro – Frutas Gómez.",
-        "Vendedor en tienda – Panadería Lima Pan.",
-        "Apoyo en instalación de postes y cuerdas de luz.",
-      ],
-    },
-    en: {
-      title: "Academic and Work Experience",
-      academic: "Academic Experience",
-      academicText:
-        "I am a Software Engineering student at Universidad Cooperativa de Colombia, Campus Pasto (currently in 5th semester). Participated in the First National Seminar on Software Engineering.",
-      academicProjects: "Development of academic projects:",
-      academicList: [
-        "Plant growth simulator.",
-        "Coffee monitoring system.",
-        "Application for calculating employee vacation based on department and seniority.",
-        "Design and development of interfaces focused on usability and user experience.",
-      ],
-      work: "Work Experience",
-      workText:
-        "I’ve worked as a cook, delivery driver, store clerk, and technical assistant. Each role taught me discipline, teamwork, and commitment.",
-      workList: [
-        "Fast food cook – Restaurante DMaíz.",
-        "Fruit delivery driver – Frutas Gómez.",
-        "Store clerk – Panadería Lima Pan.",
-        "Support in installation of light poles and wiring.",
-      ],
-    },
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
 
-  const t = translations[lang];
+  // ✅ Validación segura del contenido
+  const experiencia = isExperienciaContent(content?.experiencia)
+    ? content.experiencia[lang]
+    : null;
+
+  if (!experiencia) return null;
 
   const speakText = (text: string, type: "academico" | "laboral") => {
     const synth = window.speechSynthesis;
@@ -94,21 +86,12 @@ export default function Experiencia() {
     synth.speak(utterance);
   };
 
-  // Simular hover con toque en dispositivos táctiles
   const handleTouchHover = (type: "academico" | "laboral") => {
     if (isTouchDevice) {
       setHovered(type);
-      setTimeout(() => setHovered(null), 800); // efecto corto de hover
+      setTimeout(() => setHovered(null), 800);
     }
   };
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
-    }
-  }, []);
 
   return (
     <section
@@ -116,7 +99,7 @@ export default function Experiencia() {
       style={{ backgroundImage: "url('/images/city.webp')" }}
     >
       <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
-        {t.title}
+        {experiencia.title}
       </h2>
 
       {/* 🎓 Experiencia Académica */}
@@ -138,11 +121,11 @@ export default function Experiencia() {
             className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
-            {t.academic}
+            {experiencia.academic}
           </h3>
 
           <button
-            onClick={() => speakText(t.academicText, "academico")}
+            onClick={() => speakText(experiencia.academicText, "academico")}
             onMouseEnter={() => setHovered("academico")}
             onMouseLeave={() => setHovered(null)}
             onTouchStart={() => handleTouchHover("academico")}
@@ -156,13 +139,13 @@ export default function Experiencia() {
           </button>
         </div>
 
-        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{t.academicText}</p>
+        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{experiencia.academicText}</p>
 
         <p className="font-['Esteban'] text-[#c4af37] font-bold mb-2">
-          {t.academicProjects}
+          {experiencia.academicProjects}
         </p>
         <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
-          {t.academicList.map((item, i) => (
+          {experiencia.academicList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
@@ -181,11 +164,11 @@ export default function Experiencia() {
             className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
-            {t.work}
+            {experiencia.work}
           </h3>
 
           <button
-            onClick={() => speakText(t.workText, "laboral")}
+            onClick={() => speakText(experiencia.workText, "laboral")}
             onMouseEnter={() => setHovered("laboral")}
             onMouseLeave={() => setHovered(null)}
             onTouchStart={() => handleTouchHover("laboral")}
@@ -199,10 +182,10 @@ export default function Experiencia() {
           </button>
         </div>
 
-        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{t.workText}</p>
+        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{experiencia.workText}</p>
 
         <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
-          {t.workList.map((item, i) => (
+          {experiencia.workList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
