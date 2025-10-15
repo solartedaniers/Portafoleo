@@ -3,9 +3,40 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
+
+// 🧩 Tipos de datos esperados desde el JSON
+interface SocialLink {
+  label: string;
+  url: string;
+  sound: string;
+}
+
+interface FooterLang {
+  title: string;
+  credits: string;
+  rights: string;
+  phrase: string;
+  author: string;
+  backgroundLeft: string;
+  backgroundRight: string;
+  social: {
+    linkedin: SocialLink;
+    whatsapp: SocialLink;
+    github: SocialLink;
+  };
+}
+
+interface FooterContent {
+  es: FooterLang;
+  en: FooterLang;
+}
 
 export default function Footer() {
   const { lang } = useApp();
+  const { content } = useContent();
+  const data = (content?.footer as FooterContent)?.[lang];
+
   const [clockTime, setClockTime] = useState("");
   const [clockPeriod, setClockPeriod] = useState("");
   const [showClock, setShowClock] = useState(false);
@@ -30,7 +61,7 @@ export default function Footer() {
     }
   };
 
-  // ⏰ Reloj
+  // ⏰ Actualizar hora
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -59,45 +90,24 @@ export default function Footer() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // 🔊 Sonido botones sociales
+  // 🔊 Sonido al hacer clic en redes
   const playSound = (file: string) => {
     const audio = new Audio(`/sounds/${file}`);
     audio.play();
   };
 
-  // 🌍 Traducción
-  const translations = {
-    es: {
-      title: "Pie de página",
-      credits: "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
-      rights: "Todos los derechos son reservados",
-      phrase:
-        "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
-      author: "Portafolio creado con pasión por Damiers Solarte – 2026",
-    },
-    en: {
-      title: "Footer",
-      credits: "© 2026 Damiers Alexander Solarte Limas – Software Engineer",
-      rights: "All rights reserved",
-      phrase:
-        "“True greatness lies in growing without losing the principles that define us.”",
-      author: "Portfolio created with passion by Damiers Solarte – 2026",
-    },
-  };
-
-  const t = translations[lang];
-
-  // 🖱 Control de hover/tap universal
+  // 🖱 Hover/Tap universal
   const handleTouchHover = (callback: () => void) => {
     if (isMobile) callback();
   };
+
+  if (!data) return null; // Evita errores si el JSON no ha cargado
 
   return (
     <footer
       className="relative bg-cover bg-center text-center py-10 z-0"
       style={{
-        backgroundImage:
-          "url('/images/wolf.webp'), url('/images/samurai.webp')",
+        backgroundImage: `url('${data.backgroundLeft}'), url('${data.backgroundRight}')`,
         backgroundPosition: "left, right",
         backgroundRepeat: "no-repeat, no-repeat",
         backgroundSize: "50% 100%, 50% 100%",
@@ -106,9 +116,9 @@ export default function Footer() {
       {/* 🔴 Título */}
       <h2
         className="font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-full shadow-md transition-all duration-300 inline-block hover:bg-yellow-500 hover:text-black"
-        onClick={() => handleTouchHover(() => alert(t.title))}
+        onClick={() => handleTouchHover(() => alert(data.title))}
       >
-        {t.title}
+        {data.title}
       </h2>
 
       {/* 🕰 Reloj */}
@@ -169,27 +179,27 @@ export default function Footer() {
       {/* 📄 Créditos */}
       <div
         className="mt-8 text-lg font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105"
-        onClick={() => handleTouchHover(() => alert(t.credits))}
+        onClick={() => handleTouchHover(() => alert(data.credits))}
       >
-        {t.credits}
+        {data.credits}
         <br />
-        {t.rights}
+        {data.rights}
       </div>
 
       {/* 📜 Frase */}
       <p
         className="mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105"
-        onClick={() => handleTouchHover(() => alert(t.phrase))}
+        onClick={() => handleTouchHover(() => alert(data.phrase))}
         style={{ WebkitTextStroke: "0.5px #c4af37" }}
       >
-        {t.phrase}
+        {data.phrase}
       </p>
 
       <p
         className="mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1"
-        onClick={() => handleTouchHover(() => alert(t.author))}
+        onClick={() => handleTouchHover(() => alert(data.author))}
       >
-        {t.author}
+        {data.author}
       </p>
 
       {/* 🔗 Redes sociales */}
@@ -202,52 +212,52 @@ export default function Footer() {
       >
         {/* 🔗 LinkedIn */}
         <a
-          href="https://www.linkedin.com/in/damiers-solarte-08716b381"
+          href={data.social.linkedin.url}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
-            playSound("LinkedIn.mp3");
+            playSound(data.social.linkedin.sound);
             handleTouchHover(() => alert("Abriendo LinkedIn..."));
           }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
-            LinkedIn
+            {data.social.linkedin.label}
           </span>
         </a>
 
         {/* 🔗 WhatsApp */}
         <a
-          href="https://wa.me/573167969206"
+          href={data.social.whatsapp.url}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
-            playSound("whatsapp.mp3");
+            playSound(data.social.whatsapp.sound);
             handleTouchHover(() => alert("Abriendo WhatsApp..."));
           }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
-            WhatsApp
+            {data.social.whatsapp.label}
           </span>
         </a>
 
         {/* 🔗 GitHub */}
         <a
-          href="https://github.com/solartedaniers"
+          href={data.social.github.url}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
-            playSound("url.mp3");
+            playSound(data.social.github.sound);
             handleTouchHover(() => alert("Abriendo GitHub..."));
           }}
           className="flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white"
         >
           <FaGithub className="text-black text-2xl transition-all duration-300 hover:scale-125" />
           <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
-            GitHub
+            {data.social.github.label}
           </span>
         </a>
       </div>

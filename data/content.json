@@ -287,5 +287,92 @@
         "Support in installation of light poles and wiring."
       ]
     }
+  },
+  
+  
+  "filosofia": {
+    "es": {
+      "title": "Mi Filosofía de Vida",
+      "text": [
+        "Mi filosofía de vida se basa en tres pilares: la fe en Dios, el amor por mi familia y la convicción de que cada reto es una oportunidad para crecer.",
+        "Creo que la disciplina y la constancia son el camino para alcanzar las metas, mientras que el aprendizaje continuo nos permite fortalecernos y evolucionar.",
+        "Vivir plenamente significa disfrutar cada momento —reír, llorar, soñar— entendiendo que cada experiencia forma nuestro carácter.",
+        "Busco ayudar a los demás y aportar valor, porque la verdadera grandeza no está en lo que logramos, sino en mantener intactos los principios que nos definen."
+      ],
+      "image": "/images/samurai-tiger.webp",
+      "background": "/images/path.webp"
+    },
+    "en": {
+      "title": "My Life Philosophy",
+      "text": [
+        "My life philosophy is based on three pillars: faith in God, love for my family, and the belief that every challenge is an opportunity to grow.",
+        "I believe discipline and consistency are the path to achieving goals, while continuous learning helps us strengthen and evolve.",
+        "Living fully means enjoying every moment—laughing, crying, dreaming—understanding that each experience shapes our character.",
+        "I strive to help others and add value, because true greatness lies not in what we achieve, but in preserving the principles that define us."
+      ],
+      "image": "/images/samurai-tiger.webp",
+      "background": "/images/path.webp"
+    }
+  },
+  
+  "footer": {
+    "es": {
+      "title": "Pie de página",
+      "credits": "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
+      "rights": "Todos los derechos reservados",
+      "phrase": "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
+      "author": "Portafolio creado con pasión por Damiers Solarte – 2026",
+      "backgroundLeft": "/images/wolf.webp",
+      "backgroundRight": "/images/samurai.webp",
+      "social": {
+        "linkedin": {
+          "label": "LinkedIn",
+          "url": "https://www.linkedin.com/in/damiers-solarte-08716b381",
+          "sound": "LinkedIn.mp3"
+        },
+        "whatsapp": {
+          "label": "WhatsApp",
+          "url": "https://wa.me/573167969206",
+          "sound": "whatsapp.mp3"
+        },
+        "github": {
+          "label": "GitHub",
+          "url": "https://github.com/solartedaniers",
+          "sound": "url.mp3"
+        }
+      }
+    },
+    
+    "en": {
+      "title": "Footer",
+      "credits": "© 2026 Damiers Alexander Solarte Limas – Software Engineer",
+      "rights": "All rights reserved",
+      "phrase": "“True greatness lies in growing without losing the principles that define us.”",
+      "author": "Portfolio created with passion by Damiers Solarte – 2026",
+      "backgroundLeft": "/images/wolf.webp",
+      "backgroundRight": "/images/samurai.webp",
+      "social": {
+        "linkedin": {
+          "label": "LinkedIn",
+          "url": "https://www.linkedin.com/in/damiers-solarte-08716b381",
+          "sound": "LinkedIn.mp3"
+        },
+        "whatsapp": {
+          "label": "WhatsApp",
+          "url": "https://wa.me/573167969206",
+          "sound": "whatsapp.mp3"
+        },
+        "github": {
+          "label": "GitHub",
+          "url": "https://github.com/solartedaniers",
+          "sound": "url.mp3"
+        }
+      }
+    }
   }
 }
+
+
+
+
+

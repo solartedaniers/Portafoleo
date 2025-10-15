@@ -3,44 +3,43 @@ import { useState, useEffect } from "react";
 import { FaVolumeUp } from "react-icons/fa";
 import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
+
+// ✅ Tipos bien definidos
+interface FilosofiaLang {
+  title: string;
+  text: string[];
+  image: string;
+  background: string;
+}
+
+interface FilosofiaContent {
+  es: FilosofiaLang;
+  en: FilosofiaLang;
+}
 
 export default function Filosofia() {
   const { lang } = useApp();
+  const { content } = useContent();
+
+  // ✅ Tipamos content para que TypeScript entienda la estructura
+  const data = (content?.filosofia as FilosofiaContent)?.[lang];
+
   const [speaking, setSpeaking] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [iconHovered, setIconHovered] = useState(false); // 👈 Nuevo estado solo para el ícono
+  const [iconHovered, setIconHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  const translations = {
-    es: {
-      title: "Mi Filosofía de Vida",
-      text: `Mi filosofía de vida se basa en tres pilares: la fe en Dios, el amor por mi familia y la convicción de que cada reto es una oportunidad para crecer.
-
-Creo que la disciplina y la constancia son el camino para alcanzar las metas, mientras que el aprendizaje continuo nos permite fortalecernos y evolucionar.
-
-Vivir plenamente significa disfrutar cada momento —reír, llorar, soñar— entendiendo que cada experiencia forma nuestro carácter.
-
-Busco ayudar a los demás y aportar valor, porque la verdadera grandeza no está en lo que logramos, sino en mantener intactos los principios que nos definen.`,
-    },
-    en: {
-      title: "My Life Philosophy",
-      text: `My life philosophy is based on three pillars: faith in God, love for my family, and the belief that every challenge is an opportunity to grow.
-
-I believe discipline and consistency are the path to achieving goals, while continuous learning helps us strengthen and evolve.
-
-Living fully means enjoying every moment—laughing, crying, dreaming—understanding that each experience shapes our character.
-
-I strive to help others and add value, because true greatness lies not in what we achieve, but in preserving the principles that define us.`,
-    },
-  };
-
-  const t = translations[lang];
-  const paragraphs = t.text.split("\n").map((p, i) => (
-    <p key={i} className="mb-4">
-      {p}
-    </p>
-  ));
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsTouchDevice(window.matchMedia("(hover: none)").matches);
+      window.speechSynthesis?.getVoices();
+    }
+  }, []);
 
   const speakText = () => {
+    if (typeof window === "undefined" || !window.speechSynthesis || !data) return;
+
     const synth = window.speechSynthesis;
     if (synth.speaking) {
       synth.cancel();
@@ -48,18 +47,18 @@ I strive to help others and add value, because true greatness lies not in what w
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(t.text);
+    const utterance = new SpeechSynthesisUtterance(data.text.join(" "));
     const voices = synth.getVoices();
     const preferredLang = lang === "es" ? "es-ES" : "en-US";
 
-    const maleVoice = voices.find(
-      (v) =>
-        v.lang === preferredLang &&
-        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
-    );
+    const maleVoice =
+      voices.find(
+        (v) =>
+          v.lang.startsWith(lang) &&
+          /male|man|david|jorge|diego|pablo|john|mike|brian|daniel/i.test(v.name)
+      ) ?? voices.find((v) => v.lang.startsWith(lang));
 
-    const fallbackVoice = voices.find((v) => v.lang === preferredLang);
-    utterance.voice = maleVoice ?? fallbackVoice ?? null;
+    utterance.voice = maleVoice ?? null;
     utterance.lang = preferredLang;
     utterance.rate = 1;
     utterance.pitch = 1;
@@ -70,39 +69,32 @@ I strive to help others and add value, because true greatness lies not in what w
     synth.speak(utterance);
   };
 
-  // ⚙️ Inicializa voces
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
-    }
-  }, []);
-
-  // 📱 Efecto tap general para móviles
   const handleTouch = () => {
-    setHovered(true);
-    setTimeout(() => setHovered(false), 400);
+    if (isTouchDevice) {
+      setHovered(true);
+      setTimeout(() => setHovered(false), 400);
+    }
   };
 
-  // 📱 Efecto tap específico para el ícono de audio
   const handleIconTouch = () => {
-    setIconHovered(true);
-    setTimeout(() => setIconHovered(false), 400);
+    if (isTouchDevice) {
+      setIconHovered(true);
+      setTimeout(() => setIconHovered(false), 400);
+    }
   };
+
+  if (!data) return null;
 
   return (
     <section
       className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/path.webp')" }}
+      style={{ backgroundImage: `url('${data.background}')` }}
     >
-      <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5 ">
-        {/* 🟥 Título */}
+      <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5">
         <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
-          {t.title}
+          {data.title}
         </h2>
 
-        {/* 📜 Contenedor principal */}
         <div
           className={`relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#c4af37]" : ""
@@ -111,7 +103,6 @@ I strive to help others and add value, because true greatness lies not in what w
           onMouseLeave={() => setHovered(false)}
           onTouchStart={handleTouch}
         >
-          {/* 🔊 Botón audio */}
           <button
             onClick={speakText}
             onMouseEnter={() => setIconHovered(true)}
@@ -124,7 +115,6 @@ I strive to help others and add value, because true greatness lies not in what w
             <FaVolumeUp size={24} />
           </button>
 
-          {/* 🖼 Imagen */}
           <div
             className="flex justify-center mb-6"
             onMouseEnter={() => setHovered(true)}
@@ -132,7 +122,7 @@ I strive to help others and add value, because true greatness lies not in what w
             onTouchStart={handleTouch}
           >
             <Image
-              src="/images/samurai-tiger.webp"
+              src={data.image}
               alt="Filosofía"
               width={100}
               height={100}
@@ -140,9 +130,12 @@ I strive to help others and add value, because true greatness lies not in what w
             />
           </div>
 
-          {/* 🧠 Texto */}
           <div className="text-[17px] leading-relaxed font-esteban text-[#5c4c4c] transition-all duration-300 hover:tracking-wide text-justify">
-            {paragraphs}
+            {data.text.map((p, i) => (
+              <p key={i} className="mb-4">
+                {p}
+              </p>
+            ))}
           </div>
         </div>
       </div>
