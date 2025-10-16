@@ -4,7 +4,6 @@ import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { useRouter } from "next/navigation";
 
-// ✅ Tipado del contenido del héroe
 interface HeroLangContent {
   brand: string;
   quote: string;
@@ -17,13 +16,11 @@ interface HeroContent {
   en: HeroLangContent;
 }
 
-// ✅ Tipo general del contenido del sitio
 interface SiteContent {
   hero?: HeroContent;
   [key: string]: unknown;
 }
 
-// ✅ Tipo de idioma
 type LangType = "es" | "en";
 
 export default function Hero(): React.JSX.Element {
@@ -32,8 +29,8 @@ export default function Hero(): React.JSX.Element {
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeTouch, setActiveTouch] = useState<string | null>(null);
 
-  // ✅ Traducciones seguras
   const t: HeroLangContent = content?.hero?.[lang as LangType] ?? {
     brand: "Daniers Solarte",
     quote: "El código es mi espada,<br />la lógica mi escudo.",
@@ -41,7 +38,6 @@ export default function Hero(): React.JSX.Element {
     language: "Inglés",
   };
 
-  // ✅ Detectar si es móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -49,7 +45,6 @@ export default function Hero(): React.JSX.Element {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // ✅ Detectar tema del sistema
   useEffect(() => {
     if (typeof window !== "undefined") {
       const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
@@ -65,22 +60,23 @@ export default function Hero(): React.JSX.Element {
     }
   }, [setTheme]);
 
-  // 🎵 Sonido al hacer click en “Ver Portafolio”
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
       } catch {
-        // Ignorar error si autoplay está bloqueado
+        /* ignore autoplay block */
       }
     }
     router.push("/portfolio");
   };
 
-  // 🖱 Simular hover en móvil
-  const handleTouchHover = (callback: () => void) => {
-    if (isMobile) callback();
+  // 🖱 Simula hover visual en móvil
+  const handleTouchEffect = (id: string) => {
+    if (!isMobile) return;
+    setActiveTouch(id);
+    setTimeout(() => setActiveTouch(null), 1500);
   };
 
   return (
@@ -97,7 +93,7 @@ export default function Hero(): React.JSX.Element {
         />
       </div>
 
-      {/* 🌓 Overlay oscuro */}
+      {/* 🌓 Overlay */}
       <div
         className={`absolute inset-0 z-10 ${
           theme === "dark" ? "bg-black/60" : "bg-black/30"
@@ -106,30 +102,30 @@ export default function Hero(): React.JSX.Element {
 
       {/* 🔘 Botones */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
-        {/* Tema */}
         <button
-          onClick={() => {
-            toggleTheme();
-            handleTouchHover(() =>
-              alert(theme === "dark" ? "Modo claro" : "Modo oscuro")
-            );
-          }}
+          onClick={toggleTheme}
+          onTouchStart={() => handleTouchEffect("theme")}
           aria-label="Cambiar tema"
-          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-110 hover:border-red-600"
+          className={`px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 
+          ${
+            activeTouch === "theme"
+              ? "scale-110 border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.4)]"
+              : "hover:scale-110 hover:border-red-600"
+          }`}
         >
           {theme === "dark" ? "🌙" : "☀️"}
         </button>
 
-        {/* Idioma */}
         <button
-          onClick={() => {
-            toggleLang();
-            handleTouchHover(() =>
-              alert(lang === "es" ? "Language: English" : "Idioma: Español")
-            );
-          }}
+          onClick={toggleLang}
+          onTouchStart={() => handleTouchEffect("lang")}
           aria-label="Cambiar idioma"
-          className="px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 hover:scale-110 hover:border-red-600"
+          className={`px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 
+          ${
+            activeTouch === "lang"
+              ? "scale-110 border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.4)]"
+              : "hover:scale-110 hover:border-red-600"
+          }`}
         >
           🌐 {t.language}
         </button>
@@ -139,41 +135,41 @@ export default function Hero(): React.JSX.Element {
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center gap-6 px-4 sm:px-6 translate-x-6 sm:translate-x-60">
         {/* Nombre */}
         <h1
-          className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-110 text-stroke-gold hover:text-stroke-red"
-          onClick={() =>
-            handleTouchHover(() =>
-              alert(
-                lang === "es"
-                  ? "Bienvenido a mi portafolio"
-                  : "Welcome to my portfolio"
-              )
-            )
-          }
+          onTouchStart={() => handleTouchEffect("brand")}
+          className={`text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform text-stroke-gold 
+          ${
+            activeTouch === "brand"
+              ? "scale-110 text-stroke-red"
+              : "hover:scale-110 hover:text-stroke-red"
+          }`}
         >
           {t.brand}
         </h1>
 
         {/* Frase */}
         <p
-          className="text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban transition-transform hover:scale-105"
+          onTouchStart={() => handleTouchEffect("quote")}
+          className={`text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban transition-transform
+          ${
+            activeTouch === "quote"
+              ? "scale-105 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
+              : "hover:scale-105"
+          }`}
           style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
-          onClick={() =>
-            handleTouchHover(() =>
-              alert(
-                lang === "es"
-                  ? "El código es mi espada, la lógica mi escudo."
-                  : "The code is my sword, logic is my shield."
-              )
-            )
-          }
           dangerouslySetInnerHTML={{ __html: t.quote }}
         />
 
         {/* Botón Ver Portafolio */}
         <button
           onClick={handleViewClick}
-          onTouchStart={() => handleTouchHover(() => alert(t.view))}
-          className="px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform hover:scale-110 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
+          onTouchStart={() => handleTouchEffect("view")}
+          className={`px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform font-[Instrument_Serif]
+          ${
+            activeTouch === "view"
+              ? "scale-110 border-gold shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
+              : "hover:scale-110 hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
+          }
+          bg-[#c1c1c1] border-bloodRed text-[#605b2a]`}
         >
           {t.view}
         </button>
