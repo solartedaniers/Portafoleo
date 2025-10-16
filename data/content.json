@@ -1,4 +1,52 @@
 {
+  
+  "hero": {
+    "es": {
+      "brand": "Daniers Solarte",
+      "quote": "El código es mi espada,<br />la lógica mi escudo.",
+      "view": "Ver Portafolio",
+      "language": "Inglés"
+    },
+    "en": {
+      "brand": "Daniers Solarte",
+      "quote": "The code is my sword,<br />logic is my shield.",
+      "view": "View Portfolio",
+      "language": "Español"
+    }
+  },
+
+   "navbar": {
+    "es": {
+      "menu": [
+        { "label": "Bienvenidos", "id": "bienvenidos" },
+        { "label": "Acerca de mí", "id": "acercademi" },
+        { "label": "Tecnologías", "id": "tecnologias" },
+        { "label": "Mis Proyectos", "id": "misproyectos" },
+        { "label": "Testimonios", "id": "testimonios" },
+        { "label": "CV", "id": "cv" },
+        { "label": "Experiencia Académica y Laboral", "id": "experiencia" },
+        { "label": "Mi Filosofía de Vida", "id": "filosofia" },
+        { "label": "Contacto", "id": "contacto" },
+        { "label": "Pie de Página", "id": "PieDePágina" }
+      ]
+    },
+    "en": {
+      "menu": [
+        { "label": "Welcome", "id": "bienvenidos" },
+        { "label": "About Me", "id": "acercademi" },
+        { "label": "Technologies", "id": "tecnologias" },
+        { "label": "My Projects", "id": "misproyectos" },
+        { "label": "Testimonials", "id": "testimonios" },
+        { "label": "CV", "id": "cv" },
+        { "label": "Academic and Work Experience", "id": "experiencia" },
+        { "label": "My Life Philosophy", "id": "filosofia" },
+        { "label": "Contact", "id": "contacto" },
+        { "label": "Footer", "id": "PieDePágina" }
+      ]
+    }
+  },
+
+
   "welcome": {
     "home": { "es": "Inicio", "en": "Home" },
     "subtitle": { "es": "Ingeniero de Software", "en": "Software Engineer" },

@@ -13,9 +13,26 @@ import {
   GiArchiveResearch,
 } from "react-icons/gi";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
+
+// 🧩 Tipado del contenido
+interface MenuItem {
+  label: string;
+  id: string;
+}
+
+interface NavbarLangContent {
+  menu: MenuItem[];
+}
+
+interface NavbarContent {
+  es: NavbarLangContent;
+  en: NavbarLangContent;
+}
 
 export default function Navbar() {
   const { lang, theme } = useApp();
+  const { content } = useContent() as { content: { navbar?: NavbarContent } };
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -28,50 +45,35 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const translations = {
-    es: {
+  // 🌍 Cargar texto desde JSON o usar fallback
+  const t: NavbarLangContent =
+    content?.navbar?.[lang] ?? {
       menu: [
-        "Bienvenidos",
-        "Acerca de mí",
-        "Tecnologías",
-        "Mis Proyectos",
-        "Testimonios",
-        "CV",
-        "Experiencia Académica y Laboral",
-        "Mi Filosofía de Vida",
-        "Contacto",
-        "Pie de Página",
+        { label: "Bienvenidos", id: "bienvenidos" },
+        { label: "Acerca de mí", id: "acercademi" },
+        { label: "Tecnologías", id: "tecnologias" },
+        { label: "Mis Proyectos", id: "misproyectos" },
+        { label: "Testimonios", id: "testimonios" },
+        { label: "CV", id: "cv" },
+        { label: "Experiencia Académica y Laboral", id: "experiencia" },
+        { label: "Mi Filosofía de Vida", id: "filosofia" },
+        { label: "Contacto", id: "contacto" },
+        { label: "Pie de Página", id: "PieDePágina" },
       ],
-    },
-    en: {
-      menu: [
-        "Welcome",
-        "About Me",
-        "Technologies",
-        "My Projects",
-        "Testimonials",
-        "CV",
-        "Academic and Work Experience",
-        "My Life Philosophy",
-        "Contact",
-        "Footer",
-      ],
-    },
-  };
+    };
 
-  const t = translations[lang];
-
-  const menuItems = [
-    { icon: <FaSmile />, id: "bienvenidos" },
-    { icon: <GiFeather />, id: "acercademi" },
-    { icon: <GiBookshelf />, id: "tecnologias" },
-    { icon: <GiScrollUnfurled />, id: "misproyectos" },
-    { icon: <GiTalk />, id: "testimonios" },
-    { icon: <GiOpenBook />, id: "cv" },
-    { icon: <GiGraduateCap />, id: "experiencia" },
-    { icon: <GiBrain />, id: "filosofia" },
-    { icon: <GiQuillInk />, id: "contacto" },
-    { icon: <GiArchiveResearch />, id: "PieDePágina" },
+  // 🧱 Íconos en orden
+  const icons = [
+    <FaSmile key="1" />,
+    <GiFeather key="2" />,
+    <GiBookshelf key="3" />,
+    <GiScrollUnfurled key="4" />,
+    <GiTalk key="5" />,
+    <GiOpenBook key="6" />,
+    <GiGraduateCap key="7" />,
+    <GiBrain key="8" />,
+    <GiQuillInk key="9" />,
+    <GiArchiveResearch key="10" />,
   ];
 
   // 🎵 Sonido menú
@@ -80,12 +82,10 @@ export default function Navbar() {
     audio.play().catch(() => {});
   };
 
-  // 🎯 Manejo de selección con tap/hover
+  // 🎯 Manejo de selección
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
     playMenuSound();
-
-    // En móvil, cierra el menú tras seleccionar
     if (isMobile) setMenuOpen(false);
   };
 
@@ -95,7 +95,7 @@ export default function Navbar() {
         theme === "dark" ? "bg-black" : "bg-white"
       }`}
     >
-      {/* 🔘 Menú móvil */}
+      {/* 🔘 Botón menú móvil */}
       <div
         className="flex items-center px-4 py-2 md:hidden cursor-pointer"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -109,16 +109,16 @@ export default function Navbar() {
         </span>
       </div>
 
-      {/* 🧭 Menú lateral móvil */}
+      {/* 📱 Menú lateral móvil */}
       <div
         className={`fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-[#d4af37] shadow-lg z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col gap-2 p-4">
-          {menuItems.map((item, index) => (
+          {t.menu.map((item, index) => (
             <a
-              key={index}
+              key={item.id}
               href={`#${item.id}`}
               onClick={() => handleSelect(index)}
               className={`flex items-center gap-3 px-4 py-2 rounded-xl border transition-all duration-300 cursor-pointer ${
@@ -127,20 +127,22 @@ export default function Navbar() {
                   : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
               } bg-[#f5f5f5] text-black`}
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="font-['Irish_Grover'] text-sm">{t.menu[index]}</span>
+              <span className="text-lg">{icons[index]}</span>
+              <span className="font-['Irish_Grover'] text-sm">
+                {item.label}
+              </span>
             </a>
           ))}
         </div>
       </div>
 
-      {/* 🖥 Menú horizontal escritorio */}
+      {/* 🖥 Menú escritorio */}
       <div className="hidden md:block md:px-2 md:pt-2">
         <div className="bg-[#d4af37] max-w-[99%] mx-auto px-4 py-2">
           <div className="grid grid-cols-10 gap-2 max-w-7xl mx-auto">
-            {menuItems.map((item, index) => (
+            {t.menu.map((item, index) => (
               <a
-                key={index}
+                key={item.id}
                 href={`#${item.id}`}
                 onMouseEnter={() => !isMobile && setSelectedIndex(index)}
                 onMouseLeave={() => !isMobile && setSelectedIndex(null)}
@@ -151,9 +153,9 @@ export default function Navbar() {
                     : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
                 } bg-[#f5f5f5] text-black`}
               >
-                <span className="text-lg">{item.icon}</span>
+                <span className="text-lg">{icons[index]}</span>
                 <span className="font-['Irish_Grover'] text-xs sm:text-sm">
-                  {t.menu[index]}
+                  {item.label}
                 </span>
               </a>
             ))}

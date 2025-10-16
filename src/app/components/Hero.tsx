@@ -1,31 +1,47 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import { useApp } from "./ThemeLangContext";
+import { useContent } from "./ContentProvider";
 import { useRouter } from "next/navigation";
 
-const translations = {
-  es: {
+// ✅ Tipado del contenido del héroe
+interface HeroLangContent {
+  brand: string;
+  quote: string;
+  view: string;
+  language: string;
+}
+
+interface HeroContent {
+  es: HeroLangContent;
+  en: HeroLangContent;
+}
+
+// ✅ Tipo general del contenido del sitio
+interface SiteContent {
+  hero?: HeroContent;
+  [key: string]: unknown;
+}
+
+// ✅ Tipo de idioma
+type LangType = "es" | "en";
+
+export default function Hero(): React.JSX.Element {
+  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
+  const { content } = useContent() as { content: SiteContent };
+  const router = useRouter();
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ✅ Traducciones seguras
+  const t: HeroLangContent = content?.hero?.[lang as LangType] ?? {
     brand: "Daniers Solarte",
     quote: "El código es mi espada,<br />la lógica mi escudo.",
     view: "Ver Portafolio",
     language: "Inglés",
-  },
-  en: {
-    brand: "Daniers Solarte",
-    quote: "The code is my sword,<br />logic is my shield.",
-    view: "View Portfolio",
-    language: "Español",
-  },
-};
+  };
 
-export default function Hero() {
-  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
-  const t = translations[lang];
-  const router = useRouter();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // ✅ Detectar dispositivo (móvil o PC)
+  // ✅ Detectar si es móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -33,35 +49,36 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // ✅ Detectar el modo del sistema al cargar
+  // ✅ Detectar tema del sistema
   useEffect(() => {
     if (typeof window !== "undefined") {
       const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
       setTheme(systemDark.matches ? "dark" : "light");
 
-      const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      const handleSystemThemeChange = (e: MediaQueryListEvent) =>
         setTheme(e.matches ? "dark" : "light");
-      };
 
       systemDark.addEventListener("change", handleSystemThemeChange);
-      return () =>
+      return () => {
         systemDark.removeEventListener("change", handleSystemThemeChange);
+      };
     }
   }, [setTheme]);
 
+  // 🎵 Sonido al hacer click en “Ver Portafolio”
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
       } catch {
-        // Ignorar bloqueo de autoplay
+        // Ignorar error si autoplay está bloqueado
       }
     }
     router.push("/portfolio");
   };
 
-  // 🖱 Manejo universal de hover/tap
+  // 🖱 Simular hover en móvil
   const handleTouchHover = (callback: () => void) => {
     if (isMobile) callback();
   };
@@ -125,7 +142,11 @@ export default function Hero() {
           className="text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform hover:scale-110 text-stroke-gold hover:text-stroke-red"
           onClick={() =>
             handleTouchHover(() =>
-              alert(lang === "es" ? "Bienvenido a mi portafolio" : "Welcome to my portfolio")
+              alert(
+                lang === "es"
+                  ? "Bienvenido a mi portafolio"
+                  : "Welcome to my portfolio"
+              )
             )
           }
         >
@@ -138,7 +159,11 @@ export default function Hero() {
           style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
           onClick={() =>
             handleTouchHover(() =>
-              alert(lang === "es" ? "El código es mi espada, la lógica mi escudo." : "The code is my sword, logic is my shield.")
+              alert(
+                lang === "es"
+                  ? "El código es mi espada, la lógica mi escudo."
+                  : "The code is my sword, logic is my shield."
+              )
             )
           }
           dangerouslySetInnerHTML={{ __html: t.quote }}
@@ -147,9 +172,7 @@ export default function Hero() {
         {/* Botón Ver Portafolio */}
         <button
           onClick={handleViewClick}
-          onTouchStart={() =>
-            handleTouchHover(() => alert(t.view))
-          }
+          onTouchStart={() => handleTouchHover(() => alert(t.view))}
           className="px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform hover:scale-110 bg-[#c1c1c1] border-bloodRed text-[#605b2a] hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)] font-[Instrument_Serif]"
         >
           {t.view}
