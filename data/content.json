@@ -286,8 +286,11 @@
   "cv": {
     "background": "/images/background.webp",
     "video": "/videos/parchment.mp4",
-    "pdf": "/docs/Cv English.pdf",
     "title": "CV",
+    "pdf": {
+    "es": "/docs/Cv Spanish.pdf",
+    "en": "/docs/Cv English.pdf"
+    },
     "translations": {
       "view": { "es": "Ver CV", "en": "View CV" },
       "close": { "es": "Cerrar CV", "en": "Close CV" },
