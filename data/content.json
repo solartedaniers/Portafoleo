@@ -286,7 +286,7 @@
   "cv": {
     "background": "/images/background.webp",
     "video": "/videos/parchment.mp4",
-    "pdf": "/docs/puerva.pdf",
+    "pdf": "/docs/Cv English.pdf",
     "title": "CV",
     "translations": {
       "view": { "es": "Ver CV", "en": "View CV" },
