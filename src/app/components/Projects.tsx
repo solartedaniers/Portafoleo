@@ -9,11 +9,11 @@ import "swiper/css/navigation";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipado del proyecto
+// ✅ Tipado del proyecto (título/descripcion son strings en cada JSON de idioma)
 type Project = {
   image: string;
-  title: { es: string; en: string };
-  description: { es: string; en: string };
+  title: string;
+  description: string;
   tools: string[];
   gitUrl: string;
 };
@@ -24,8 +24,8 @@ export default function Projects() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const thunderRef = useRef<HTMLAudioElement | null>(null);
 
-  // ✅ Obtener proyectos desde JSON
-  const projects = content?.projects as Project[] || [];
+  // ✅ Obtener proyectos desde el JSON cargado por ContentProvider
+  const projects = (content as { projects?: Project[] } | null)?.projects ?? [];
 
   // 🔊 Reproducir sonido al abrir enlace (Git)
   const playUrlSound = () => {
@@ -46,7 +46,7 @@ export default function Projects() {
   };
 
   // 🧱 Renderizar tarjeta
-  const renderCard = (c: Project, id: number) => (
+  const renderCard = (p: Project, id: number) => (
     <article
       key={id}
       className="relative bg-[#f5f5f5] rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] mx-2"
@@ -66,17 +66,18 @@ export default function Projects() {
               border: "3px solid rgba(220,20,60,0.15)",
             }}
             onTouchStart={(e) => {
-              e.currentTarget.style.transform = "scale(1.03)";
-              e.currentTarget.style.boxShadow = "0 10px 30px rgba(196,175,55,0.45)";
+              (e.currentTarget as HTMLElement).style.transform = "scale(1.03)";
+              (e.currentTarget as HTMLElement).style.boxShadow =
+                "0 10px 30px rgba(196,175,55,0.45)";
             }}
             onTouchEnd={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "none";
+              (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "none";
             }}
           >
             <Image
-              src={c.image}
-              alt={c.title[lang]}
+              src={p.image}
+              alt={p.title}
               width={220}
               height={140}
               className="object-cover w-[220px] h-[140px] transition-all duration-300"
@@ -87,17 +88,17 @@ export default function Projects() {
         {/* 🔗 Botón GitHub */}
         <div className="w-full flex justify-center px-2">
           <a
-            href={c.gitUrl}
+            href={p.gitUrl}
             target="_blank"
             rel="noreferrer"
             onClick={playUrlSound}
             onTouchStart={(e) => {
-              e.currentTarget.style.transform = "scale(1.1)";
-              e.currentTarget.style.borderColor = "#c4af37";
+              (e.currentTarget as HTMLElement).style.transform = "scale(1.1)";
+              (e.currentTarget as HTMLElement).style.borderColor = "#c4af37";
             }}
             onTouchEnd={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.borderColor = "red";
+              (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+              (e.currentTarget as HTMLElement).style.borderColor = "red";
             }}
             className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm border-2 border-red-600 transition-all duration-300 hover:border-[#c4af37] hover:shadow-[0_6px_20px_rgba(196,175,55,0.45)] active:scale-95"
             aria-label="GitHub Repository"
@@ -118,7 +119,7 @@ export default function Projects() {
             letterSpacing: "0.2px",
           }}
         >
-          {c.title[lang]}
+          {p.title}
         </h3>
 
         {/* 📖 Descripción */}
@@ -126,7 +127,7 @@ export default function Projects() {
           className="text-sm text-gray-700 text-center px-2 transition-colors duration-300 hover:text-gray-900"
           style={{ fontFamily: "'Esteban', serif" }}
         >
-          {c.description[lang]}
+          {p.description}
         </p>
 
         {/* 🔧 Lenguajes */}
@@ -145,19 +146,20 @@ export default function Projects() {
 
         {/* ⚡ Botones de herramientas */}
         <div className="mt-3 flex flex-wrap gap-3 justify-start w-full">
-          {c.tools.map((tool) => (
+          {p.tools.map((tool) => (
             <button
               key={tool}
               onClick={playThunderSound}
               onTouchStart={(e) => {
-                e.currentTarget.style.border = "1px solid red";
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.textShadow = "0 0 6px rgba(196,175,55,0.6)";
+                (e.currentTarget as HTMLElement).style.border = "1px solid red";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                (e.currentTarget as HTMLElement).style.textShadow =
+                  "0 0 6px rgba(196,175,55,0.6)";
               }}
               onTouchEnd={(e) => {
-                e.currentTarget.style.border = "1px solid #c4af37";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.textShadow = "none";
+                (e.currentTarget as HTMLElement).style.border = "1px solid #c4af37";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                (e.currentTarget as HTMLElement).style.textShadow = "none";
               }}
               className="px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
               style={{
@@ -210,7 +212,7 @@ export default function Projects() {
           </Swiper>
         </div>
 
-                {/* 💻 Rejilla en escritorio */}
+        {/* 💻 Rejilla en escritorio */}
         <main className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((p, i) => renderCard(p, i))}
         </main>

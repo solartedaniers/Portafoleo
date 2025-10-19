@@ -6,19 +6,24 @@ import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { FaVolumeUp } from "react-icons/fa";
 
-type WelcomeContent = {
-  home?: Record<string, string>;
-  subtitle?: Record<string, string>;
-  welcomeTitle?: Record<string, string>;
-  description?: Record<string, string[]>;
-};
+interface WelcomeLang {
+  home: string;
+  subtitle: string;
+  welcomeTitle: string;
+  description: string[];
+}
+
+interface WelcomeData {
+  welcome: WelcomeLang;
+}
 
 export default function Welcome() {
   const router = useRouter();
   const { lang } = useApp();
   const { content, loading } = useContent();
-const t = content?.welcome as WelcomeContent | undefined;
-  const currentLang = lang === "en" ? "en" : "es";
+
+  // ✅ El contenido llega como un solo objeto del idioma activo
+  const t = (content as WelcomeData | null)?.welcome;
 
   const [hovered, setHovered] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -26,6 +31,7 @@ const t = content?.welcome as WelcomeContent | undefined;
   const containerRef = useRef<HTMLDivElement>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
+  // 🎯 Rotación por mouse o giroscopio
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -38,7 +44,6 @@ const t = content?.welcome as WelcomeContent | undefined;
     };
 
     const handleMouseLeave = () => setRotation({ x: 0, y: 0 });
-
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
 
@@ -58,6 +63,7 @@ const t = content?.welcome as WelcomeContent | undefined;
     };
   }, []);
 
+  // ⚔️ Efectos de sonido
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword.mp3");
     audio.play().catch(() => {});
@@ -68,7 +74,9 @@ const t = content?.welcome as WelcomeContent | undefined;
     router.push("/");
   };
 
+  // 🗣️ Lectura en voz alta
   const toggleSpeech = () => {
+    if (!t) return;
     const synth = window.speechSynthesis;
     if (synth.speaking) {
       synth.cancel();
@@ -76,24 +84,25 @@ const t = content?.welcome as WelcomeContent | undefined;
       return;
     }
 
-    const text = t?.description?.[currentLang]
-      ?.map((d: string) => d.replace(/<br\s*\/?>/gi, ""))
-      .join(" ");
-    const utterance = new SpeechSynthesisUtterance(text || "");
+    const text = t.description.join(" ");
+    const utterance = new SpeechSynthesisUtterance(text);
     utteranceRef.current = utterance;
     const voices = synth.getVoices();
     const preferredLang = lang === "es" ? "es-ES" : "en-US";
-    const maleVoice = voices.find(
-      (v) =>
-        v.lang === preferredLang &&
-        /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
-    );
-    utterance.voice = maleVoice ?? voices.find((v) => v.lang === preferredLang) ?? null;
+    const maleVoice =
+      voices.find(
+        (v) =>
+          v.lang.startsWith(lang) &&
+          /male|man|david|jorge|diego|pablo|john|mike|brian|daniel/i.test(v.name)
+      ) ?? voices.find((v) => v.lang.startsWith(lang));
+
+    utterance.voice = maleVoice ?? null;
     utterance.lang = preferredLang;
     utterance.rate = 1;
     utterance.pitch = 1;
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
+
     synth.speak(utterance);
     setIsSpeaking(true);
   };
@@ -113,7 +122,7 @@ const t = content?.welcome as WelcomeContent | undefined;
       className="relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10"
       style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
-      {/* Botón Inicio */}
+      {/* 🏠 Botón Home */}
       <div
         className="absolute top-2 left-2 flex items-center gap-1 bg-[#f5f5f5] px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]"
         onClick={handleHomeClick}
@@ -121,18 +130,18 @@ const t = content?.welcome as WelcomeContent | undefined;
         <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
           <Image
             src="/images/fire.webp"
-            alt={t.home?.[currentLang] ?? "Inicio"}
+            alt={t.home}
             width={32}
             height={32}
             className="object-cover w-full h-full"
           />
         </div>
         <span className="font-['Irish_Grover'] text-black text-sm drop-shadow-[0_0_1px_silver] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300">
-          {t.home?.[currentLang]}
+          {t.home}
         </span>
       </div>
 
-      {/* Imagen perfil */}
+      {/* 🧑 Imagen perfil */}
       <div
         ref={containerRef}
         className="relative mt-10 perspective-[1000px]"
@@ -160,24 +169,24 @@ const t = content?.welcome as WelcomeContent | undefined;
         </div>
       </div>
 
-      {/* Nombre */}
+      {/* 👤 Nombre */}
       <h1 className="mt-6 font-['Irish_Grover'] text-2xl sm:text-3xl text-black drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer">
         Daniers Alexander Solarte Limas
       </h1>
 
       <hr className="w-1/2 border-t-2 border-black mt-4" />
 
-      {/* Subtítulo */}
+      {/* 🏷️ Subtítulo */}
       <h2 className="mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] animate-pulse hover:animate-none hover:scale-105 transition-all duration-300 bg-white/60 px-1 py-1 rounded-xl text-center cursor-pointer">
-        {t.subtitle?.[currentLang]}
+        {t.subtitle}
       </h2>
 
-      {/* Bienvenida */}
+      {/* 👋 Bienvenida */}
       <h3 className="mt-6 font-['Irish_Grover'] text-2xl sm:text-4xl text-white bg-red-600/70 px-6 sm:px-10 py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center">
-        {t.welcomeTitle?.[currentLang]}
+        {t.welcomeTitle}
       </h3>
 
-      {/* Descripción + narrador */}
+      {/* 📜 Descripción + narrador */}
       <div className="bg-[#f5f5f5] p-4 sm:p-6 rounded-2xl shadow-md border mt-6 w-full max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-300">
         <div
           className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${
@@ -188,7 +197,7 @@ const t = content?.welcome as WelcomeContent | undefined;
           <FaVolumeUp className="text-xl hover:scale-125 transition-transform duration-300" />
         </div>
 
-        {t.description?.[currentLang]?.map((text: string, i: number) => (
+        {t.description.map((text, i) => (
           <p
             key={i}
             className={`mt-${i === 0 ? "0" : "4"} font-['Esteban'] text-[#5c4c4c] text-base sm:text-lg leading-relaxed text-center`}

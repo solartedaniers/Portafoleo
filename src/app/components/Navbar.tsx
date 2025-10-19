@@ -25,14 +25,9 @@ interface NavbarLangContent {
   menu: MenuItem[];
 }
 
-interface NavbarContent {
-  es: NavbarLangContent;
-  en: NavbarLangContent;
-}
-
 export default function Navbar() {
   const { lang, theme } = useApp();
-  const { content } = useContent() as { content: { navbar?: NavbarContent } };
+  const { content } = useContent() as { content: {navbar?: NavbarLangContent } };
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -45,22 +40,38 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🌍 Cargar texto desde JSON o usar fallback
-  const t: NavbarLangContent =
-    content?.navbar?.[lang] ?? {
-      menu: [
-        { label: "Bienvenidos", id: "bienvenidos" },
-        { label: "Acerca de mí", id: "acercademi" },
-        { label: "Tecnologías", id: "tecnologias" },
-        { label: "Mis Proyectos", id: "misproyectos" },
-        { label: "Testimonios", id: "testimonios" },
-        { label: "CV", id: "cv" },
-        { label: "Experiencia Académica y Laboral", id: "experiencia" },
-        { label: "Mi Filosofía de Vida", id: "filosofia" },
-        { label: "Contacto", id: "contacto" },
-        { label: "Pie de Página", id: "PieDePágina" },
-      ],
-    };
+  // 🌍 Cargar desde el JSON correcto según el idioma
+  const navbarContent: NavbarLangContent =
+    content?.navbar ??
+    (lang === "es"
+      ? {
+          menu: [
+            { label: "Bienvenidos", id: "bienvenidos" },
+            { label: "Acerca de mí", id: "acercademi" },
+            { label: "Tecnologías", id: "tecnologias" },
+            { label: "Mis Proyectos", id: "misproyectos" },
+            { label: "Testimonios", id: "testimonios" },
+            { label: "CV", id: "cv" },
+            { label: "Experiencia Académica y Laboral", id: "experiencia" },
+            { label: "Mi Filosofía de Vida", id: "filosofia" },
+            { label: "Contacto", id: "contacto" },
+            { label: "Pie de Página", id: "PieDePágina" },
+          ],
+        }
+      : {
+          menu: [
+            { label: "Welcome", id: "bienvenidos" },
+            { label: "About Me", id: "acercademi" },
+            { label: "Technologies", id: "tecnologias" },
+            { label: "My Projects", id: "misproyectos" },
+            { label: "Testimonials", id: "testimonios" },
+            { label: "Resume", id: "cv" },
+            { label: "Academic & Work Experience", id: "experiencia" },
+            { label: "My Life Philosophy", id: "filosofia" },
+            { label: "Contact", id: "contacto" },
+            { label: "Footer", id: "PieDePágina" },
+          ],
+        });
 
   // 🧱 Íconos en orden
   const icons = [
@@ -116,7 +127,7 @@ export default function Navbar() {
         }`}
       >
         <div className="flex flex-col gap-2 p-4">
-          {t.menu.map((item, index) => (
+          {navbarContent.menu.map((item, index) => (
             <a
               key={item.id}
               href={`#${item.id}`}
@@ -140,7 +151,7 @@ export default function Navbar() {
       <div className="hidden md:block md:px-2 md:pt-2">
         <div className="bg-[#d4af37] max-w-[99%] mx-auto px-4 py-2">
           <div className="grid grid-cols-10 gap-2 max-w-7xl mx-auto">
-            {t.menu.map((item, index) => (
+            {navbarContent.menu.map((item, index) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}

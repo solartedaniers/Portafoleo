@@ -5,15 +5,15 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🧩 Tipos seguros para el contenido
+// 🧩 Tipos ajustados al nuevo modelo (un JSON por idioma)
 interface AboutItem {
   img: string;
   audio: string;
-  text: { es: string; en: string };
+  text: string; // ✅ ahora es solo texto (no {es, en})
 }
 
 interface AboutContent {
-  title: { es: string; en: string };
+  title: string; // ✅ también es texto plano
   items: AboutItem[];
 }
 
@@ -32,6 +32,7 @@ export default function AboutMe() {
   const about = (content as ContentStructure)?.about;
   const items: AboutItem[] = about?.items || [];
 
+  // Detectar si el dispositivo soporta hover
   useEffect(() => {
     if (typeof window !== "undefined") {
       const mq = window.matchMedia("(hover: hover)");
@@ -39,6 +40,7 @@ export default function AboutMe() {
     }
   }, []);
 
+  // 🗣️ Función para leer el texto
   const speakText = (text: string, index: number) => {
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -56,7 +58,8 @@ export default function AboutMe() {
         v.lang === preferredLang &&
         /male|man|david|jorge|diego|miguel|pablo|john|mike/i.test(v.name)
     );
-    utterance.voice = maleVoice ?? voices.find((v) => v.lang === preferredLang) ?? null;
+    utterance.voice =
+      maleVoice ?? voices.find((v) => v.lang === preferredLang) ?? null;
     utterance.lang = preferredLang;
     utterance.rate = 1;
     utterance.pitch = 1;
@@ -66,6 +69,7 @@ export default function AboutMe() {
     synth.speak(utterance);
   };
 
+  // Asegurar que las voces se carguen correctamente
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -74,6 +78,7 @@ export default function AboutMe() {
     }
   }, []);
 
+  // Soporte para toque en móviles
   const handleTouch = (index: number) => {
     if (!hasHover) {
       setHoveredIndex(index);
@@ -97,7 +102,7 @@ export default function AboutMe() {
             className="text-2xl sm:text-4xl text-center mb-10 px-4 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
                        bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-['Irish_Grover']"
           >
-            {about.title?.[lang] ?? "About Me"}
+            {about.title ?? "About Me"}
           </h2>
 
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
@@ -106,12 +111,15 @@ export default function AboutMe() {
                 key={i}
                 onTouchStart={() => handleTouch(i)}
                 className={`relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 w-full shadow-lg ${
-                  hoveredIndex === i ? "scale-105 border-2 border-[#c4af37]" : "hover:scale-105"
+                  hoveredIndex === i
+                    ? "scale-105 border-2 border-[#c4af37]"
+                    : "hover:scale-105"
                 }`}
                 style={{ boxShadow: "0px 4px 20px #c4af37" }}
               >
+                {/* 🔊 Icono de voz */}
                 <div
-                  onClick={() => speakText(item.text[lang], i)}
+                  onClick={() => speakText(item.text, i)}
                   onMouseEnter={() => setHoveredIndex(i)}
                   onMouseLeave={() => setHoveredIndex(null)}
                   className={`absolute top-2 right-2 cursor-pointer transition-all duration-300 ${
@@ -123,9 +131,10 @@ export default function AboutMe() {
                   <FaVolumeUp className="text-xl sm:text-2xl transition-transform duration-300" />
                 </div>
 
+                {/* 🖼 Imagen */}
                 <Image
                   src={item.img}
-                  alt={item.text[lang] ?? "Imagen"}
+                  alt={item.text ?? "Imagen"}
                   width={110}
                   height={110}
                   className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 shadow-md transition-all duration-500 ${
@@ -135,11 +144,12 @@ export default function AboutMe() {
                   }`}
                 />
 
+                {/* 📝 Texto */}
                 <p
                   className="text-base sm:text-lg text-center mt-6"
                   style={{ fontFamily: "'Esteban', serif" }}
                 >
-                  {item.text[lang]}
+                  {item.text}
                 </p>
               </div>
             ))}

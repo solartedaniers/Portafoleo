@@ -11,34 +11,35 @@ import {
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipo fuerte para TypeScript
+// ✅ Tipo adaptado a un JSON único por idioma
 type ContactContent = {
   background: string;
-  title: { es: string; en: string };
-  message: { es: string; en: string };
+  title: string;
+  message: string;
   profile: { default: string; hover: string };
   social: {
-    linkedin: { url: string; label: { es: string; en: string } };
-    whatsapp: { url: string; label: { es: string; en: string } };
+    linkedin: { url: string; label: string };
+    whatsapp: { url: string; label: string };
   };
   fields: {
-    email: { label: { es: string; en: string }; placeholder: { es: string; en: string } };
-    name: { label: { es: string; en: string }; placeholder: { es: string; en: string } };
-    content: { label: { es: string; en: string }; placeholder: { es: string; en: string } };
-    send: { es: string; en: string };
+    email: { label: string; placeholder: string };
+    name: { label: string; placeholder: string };
+    content: { label: string; placeholder: string };
+    send: string;
   };
   errors: {
-    email: { es: string; en: string };
-    nombre: { es: string; en: string };
-    contenido: { es: string; en: string };
-    onlyLetters: { es: string; en: string };
+    email: string;
+    nombre: string;
+    contenido: string;
+    onlyLetters: string;
   };
-  success: { es: string; en: string };
-  error: { es: string; en: string };
+  success: string;
+  error: string;
 };
 
 export default function Contact() {
-  const { lang } = useApp();
+  // ✅ Solo obtenemos lo necesario del contexto
+  const { } = useApp();
   const { content } = useContent();
 
   const [email, setEmail] = useState("");
@@ -56,9 +57,9 @@ export default function Contact() {
     }
   }, []);
 
-  // 🧠 Si el JSON no está cargado, salimos
+  // 🚫 Si no hay contenido, no renderiza
   if (!content?.contact) return null;
-  const c = content.contact as ContactContent; // ✅ Le decimos a TypeScript que es de tipo ContactContent
+  const c = content.contact as ContactContent;
 
   // 🎵 Sonidos
   const playLinkedInSound = () => new Audio("/sounds/LinkedIn.mp3").play();
@@ -71,17 +72,17 @@ export default function Contact() {
     const emailRegex = /^[\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$/;
 
-    if (!email) newErrors.email = c.errors.email[lang];
-    else if (!emailRegex.test(email)) newErrors.email = c.errors.email[lang];
+    if (!email) newErrors.email = c.errors.email;
+    else if (!emailRegex.test(email)) newErrors.email = c.errors.email;
 
     if (!nombre) {
-      newErrors.nombre = c.errors.nombre[lang];
+      newErrors.nombre = c.errors.nombre;
     } else if (!nameRegex.test(nombre)) {
-      if (/\d/.test(nombre)) newErrors.nombre = c.errors.onlyLetters[lang];
-      else newErrors.nombre = c.errors.nombre[lang];
+      if (/\d/.test(nombre)) newErrors.nombre = c.errors.onlyLetters;
+      else newErrors.nombre = c.errors.nombre;
     }
 
-    if (!contenido.trim()) newErrors.contenido = c.errors.contenido[lang];
+    if (!contenido.trim()) newErrors.contenido = c.errors.contenido;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -102,15 +103,15 @@ export default function Contact() {
         });
 
         if (res.ok) {
-          setSuccessMsg(c.success[lang]);
+          setSuccessMsg(c.success);
           setEmail("");
           setNombre("");
           setContenido("");
         } else {
-          setSuccessMsg(c.error[lang]);
+          setSuccessMsg(c.error);
         }
       } catch {
-        setSuccessMsg(c.error[lang]);
+        setSuccessMsg(c.error);
       }
 
       setTimeout(() => setSuccessMsg(null), 4000);
@@ -135,7 +136,7 @@ export default function Contact() {
         className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
                    bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] mb-6"
       >
-        {c.title[lang]}
+        {c.title}
       </h2>
 
       {/* 💬 Texto motivacional */}
@@ -147,7 +148,7 @@ export default function Contact() {
           <p
             className="font-['Esteban'] text-[#5c4c4c] text-lg drop-shadow-[0_0_1px_#d4af37]
                        leading-relaxed transition-all duration-300"
-            dangerouslySetInnerHTML={{ __html: c.message[lang] }}
+            dangerouslySetInnerHTML={{ __html: c.message }}
           />
         </div>
       </div>
@@ -192,7 +193,7 @@ export default function Contact() {
                 onClick={playLinkedInSound}
                 className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
               >
-                {c.social.linkedin.label[lang]}
+                {c.social.linkedin.label}
               </a>
             </div>
 
@@ -209,72 +210,79 @@ export default function Contact() {
                 onClick={playWhatsAppSound}
                 className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
               >
-                {c.social.whatsapp.label[lang]}
+                {c.social.whatsapp.label}
               </a>
             </div>
           </div>
 
           {/* ✉️ Formulario */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md text-left">
-            {/* Email */}
             <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
-              {c.fields.email.label[lang]}
+              {c.fields.email.label}
             </label>
             <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300">
               <FaEnvelope className="text-gray-500" />
               <input
                 type="email"
-                placeholder={c.fields.email.placeholder[lang]}
+                placeholder={c.fields.email.placeholder}
                 className="bg-transparent w-full outline-none font-['Esteban'] placeholder-gray-400 text-black"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            {errors.email && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.email}</p>}
+            {errors.email && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.email}
+              </p>
+            )}
 
-            {/* Nombre */}
             <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
-              {c.fields.name.label[lang]}
+              {c.fields.name.label}
             </label>
             <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300">
               <FaUser className="text-gray-500" />
               <input
                 type="text"
-                placeholder={c.fields.name.placeholder[lang]}
+                placeholder={c.fields.name.placeholder}
                 className="bg-transparent w-full outline-none font-['Esteban'] placeholder-gray-400 text-black"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 required
               />
             </div>
-            {errors.nombre && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.nombre}</p>}
+            {errors.nombre && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.nombre}
+              </p>
+            )}
 
-            {/* Contenido */}
             <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
-              {c.fields.content.label[lang]}
+              {c.fields.content.label}
             </label>
             <textarea
-              placeholder={c.fields.content.placeholder[lang]}
+              placeholder={c.fields.content.placeholder}
               className="bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm w-full h-28 font-['Esteban'] placeholder-gray-400 text-black transition-all duration-300"
               value={contenido}
               onChange={(e) => setContenido(e.target.value)}
               required
             />
             {errors.contenido && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.contenido}</p>
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">
+                {errors.contenido}
+              </p>
             )}
 
-            {/* Botón */}
             <button
               type="submit"
               className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600 hover:border-yellow-500 hover:shadow-lg hover:shadow-yellow-500 hover:scale-105 transition-all duration-300"
             >
               <FaPaperPlane className="text-black animate-pulse" />
-              <span className="font-['Esteban'] text-black">{c.fields.send[lang]}</span>
+              <span className="font-['Esteban'] text-black">
+                {c.fields.send}
+              </span>
             </button>
 
-            {/* Mensaje de éxito */}
             {successMsg && (
               <p className="text-black text-base bg-gray-200 mt-3 py-2 px-3 rounded-md shadow-md animate-fadeIn">
                 {successMsg}

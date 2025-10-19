@@ -8,11 +8,11 @@ type CvContent = {
   background: string;
   video: string;
   title: string;
-  pdf: { es: string; en: string };
+  pdf: string; // ✅ Ahora solo un string, no { es, en }
   translations: {
-    view: { es: string; en: string };
-    close: { es: string; en: string };
-    download: { es: string; en: string };
+    view: string;
+    close: string;
+    download: string;
   };
 };
 
@@ -26,9 +26,6 @@ export default function CvSection() {
   if (!content?.cv) return null;
   const c = content.cv as CvContent;
 
-  // 📄 PDF dinámico desde el JSON
-  const pdfPath = c.pdf[lang];
-
   const handleMouseEnter = () => {
     setHoverVideo(true);
     videoRef.current?.play();
@@ -40,12 +37,6 @@ export default function CvSection() {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
-  };
-
-  const t = {
-    view: c.translations.view[lang],
-    close: c.translations.close[lang],
-    download: c.translations.download[lang],
   };
 
   return (
@@ -88,26 +79,26 @@ export default function CvSection() {
           <FaEyeSlash className="text-red-600" />
         )}
         <span className="font-esteban text-gray-600 hover:text-[#c4af37] transition-all duration-300">
-          {showCv ? t.close : t.view}
+          {showCv ? c.translations.close : c.translations.view}
         </span>
       </button>
 
       {/* 📄 Vista PDF */}
       {showCv && (
         <div className="mt-6 w-[90%] md:w-[60%] h-[500px] border-4 border-red-600 rounded-2xl shadow-[0_0_25px_#c4af37] overflow-hidden">
-          <iframe src={pdfPath} className="w-full h-full" title="CV Preview" />
+          <iframe src={c.pdf} className="w-full h-full" title="CV Preview" />
         </div>
       )}
 
       {/* ⬇️ Descargar PDF */}
       <a
-        href={pdfPath}
-        download={lang === "es" ? "CV_Danier_Solarte_ES.pdf" : "CV_Danier_Solarte_EN.pdf"}
+        href={c.pdf}
+        download={`CV_Danier_Solarte_${lang === "es" ? "ES" : "EN"}.pdf`}
         className="mt-6 flex items-center gap-3 px-6 py-3 rounded-full bg-[#f5f5f5] border-2 border-red-600 transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)]"
       >
         <FaDownload className="text-red-600" />
         <span className="font-esteban text-gray-600 hover:text-[#c4af37] transition-all duration-300">
-          {t.download}
+          {c.translations.download}
         </span>
       </a>
     </section>

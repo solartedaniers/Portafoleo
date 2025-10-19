@@ -5,7 +5,7 @@ import { FaVolumeUp, FaBriefcase } from "react-icons/fa";
 import { useContent } from "./ContentProvider";
 import { useApp } from "./ThemeLangContext";
 
-// ✅ Tipado seguro
+// ✅ Tipado para el JSON
 interface ExperienciaData {
   title: string;
   academic: string;
@@ -17,20 +17,8 @@ interface ExperienciaData {
   workList: string[];
 }
 
-type Lang = "es" | "en";
-
-// ✅ Type guard para validar estructura
-function isExperienciaContent(obj: unknown): obj is Record<Lang, ExperienciaData> {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "es" in obj &&
-    "en" in obj
-  );
-}
-
 export default function Experiencia() {
-  const { content } = useContent();
+  const { content, loading } = useContent();
   const { lang } = useApp();
 
   const [speaking, setSpeaking] = useState<"academico" | "laboral" | null>(null);
@@ -49,11 +37,10 @@ export default function Experiencia() {
     }
   }, []);
 
-  // ✅ Validación segura del contenido
-  const experiencia = isExperienciaContent(content?.experiencia)
-    ? content.experiencia[lang]
-    : null;
+  if (loading) return <p className="text-center text-white">Cargando...</p>;
 
+  // ✅ Tomamos el bloque "experiencia" directamente
+  const experiencia = content?.experiencia as ExperienciaData | undefined;
   if (!experiencia) return null;
 
   const speakText = (text: string, type: "academico" | "laboral") => {

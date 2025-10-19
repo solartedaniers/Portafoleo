@@ -5,25 +5,20 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipos bien definidos
-interface FilosofiaLang {
+// ✅ Tipo adaptado: solo hay una versión del idioma actual
+interface FilosofiaData {
   title: string;
   text: string[];
   image: string;
   background: string;
 }
 
-interface FilosofiaContent {
-  es: FilosofiaLang;
-  en: FilosofiaLang;
-}
-
 export default function Filosofia() {
   const { lang } = useApp();
   const { content } = useContent();
 
-  // ✅ Tipamos content para que TypeScript entienda la estructura
-  const data = (content?.filosofia as FilosofiaContent)?.[lang];
+  // ✅ Ya no accedemos con [lang], porque el archivo ya es del idioma actual
+  const data = content?.filosofia as FilosofiaData | undefined;
 
   const [speaking, setSpeaking] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -91,10 +86,12 @@ export default function Filosofia() {
       style={{ backgroundImage: `url('${data.background}')` }}
     >
       <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5">
+        {/* 🟥 Título */}
         <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
           {data.title}
         </h2>
 
+        {/* 📜 Contenedor principal */}
         <div
           className={`relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#c4af37]" : ""
@@ -103,6 +100,7 @@ export default function Filosofia() {
           onMouseLeave={() => setHovered(false)}
           onTouchStart={handleTouch}
         >
+          {/* 🔊 Icono de voz */}
           <button
             onClick={speakText}
             onMouseEnter={() => setIconHovered(true)}
@@ -115,6 +113,7 @@ export default function Filosofia() {
             <FaVolumeUp size={24} />
           </button>
 
+          {/* 🖼️ Imagen */}
           <div
             className="flex justify-center mb-6"
             onMouseEnter={() => setHovered(true)}
@@ -130,6 +129,7 @@ export default function Filosofia() {
             />
           </div>
 
+          {/* 📖 Texto */}
           <div className="text-[17px] leading-relaxed font-esteban text-[#5c4c4c] transition-all duration-300 hover:tracking-wide text-justify">
             {data.text.map((p, i) => (
               <p key={i} className="mb-4">

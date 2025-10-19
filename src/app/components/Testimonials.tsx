@@ -4,15 +4,15 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipos
+// ✅ Tipos según el JSON por idioma
 interface Testimonial {
   name: string;
-  text: { es: string; en: string };
+  text: string;
   image: string;
 }
 
 interface TestimonialsContent {
-  title: { es: string; en: string };
+  title: string;
   list: Testimonial[];
 }
 
@@ -25,18 +25,20 @@ export default function Testimonials() {
   const [isMobile, setIsMobile] = useState(false);
   const [hasHover, setHasHover] = useState(true);
 
-  // ✅ Hook siempre en la raíz
+  // ✅ Detectar tipo de dispositivo
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     setHasHover(window.matchMedia("(hover: hover)").matches);
   }, []);
 
+  // ✅ Si no hay contenido, no renderizar
   if (!content?.testimonials) return null;
   const t = content.testimonials as TestimonialsContent;
-  const testimonials = t.list;
+  const testimonials = t.list ?? [];
 
   const renderCard = (testimonial: Testimonial, idx: number) => {
     const isSelected = selected === idx;
+
     const handleInteraction = () => {
       if (!hasHover) {
         setSelected(isSelected ? null : idx);
@@ -78,7 +80,7 @@ export default function Testimonials() {
             {testimonial.name}
           </h3>
           <p className="mt-2 font-['Esteban'] text-[#5c4c4c] text-justify">
-            {testimonial.text[lang]}
+            {testimonial.text}
           </p>
         </div>
       </div>
@@ -91,17 +93,20 @@ export default function Testimonials() {
       className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center"
       style={{ backgroundImage: "url('/images/parchment.webp')" }}
     >
+      {/* 🔴 Título */}
       <h2 className="text-4xl text-center bg-red-600/60 text-white font-['Irish_Grover'] px-6 py-3 rounded-full shadow-md">
-        {t.title[lang]}
+        {t.title}
       </h2>
 
+      {/* 🧾 Lista de testimonios */}
       <div className="flex flex-col gap-10 w-full max-w-4xl mt-10">
         {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(
           (testimonial, idx) => renderCard(testimonial, idx)
         )}
       </div>
 
-      {isMobile && (
+      {/* 📱 Botón ver más / ver menos en móvil */}
+      {isMobile && testimonials.length > 2 && (
         <div className="mt-10">
           {visibleCount >= testimonials.length ? (
             <button

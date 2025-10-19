@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useContent } from "./ContentProvider"; 
+import { useContent } from "./ContentProvider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import {
@@ -26,8 +26,8 @@ interface Technology {
 }
 
 interface TechnologiesContent {
-  title: { es: string; en: string };
-  quote: { es: string; en: string };
+  title: string;
+  quote: string;
   list: Technology[];
 }
 
@@ -36,7 +36,6 @@ export default function Languages() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // ✅ Hook siempre llamado, sin condicionales
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -47,12 +46,10 @@ export default function Languages() {
   // ✅ Verificación segura de contenido
   if (!content?.technologies) return null;
 
-  const lang = "es"; // Puedes luego conectar esto con tu contexto de idioma
   const techData = content.technologies as TechnologiesContent;
 
-  // ✅ Traducciones dinámicas
-  const title = techData.title[lang];
-  const quote = techData.quote[lang];
+  const title = techData.title;
+  const quote = techData.quote;
 
   // ✅ Mapeo de íconos
   const iconMap: Record<string, React.ReactNode> = {
@@ -67,7 +64,6 @@ export default function Languages() {
     SiUnity: <SiUnity size={60} className="text-black dark:text-white" />,
   };
 
-  // ✅ Lista de tecnologías segura
   const techList = techData.list.map((tech) => ({
     name: tech.name,
     icon: iconMap[tech.icon] ?? <div className="text-gray-400">?</div>,

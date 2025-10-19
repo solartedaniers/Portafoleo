@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useContent } from "../components/ContentProvider";
+import { useApp } from "../components/ThemeLangContext";
 
 export default function AdminPage() {
   const { content, loading, saveContent } = useContent();
+  const { lang, setLang } = useApp();
   const [text, setText] = useState("");
   const [msg, setMsg] = useState("");
 
@@ -26,7 +28,18 @@ export default function AdminPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl mb-4 font-bold">📝 Editor de contenido (JSON)</h1>
+      <h1 className="text-2xl mb-4 font-bold">📝 Editor de contenido ({lang.toUpperCase()})</h1>
+
+      {/* 🌍 Selector de idioma */}
+      <select
+        value={lang}
+        onChange={(e) => setLang(e.target.value as "es" | "en")}
+        className="mb-4 border px-3 py-2 rounded"
+      >
+        <option value="es">Español</option>
+        <option value="en">Inglés</option>
+      </select>
+
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}

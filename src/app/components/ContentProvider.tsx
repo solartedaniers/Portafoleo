@@ -1,5 +1,12 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import { useApp } from "./ThemeLangContext";
 
 type Content = Record<string, unknown>;
 
@@ -12,15 +19,19 @@ interface ContentCtx {
 
 const ContentContext = createContext<ContentCtx | undefined>(undefined);
 
-export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { lang } = useApp(); // 🧠 idioma actual ("es" o "en")
   const [content, setContent] = useState<Content | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Función para cargar el contenido desde el backend
-  const load = async () => {
+  // ✅ Función para cargar el JSON correcto según idioma
+  const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/content", { cache: "no-store" });
+      const res = await fetch(`/api/content?lang=${lang}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
       const data = await res.json();
       setContent(data);
     } catch (error) {
@@ -28,30 +39,25 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } finally {
       setLoading(false);
     }
-  };
+  }, [lang]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
-  // 💾 Guardar contenido y recargar después
+  // ✅ Guardar cambios y recargar desde disco
   const saveContent = async (c: Content) => {
     try {
-      const res = await fetch("/api/content", {
+      const res = await fetch(`/api/content?lang=${lang}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(c),
       });
-
       const data = await res.json();
-
       if (data.ok) {
-        console.log("✅ Contenido guardado. Recargando...");
-        await load(); // 🔥 Recargar desde el servidor para evitar caché
+        await load(); // recargar desde disco para evitar caché
         return true;
       }
-
-      console.error("⚠️ Error: respuesta inválida del servidor:", data);
       return false;
     } catch (error) {
       console.error("❌ Error al guardar contenido:", error);
@@ -60,7 +66,14 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   return (
-    <ContentContext.Provider value={{ content, loading, saveContent, reload: load }}>
+    <ContentContext.Provider
+      value={{
+        content,
+        loading,
+        saveContent,
+        reload: load,
+      }}
+    >
       {children}
     </ContentContext.Provider>
   );
@@ -68,6 +81,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
 export function useContent() {
   const ctx = useContext(ContentContext);
-  if (!ctx) throw new Error("useContent debe usarse dentro de <ContentProvider>");
+  if (!ctx)
+    throw new Error("useContent debe usarse dentro de <ContentProvider>");
   return ctx;
 }
