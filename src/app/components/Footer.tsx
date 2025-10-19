@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useContent } from "./ContentProvider";
+import { useApp } from "./ThemeLangContext"; // ✅ Para modo oscuro/claro
 
-// 🧩 Tipos
 interface SocialLink {
   label: string;
   url: string;
@@ -28,6 +28,7 @@ interface FooterLang {
 
 export default function Footer() {
   const { content } = useContent();
+  const { theme } = useApp(); // ✅ Tema dinámico
   const footerData = content?.footer as FooterLang;
 
   const [clockTime, setClockTime] = useState("");
@@ -37,6 +38,9 @@ export default function Footer() {
   const [tapHighlight, setTapHighlight] = useState<string | null>(null);
   const clockAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  const isDark = theme === "dark";
+
+  // 🎵 Sonido del reloj
   useEffect(() => {
     clockAudioRef.current = new Audio("/sounds/clock.mp3");
     clockAudioRef.current.loop = true;
@@ -53,6 +57,7 @@ export default function Footer() {
     }
   };
 
+  // ⏰ Actualización del reloj
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -73,6 +78,7 @@ export default function Footer() {
     return () => clearInterval(interval);
   }, []);
 
+  // 📱 Detectar móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -80,11 +86,13 @@ export default function Footer() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
+  // 🔊 Sonidos
   const playSound = (file: string) => {
     const audio = new Audio(`/sounds/${file}`);
     audio.play().catch(() => {});
   };
 
+  // 👆 Tap effect
   const handleTap = (key: string) => {
     if (!isMobile) return;
     setTapHighlight(key);
@@ -93,27 +101,40 @@ export default function Footer() {
 
   if (!footerData) return null;
 
+  // 🎨 Estilos según modo
+  const baseText = isDark ? "text-gray-200" : "text-[#2a2a2a]";
+  const phraseText = isDark ? "text-white" : "text-[#1c1b19]";
+  const authorText = isDark ? "text-gray-300" : "text-[#333]";
+  const filterBrightness = isDark ? "brightness(0.85)" : "brightness(1)";
+
   return (
     <footer
-      className="relative bg-cover bg-center text-center py-10 z-0"
+      className={`relative text-center py-10 transition-all duration-500 ${
+        isDark ? "bg-[#0f0f0f]" : "bg-[#f3efe2]"
+      }`}
       style={{
         backgroundImage: `url('${footerData.backgroundLeft}'), url('${footerData.backgroundRight}')`,
         backgroundPosition: "left, right",
         backgroundRepeat: "no-repeat, no-repeat",
         backgroundSize: "50% 100%, 50% 100%",
+        filter: filterBrightness,
       }}
     >
+      {/* 🔖 Título */}
       <h2
-        className={`font-['Irish_Grover'] text-white text-4xl px-6 py-2 bg-red-600 rounded-full shadow-md transition-all duration-300 inline-block ${
+        className={`font-['Irish_Grover'] text-4xl px-6 py-2 rounded-full shadow-md transition-all duration-300 inline-block
+        ${isDark ? "bg-red-600 text-white" : "bg-red-600 text-white"}
+        ${
           tapHighlight === "title"
-            ? "bg-yellow-500 text-black scale-105"
-            : "hover:bg-yellow-500 hover:text-black"
+            ? "bg-[#d4af37] text-black scale-105"
+            : "hover:bg-[#d4af37] hover:text-black hover:border-red-600"
         }`}
         onClick={() => handleTap("title")}
       >
         {footerData.title}
       </h2>
 
+      {/* 🕒 Reloj */}
       <div className="mt-6 flex justify-center relative z-10">
         <div
           className="inline-block px-6 py-4 cursor-pointer select-none"
@@ -143,21 +164,19 @@ export default function Footer() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.4 }}
-                className="bg-[#d9d9d9] px-6 py-3 rounded-xl border border-black shadow-[0_0_20px_silver] inline-block z-20"
+                className={`px-6 py-3 rounded-xl border shadow-[0_0_20px_rgba(212,175,55,0.5)] inline-block ${
+                  isDark ? "bg-[#1e1e1e] border-[#d4af37]" : "bg-[#f5f5f5] border-[#c4af37]"
+                }`}
               >
                 <span
-                  className="text-black font-['Esteban'] text-xl"
-                  style={{
-                    WebkitTextStroke: "0.5px #d4af37",
-                    textShadow: "0 0 4px #ffffff",
-                  }}
+                  className={`font-['Esteban'] text-xl ${
+                    isDark ? "text-white" : "text-black"
+                  }`}
+                  style={{ WebkitTextStroke: "0.5px #d4af37" }}
                 >
                   {clockTime}
                 </span>
-                <span
-                  className="ml-2 text-red-600 font-bold text-xl"
-                  style={{ textShadow: "0 0 4px #ffffff" }}
-                >
+                <span className="ml-2 text-red-600 font-bold text-xl">
                   {clockPeriod}
                 </span>
               </motion.div>
@@ -166,9 +185,10 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Créditos */}
       <div
-        className={`mt-8 text-lg font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
-          tapHighlight === "credits" ? "text-yellow-400 scale-105" : ""
+        className={`mt-8 text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
+          tapHighlight === "credits" ? "text-[#d4af37] scale-105" : ""
         }`}
         onClick={() => handleTap("credits")}
       >
@@ -177,25 +197,28 @@ export default function Footer() {
         {footerData.rights}
       </div>
 
+      {/* Frase */}
       <p
-        className={`mt-6 font-['Labrada'] text-xl text-white transition-all duration-300 hover:text-[#C0C0C0] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
-          tapHighlight === "phrase" ? "text-yellow-300 scale-105" : ""
+        className={`mt-6 font-['Labrada'] text-xl ${phraseText} transition-all duration-300 hover:text-[#c4af37] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
+          tapHighlight === "phrase" ? "text-[#d4af37] scale-105" : ""
         }`}
         onClick={() => handleTap("phrase")}
-        style={{ WebkitTextStroke: "0.5px #c4af37" }}
+        style={{ WebkitTextStroke: "0.5px #d4af37" }}
       >
         {footerData.phrase}
       </p>
 
+      {/* Autor */}
       <p
-        className={`mt-4 font-['Esteban'] text-gray-300 drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
-          tapHighlight === "author" ? "text-yellow-300 scale-105" : ""
+        className={`mt-4 font-['Esteban'] ${authorText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
+          tapHighlight === "author" ? "text-[#d4af37] scale-105" : ""
         }`}
         onClick={() => handleTap("author")}
       >
         {footerData.author}
       </p>
 
+      {/* Redes Sociales */}
       <div
         className={`mt-8 flex ${
           isMobile
@@ -213,7 +236,11 @@ export default function Footer() {
               playSound(social.sound);
               handleTap(key);
             }}
-            className={`flex items-center gap-2 bg-[#f5f5f5] rounded-3xl px-5 py-3 border-2 border-gold shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-white ${
+            className={`flex items-center gap-2 rounded-3xl px-5 py-3 border-2 transition-all duration-300 shadow-md ${
+              isDark
+                ? "bg-[#1a1a1a] border-[#d4af37] text-white"
+                : "bg-[#f5f5f5] border-[#c4af37] text-black"
+            } hover:border-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.4)] ${
               tapHighlight === key ? "border-red-600 scale-105" : ""
             }`}
           >
@@ -224,9 +251,9 @@ export default function Footer() {
               <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
             )}
             {key === "github" && (
-              <FaGithub className="text-black text-2xl transition-all duration-300 hover:scale-125" />
+              <FaGithub className="text-[#333] dark:text-white text-2xl transition-all duration-300 hover:scale-125" />
             )}
-            <span className="font-['Esteban'] text-gray-300 hover:text-black transition-all duration-300">
+            <span className="font-['Esteban'] hover:text-[#d4af37] transition-all duration-300">
               {social.label}
             </span>
           </a>

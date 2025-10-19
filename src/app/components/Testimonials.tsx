@@ -17,7 +17,7 @@ interface TestimonialsContent {
 }
 
 export default function Testimonials() {
-  const { lang } = useApp();
+  const { theme, lang } = useApp(); // ✅ usamos theme
   const { content } = useContent();
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const [visibleCount, setVisibleCount] = useState(2);
@@ -53,9 +53,13 @@ export default function Testimonials() {
         key={idx}
         onClick={handleInteraction}
         onTouchStart={handleInteraction}
-        className={`bg-[#f5f5f5] rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer ${
+        className={`rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer ${
+          theme === "dark"
+            ? "bg-[#0e0e0e] text-white"
+            : "bg-[#f5f5f5] text-black"
+        } ${
           isSelected || isTapped
-            ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-gold"
+            ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-[#c4af37]"
             : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"
         }`}
       >
@@ -84,8 +88,11 @@ export default function Testimonials() {
               : "hover:-translate-y-1 hover:shadow-md"
           }`}
         >
+          {/* 🧠 Nombre con parpadeo constante */}
           <h3
-            className="font-['Irish_Grover'] text-black text-2xl animate-blink"
+            className={`font-['Irish_Grover'] text-2xl animate-blink ${
+              theme === "dark" ? "text-white" : "text-black"
+            }`}
             style={{
               WebkitTextStroke: "0.5px #d4af37",
               textShadow: "0 0 4px #d4af37",
@@ -93,7 +100,15 @@ export default function Testimonials() {
           >
             {testimonial.name}
           </h3>
-          <p className="mt-2 font-['Esteban'] text-[#5c4c4c] text-justify">
+
+          {/* 🗣 Texto */}
+          <p
+            className={`mt-2 font-['Esteban'] text-justify transition-colors duration-300 ${
+              theme === "dark"
+                ? "text-gray-300 hover:text-gray-100"
+                : "text-[#5c4c4c] hover:text-black"
+            }`}
+          >
             {testimonial.text}
           </p>
         </div>
@@ -104,11 +119,15 @@ export default function Testimonials() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/parchment.webp')" }}
+      className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center transition-colors duration-500"
+      style={{
+        backgroundImage: "url('/images/parchment.webp')",
+        backgroundBlendMode: theme === "dark" ? "multiply" : "normal",
+        backgroundColor: theme === "dark" ? "rgba(0,0,0,0.4)" : "transparent",
+      }}
     >
       {/* 🔴 Título */}
-      <h2 className="text-4xl text-center bg-red-600/60 text-white font-['Irish_Grover'] px-6 py-3 rounded-full shadow-md">
+      <h2 className="text-4xl text-center bg-red-600/60 text-white font-['Irish_Grover'] px-6 py-3 rounded-full shadow-md hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] transition-all duration-300">
         {t.title}
       </h2>
 
@@ -119,7 +138,7 @@ export default function Testimonials() {
         )}
       </div>
 
-      {/* 📱 Botón ver más / ver menos en móvil */}
+      {/* 📱 Botón móvil */}
       {isMobile && testimonials.length > 2 && (
         <div className="mt-10">
           {visibleCount >= testimonials.length ? (
@@ -128,14 +147,22 @@ export default function Testimonials() {
                 setVisibleCount(2);
                 sectionRef.current?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-6 py-3 rounded-full border-2 border-red-600 bg-white font-['Esteban'] text-black"
+              className={`px-6 py-3 rounded-full border-2 font-['Esteban'] transition-all duration-300 ${
+                theme === "dark"
+                  ? "border-[#c4af37] bg-[#111] text-white hover:bg-[#c4af37] hover:text-black"
+                  : "border-red-600 bg-white text-black hover:bg-[#c4af37] hover:text-black"
+              }`}
             >
               {lang === "es" ? "Ver menos" : "See less"}
             </button>
           ) : (
             <button
               onClick={() => setVisibleCount((prev) => prev + 2)}
-              className="px-6 py-3 rounded-full border-2 border-red-600 bg-white font-['Esteban'] text-black"
+              className={`px-6 py-3 rounded-full border-2 font-['Esteban'] transition-all duration-300 ${
+                theme === "dark"
+                  ? "border-[#c4af37] bg-[#111] text-white hover:bg-[#c4af37] hover:text-black"
+                  : "border-red-600 bg-white text-black hover:bg-[#c4af37] hover:text-black"
+              }`}
             >
               {lang === "es" ? "Ver más" : "See more"}
             </button>

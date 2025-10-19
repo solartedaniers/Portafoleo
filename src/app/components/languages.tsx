@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -33,6 +34,7 @@ interface TechnologiesContent {
 }
 
 export default function Languages() {
+  const { theme } = useApp();
   const { content } = useContent();
   const [hovered, setHovered] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -50,27 +52,44 @@ export default function Languages() {
   const iconMap: Record<string, React.ReactNode> = {
     SiAngular: <SiAngular size={60} className="text-red-600" />,
     SiTailwindcss: <SiTailwindcss size={60} className="text-cyan-400" />,
-    SiNextdotjs: <SiNextdotjs size={60} className="text-black" />,
-    SiDjango: <SiDjango size={60} className="text-green-900" />,
+    SiNextdotjs: <SiNextdotjs size={60} className="text-black dark:text-white" />,
+    SiDjango: <SiDjango size={60} className="text-green-900 dark:text-green-500" />,
     SiPython: <SiPython size={60} className="text-blue-600" />,
     SiMysql: <SiMysql size={60} className="text-blue-800" />,
     FaJava: <FaJava size={60} className="text-orange-500" />,
     SiSharp: <SiSharp size={60} className="text-purple-600" />,
-    SiUnity: <SiUnity size={60} className="text-black" />,
+    SiUnity: <SiUnity size={60} className="text-black dark:text-white" />,
     SiSpringboot: <SiSpringboot size={60} className="text-green-500" />,
-    FaGithub: <FaGithub size={60} className="text-gray-800" />,
+    FaGithub: <FaGithub size={60} className="text-gray-800 dark:text-gray-300" />,
   };
 
   const handleHover = (name: string) => {
     setHovered(name);
-    if (isMobile) {
-      setTimeout(() => setHovered(null), 1200);
-    }
+    if (isMobile) setTimeout(() => setHovered(null), 1200);
   };
 
+  // 🎨 Colores según tema
+  const sectionBorder = theme === "dark" ? "border-yellow-500" : "border-yellow-500";
+  const titleStyle =
+    theme === "dark"
+      ? "bg-red-700 text-white hover:bg-yellow-500 hover:text-black"
+      : "bg-red-600 text-white hover:bg-yellow-500 hover:text-black";
+
+  const cardBase =
+    theme === "dark"
+      ? "bg-black text-white border-red-600"
+      : "bg-gray-100 text-black border-red-600";
+
+  const quoteStyle =
+    theme === "dark"
+      ? "text-white bg-black border-red-600 hover:text-yellow-500 hover:border-yellow-500"
+      : "text-black bg-gray-100 border-red-600 hover:text-yellow-500 hover:border-yellow-500";
+
   return (
-    <section className="relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 border-yellow-500">
-      {/* 🎥 Fondo */}
+    <section
+      className={`relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 ${sectionBorder}`}
+    >
+      {/* 🎥 Fondo (sin alterar luminosidad) */}
       <video
         src="/videos/stellar-wolf.mp4"
         autoPlay
@@ -81,11 +100,11 @@ export default function Languages() {
         style={{ transform: isMobile ? "scale(1)" : "scale(0.9)" }}
       />
 
-      {/* Contenido */}
-      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
+      {/* 🌟 Contenido */}
+      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6 transition-all duration-500">
         {/* 🏷️ Título */}
         <h2
-          className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition duration-300 bg-red-600 text-white hover:bg-yellow-500 hover:text-black hover:shadow-xl"
+          className={`text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 font-['Irish_Grover'] cursor-pointer ${titleStyle}`}
           onTouchStart={() => handleHover("title")}
         >
           {techData.title}
@@ -115,10 +134,10 @@ export default function Languages() {
                     onMouseEnter={() => handleHover(tech.name)}
                     onMouseLeave={() => !isMobile && setHovered(null)}
                     onTouchStart={() => handleHover(tech.name)}
-                    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-xl border-4 p-4 transition duration-300 bg-gray-100 ${
+                    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-xl border-4 p-4 transition duration-500 ${cardBase} ${
                       hovered === tech.name
                         ? "border-yellow-500 shadow-lg scale-105 rotate-3"
-                        : "border-red-600 shadow-md"
+                        : "shadow-md"
                     }`}
                   >
                     <div
@@ -139,7 +158,7 @@ export default function Languages() {
                           animate={{ opacity: 1, y: -2 }}
                           exit={{ opacity: 0, y: 10 }}
                           transition={{ duration: 0.3 }}
-                          className="mt-3 text-sm font-bold text-black bg-white rounded-full px-3 py-1 border border-yellow-500 shadow animate-blink"
+                          className="mt-3 text-sm font-bold bg-white/90 text-black rounded-full px-3 py-1 border border-yellow-500 shadow animate-blink"
                           style={{
                             WebkitTextStroke: "0.5px #facc15",
                             textShadow: "0 0 4px #facc15",
@@ -161,7 +180,9 @@ export default function Languages() {
         </div>
 
         {/* 💬 Frase motivadora */}
-        <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-gray-100 shadow-md transition duration-300 hover:scale-105 hover:text-yellow-500 hover:border-yellow-500 hover:shadow-lg text-center">
+        <p
+          className={`hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 hover:scale-105 text-center ${quoteStyle}`}
+        >
           {techData.quote}
         </p>
       </div>

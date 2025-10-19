@@ -11,7 +11,6 @@ import {
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipo adaptado a un JSON único por idioma
 type ContactContent = {
   background: string;
   title: string;
@@ -38,8 +37,7 @@ type ContactContent = {
 };
 
 export default function Contact() {
-  // ✅ Solo obtenemos lo necesario del contexto
-  const { } = useApp();
+  const { theme } = useApp(); // ✅ ahora obtenemos el tema
   const { content } = useContent();
 
   const [email, setEmail] = useState("");
@@ -50,23 +48,25 @@ export default function Contact() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [hasHover, setHasHover] = useState(true);
 
-  // 🧩 Detectar si el dispositivo soporta hover
   useEffect(() => {
     if (typeof window !== "undefined") {
       setHasHover(window.matchMedia("(hover: hover)").matches);
     }
   }, []);
 
-  // 🚫 Si no hay contenido, no renderiza
   if (!content?.contact) return null;
   const c = content.contact as ContactContent;
 
-  // 🎵 Sonidos
   const playLinkedInSound = () => new Audio("/sounds/LinkedIn.mp3").play();
   const playWhatsAppSound = () => new Audio("/sounds/whatsapp.mp3").play();
   const playSendSound = () => new Audio("/sounds/blow.mp3").play();
 
-  // 🧠 Validación
+  // ✅ Estilos dinámicos
+  const boxBg = theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
+  const textMain = theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
+  const inputText = theme === "dark" ? "text-white" : "text-black";
+  const placeholderColor = theme === "dark" ? "placeholder-gray-400" : "placeholder-gray-500";
+
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     const emailRegex = /^[\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -88,7 +88,6 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // 📬 Envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccessMsg(null);
@@ -118,7 +117,6 @@ export default function Contact() {
     }
   };
 
-  // 💡 Efecto hover simulado en móviles
   const handleHoverToggle = () => {
     if (!hasHover) {
       setHovered((prev) => !prev);
@@ -128,26 +126,21 @@ export default function Contact() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
+      className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6 transition-all duration-500"
       style={{ backgroundImage: `url('${c.background}')` }}
     >
       {/* 🔴 Título */}
-      <h2
-        className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500
-                   bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] mb-6"
-      >
+      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37] mb-6">
         {c.title}
       </h2>
 
-      {/* 💬 Texto motivacional */}
+      {/* 💬 Mensaje */}
       <div className="hidden md:block">
         <div
-          className="bg-[#f5f5f5] p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-white
-                     transition-all duration-300 hover:scale-105 max-w-xl w-full mb-12"
+          className={`${boxBg} p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-[#d4af37] transition-all duration-300 hover:scale-105 max-w-xl w-full mb-12`}
         >
           <p
-            className="font-['Esteban'] text-[#5c4c4c] text-lg drop-shadow-[0_0_1px_#d4af37]
-                       leading-relaxed transition-all duration-300"
+            className={`font-['Esteban'] ${textMain} text-lg drop-shadow-[0_0_1px_#d4af37] leading-relaxed transition-all duration-300`}
             dangerouslySetInnerHTML={{ __html: c.message }}
           />
         </div>
@@ -182,8 +175,7 @@ export default function Contact() {
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
             {/* LinkedIn */}
             <div
-              className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
-                hover:border-yellow-500 transition-all duration-300 hover:scale-105"
+              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaLinkedin className="text-2xl text-blue-600 hover:scale-125 transition-all duration-300" />
               <a
@@ -191,7 +183,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={playLinkedInSound}
-                className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
+                className={`font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}
               >
                 {c.social.linkedin.label}
               </a>
@@ -199,8 +191,7 @@ export default function Contact() {
 
             {/* WhatsApp */}
             <div
-              className="flex items-center justify-center gap-2 bg-[#f5f5f5] p-4 rounded-xl border shadow-md  
-                hover:border-yellow-500 transition-all duration-300 hover:scale-105"
+              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaWhatsapp className="text-2xl text-green-600 hover:scale-125 transition-all duration-300" />
               <a
@@ -208,7 +199,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={playWhatsAppSound}
-                className="font-['Esteban'] text-gray-400 hover:scale-110 hover:animate-pulse transition-all duration-300"
+                className={`font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}
               >
                 {c.social.whatsapp.label}
               </a>
@@ -217,15 +208,15 @@ export default function Contact() {
 
           {/* ✉️ Formulario */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md text-left">
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+            <label className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold`}>
               {c.fields.email.label}
             </label>
-            <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300">
+            <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300`}>
               <FaEnvelope className="text-gray-500" />
               <input
                 type="email"
                 placeholder={c.fields.email.placeholder}
-                className="bg-transparent w-full outline-none font-['Esteban'] placeholder-gray-400 text-black"
+                className={`bg-transparent w-full outline-none font-['Esteban'] ${placeholderColor} ${inputText}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -237,15 +228,15 @@ export default function Contact() {
               </p>
             )}
 
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+            <label className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold`}>
               {c.fields.name.label}
             </label>
-            <div className="flex items-center gap-2 bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300">
+            <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 shadow-sm transition-all duration-300`}>
               <FaUser className="text-gray-500" />
               <input
                 type="text"
                 placeholder={c.fields.name.placeholder}
-                className="bg-transparent w-full outline-none font-['Esteban'] placeholder-gray-400 text-black"
+                className={`bg-transparent w-full outline-none font-['Esteban'] ${placeholderColor} ${inputText}`}
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 required
@@ -257,12 +248,12 @@ export default function Contact() {
               </p>
             )}
 
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+            <label className={`font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold`}>
               {c.fields.content.label}
             </label>
             <textarea
               placeholder={c.fields.content.placeholder}
-              className="bg-[#f5f5f5] p-3 rounded-xl border-2 border-red-600 shadow-sm w-full h-28 font-['Esteban'] placeholder-gray-400 text-black transition-all duration-300"
+              className={`${boxBg} p-3 rounded-xl border-2 border-red-600 shadow-sm w-full h-28 font-['Esteban'] ${placeholderColor} ${inputText} transition-all duration-300`}
               value={contenido}
               onChange={(e) => setContenido(e.target.value)}
               required
@@ -275,12 +266,10 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="flex items-center justify-center gap-2 bg-[#f5f5f5] px-6 py-3 rounded-full border-2 border-red-600 hover:border-yellow-500 hover:shadow-lg hover:shadow-yellow-500 hover:scale-105 transition-all duration-300"
+              className={`${boxBg} flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-red-600 hover:border-yellow-500 hover:shadow-lg hover:shadow-yellow-500 hover:scale-105 transition-all duration-300`}
             >
-              <FaPaperPlane className="text-black animate-pulse" />
-              <span className="font-['Esteban'] text-black">
-                {c.fields.send}
-              </span>
+              <FaPaperPlane className={`${inputText} animate-pulse`} />
+              <span className={`font-['Esteban'] ${inputText}`}>{c.fields.send}</span>
             </button>
 
             {successMsg && (

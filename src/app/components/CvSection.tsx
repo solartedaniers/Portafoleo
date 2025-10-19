@@ -8,7 +8,7 @@ type CvContent = {
   background: string;
   video: string;
   title: string;
-  pdf: string; // ✅ Ahora solo un string, no { es, en }
+  pdf: string;
   translations: {
     view: string;
     close: string;
@@ -17,7 +17,7 @@ type CvContent = {
 };
 
 export default function CvSection() {
-  const { lang } = useApp();
+  const { lang, theme } = useApp(); // ✅ Agregamos theme
   const { content } = useContent();
   const [showCv, setShowCv] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -39,22 +39,36 @@ export default function CvSection() {
     }
   };
 
+  // 🎨 Colores según tema
+  const isDark = theme === "dark";
+  const bgButton = isDark ? "bg-[#222]" : "bg-[#f5f5f5]";
+  const textButton = isDark ? "text-[#f5f5f5]" : "text-gray-600";
+  const borderButton = isDark ? "border-[#c4af37]" : "border-red-600";
+  const iconColor = isDark ? "text-[#c4af37]" : "text-red-600";
+
   return (
     <section
       id="cv"
-      className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center"
+      className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center transition-all duration-500"
+      // ✨ Fondo dorado mantiene su brillo original, no se altera
       style={{ backgroundImage: `url('${c.background}')` }}
     >
       {/* 🔴 Título */}
-      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+      <h2
+        className={`text-4xl text-center px-6 py-2 rounded-full shadow-lg font-['Irish_Grover'] transition-all duration-500 ${
+          isDark
+            ? "bg-[#c4af37]/90 text-black hover:bg-red-600 hover:text-white"
+            : "bg-red-600/80 text-white hover:bg-[#d4af37] hover:text-black"
+        } hover:shadow-[0_0_25px_#c4af37]`}
+      >
         {c.title}
       </h2>
 
       {/* 🎥 Video */}
       <div
-        className={`relative mt-10 w-[260px] md:w-[320px] h-[500px] aspect-video rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-105 ${
+        className={`relative mt-10 w-[260px] md:w-[320px] h-[500px] rounded-2xl overflow-hidden border-4 transition-all duration-500 hover:scale-105 shadow-[0_0_30px_rgba(196,175,55,0.5)] ${
           hoverVideo ? "border-red-600" : "border-[#c4af37]"
-        } shadow-[0_0_30px_rgba(196,175,55,0.5)]`}
+        }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -71,21 +85,27 @@ export default function CvSection() {
       {/* 👁️ Botón Ver/Cerrar */}
       <button
         onClick={() => setShowCv(!showCv)}
-        className="mt-6 flex items-center gap-3 px-6 py-3 rounded-full bg-[#f5f5f5] border-2 border-red-600 transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)]"
+        className={`mt-6 flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)] ${bgButton} ${borderButton}`}
       >
         {showCv ? (
-          <FaEye className="text-[#c4af37]" />
+          <FaEye className={iconColor} />
         ) : (
-          <FaEyeSlash className="text-red-600" />
+          <FaEyeSlash className={iconColor} />
         )}
-        <span className="font-esteban text-gray-600 hover:text-[#c4af37] transition-all duration-300">
+        <span
+          className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}
+        >
           {showCv ? c.translations.close : c.translations.view}
         </span>
       </button>
 
       {/* 📄 Vista PDF */}
       {showCv && (
-        <div className="mt-6 w-[90%] md:w-[60%] h-[500px] border-4 border-red-600 rounded-2xl shadow-[0_0_25px_#c4af37] overflow-hidden">
+        <div
+          className={`mt-6 w-[90%] md:w-[60%] h-[500px] border-4 rounded-2xl shadow-[0_0_25px_#c4af37] overflow-hidden transition-all duration-500 ${
+            isDark ? "border-[#c4af37]" : "border-red-600"
+          }`}
+        >
           <iframe src={c.pdf} className="w-full h-full" title="CV Preview" />
         </div>
       )}
@@ -94,10 +114,12 @@ export default function CvSection() {
       <a
         href={c.pdf}
         download={`CV_Danier_Solarte_${lang === "es" ? "ES" : "EN"}.pdf`}
-        className="mt-6 flex items-center gap-3 px-6 py-3 rounded-full bg-[#f5f5f5] border-2 border-red-600 transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)]"
+        className={`mt-6 flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)] ${bgButton} ${borderButton}`}
       >
-        <FaDownload className="text-red-600" />
-        <span className="font-esteban text-gray-600 hover:text-[#c4af37] transition-all duration-300">
+        <FaDownload className={iconColor} />
+        <span
+          className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}
+        >
           {c.translations.download}
         </span>
       </a>

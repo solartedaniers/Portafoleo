@@ -5,15 +5,14 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🧩 Tipos ajustados al nuevo modelo (un JSON por idioma)
 interface AboutItem {
   img: string;
   audio: string;
-  text: string; // ✅ ahora es solo texto (no {es, en})
+  text: string;
 }
 
 interface AboutContent {
-  title: string; // ✅ también es texto plano
+  title: string;
   items: AboutItem[];
 }
 
@@ -22,7 +21,7 @@ interface ContentStructure {
 }
 
 export default function AboutMe() {
-  const { lang } = useApp();
+  const { lang, theme } = useApp();
   const { content, loading } = useContent();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
@@ -40,7 +39,7 @@ export default function AboutMe() {
     }
   }, []);
 
-  // 🗣️ Función para leer el texto
+  // 🗣️ Función para leer texto
   const speakText = (text: string, index: number) => {
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -69,7 +68,6 @@ export default function AboutMe() {
     synth.speak(utterance);
   };
 
-  // Asegurar que las voces se carguen correctamente
   useEffect(() => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -78,7 +76,6 @@ export default function AboutMe() {
     }
   }, []);
 
-  // Soporte para toque en móviles
   const handleTouch = (index: number) => {
     if (!hasHover) {
       setHoveredIndex(index);
@@ -89,13 +86,21 @@ export default function AboutMe() {
   if (loading) return <p>Cargando contenido...</p>;
   if (!about) return <p>No hay contenido disponible.</p>;
 
+  // 🎨 Estilos dinámicos por tema
+  const cardBg =
+    theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-black";
+  const forestFilter = theme === "dark" ? "brightness(0.6)" : "brightness(1)";
+
   return (
-    <section className="w-full text-black overflow-x-hidden">
+    <section className="w-full overflow-x-hidden transition-all duration-500">
       {/* 🌲 Fondo superior */}
       <div className="relative w-full z-0">
         <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/forest-2.webp')" }}
+          className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-500"
+          style={{
+            backgroundImage: "url('/images/forest-2.webp')",
+            filter: forestFilter,
+          }}
         />
         <div className="relative z-10 py-16 px-4 sm:px-6 flex flex-col items-center">
           <h2
@@ -105,17 +110,23 @@ export default function AboutMe() {
             {about.title ?? "About Me"}
           </h2>
 
+          {/* 🧱 Cuadros de contenido */}
           <div className="flex flex-col items-center gap-10 max-w-2xl w-full">
             {items.map((item, i) => (
               <div
                 key={i}
                 onTouchStart={() => handleTouch(i)}
-                className={`relative flex flex-col items-center p-4 sm:p-6 rounded-xl bg-[#f5f5f5] transition-all duration-500 w-full shadow-lg ${
+                className={`relative flex flex-col items-center p-4 sm:p-6 rounded-xl shadow-lg border transition-all duration-500 w-full ${cardBg} ${
                   hoveredIndex === i
-                    ? "scale-105 border-2 border-[#c4af37]"
-                    : "hover:scale-105"
+                    ? "scale-105 border-2 border-[#d4af37]"
+                    : "hover:scale-105 hover:border-[#d4af37]"
                 }`}
-                style={{ boxShadow: "0px 4px 20px #c4af37" }}
+                style={{
+                  boxShadow:
+                    theme === "dark"
+                      ? "0px 4px 20px rgba(255, 215, 0, 0.3)"
+                      : "0px 4px 20px #c4af37",
+                }}
               >
                 {/* 🔊 Icono de voz */}
                 <div
@@ -128,7 +139,7 @@ export default function AboutMe() {
                       : "text-gray-500"
                   }`}
                 >
-                  <FaVolumeUp className="text-xl sm:text-2xl transition-transform duration-300" />
+                  <FaVolumeUp className="text-xl sm:text-2xl" />
                 </div>
 
                 {/* 🖼 Imagen */}
@@ -139,14 +150,14 @@ export default function AboutMe() {
                   height={110}
                   className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 shadow-md transition-all duration-500 ${
                     hoveredIndex === i
-                      ? "border-[#c4af37] scale-110"
-                      : "border-red-600 hover:border-[#c4af37]"
+                      ? "border-[#d4af37] scale-110"
+                      : "border-red-600 hover:border-[#d4af37]"
                   }`}
                 />
 
                 {/* 📝 Texto */}
                 <p
-                  className="text-base sm:text-lg text-center mt-6"
+                  className="text-base sm:text-lg text-center mt-6 transition-colors duration-500"
                   style={{ fontFamily: "'Esteban', serif" }}
                 >
                   {item.text}

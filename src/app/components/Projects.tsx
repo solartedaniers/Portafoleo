@@ -9,7 +9,6 @@ import "swiper/css/navigation";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipado del proyecto (título/descripcion son strings en cada JSON de idioma)
 type Project = {
   image: string;
   title: string;
@@ -19,15 +18,13 @@ type Project = {
 };
 
 export default function Projects() {
-  const { lang } = useApp();
+  const { theme, lang } = useApp(); // ✅ usamos theme
   const { content } = useContent();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const thunderRef = useRef<HTMLAudioElement | null>(null);
 
-  // ✅ Obtener proyectos desde el JSON cargado por ContentProvider
   const projects = (content as { projects?: Project[] } | null)?.projects ?? [];
 
-  // 🔊 Reproducir sonido al abrir enlace (Git)
   const playUrlSound = () => {
     if (audioRef.current) {
       audioRef.current.src = "/sounds/url.mp3";
@@ -36,7 +33,6 @@ export default function Projects() {
     }
   };
 
-  // ⚡ Reproducir sonido al hacer hover/click/tap en "tool"
   const playThunderSound = () => {
     if (thunderRef.current) {
       thunderRef.current.src = "/sounds/thunder.mp3";
@@ -45,18 +41,22 @@ export default function Projects() {
     }
   };
 
-  // 🧱 Renderizar tarjeta
   const renderCard = (p: Project, id: number) => (
     <article
       key={id}
-      className="relative bg-[#f5f5f5] rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] mx-2"
+      className={`relative rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-[1.02] mx-2 ${
+        theme === "dark" ? "bg-[#0e0e0e] text-white" : "bg-[#f5f5f5] text-black"
+      }`}
       style={{
         border: "2px solid red",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
+        boxShadow:
+          theme === "dark"
+            ? "0 10px 30px rgba(255,255,255,0.08), 0 0 18px rgba(196,175,55,0.2)"
+            : "0 10px 30px rgba(0,0,0,0.12), 0 0 18px rgba(196,175,55,0.14)",
       }}
     >
       <div className="p-6 flex flex-col items-center gap-4">
-        {/* 🖼 Imagen del proyecto */}
+        {/* 🖼 Imagen */}
         <div className="relative w-full flex justify-center">
           <div
             className="rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_10px_30px_rgba(196,175,55,0.45)]"
@@ -85,26 +85,25 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* 🔗 Botón GitHub */}
+        {/* 🔗 GitHub */}
         <div className="w-full flex justify-center px-2">
           <a
             href={p.gitUrl}
             target="_blank"
             rel="noreferrer"
             onClick={playUrlSound}
-            onTouchStart={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "scale(1.1)";
-              (e.currentTarget as HTMLElement).style.borderColor = "#c4af37";
-            }}
-            onTouchEnd={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-              (e.currentTarget as HTMLElement).style.borderColor = "red";
-            }}
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm border-2 border-red-600 transition-all duration-300 hover:border-[#c4af37] hover:shadow-[0_6px_20px_rgba(196,175,55,0.45)] active:scale-95"
+            className={`inline-flex items-center justify-center w-10 h-10 rounded-full shadow-sm border-2 transition-all duration-300 active:scale-95 ${
+              theme === "dark"
+                ? "bg-[#111] border-[#c4af37] hover:shadow-[0_0_18px_#c4af37]"
+                : "bg-white border-red-600 hover:border-[#c4af37] hover:shadow-[0_6px_20px_rgba(196,175,55,0.45)]"
+            }`}
             aria-label="GitHub Repository"
             title="GitHub Repository"
           >
-            <FiGithub className="text-[#222]" size={20} />
+            <FiGithub
+              className={theme === "dark" ? "text-white" : "text-[#222]"}
+              size={20}
+            />
           </a>
         </div>
 
@@ -113,10 +112,13 @@ export default function Projects() {
           className="mt-1 text-center text-xl font-medium animate-pulse"
           style={{
             fontFamily: "'Esteban', serif",
-            color: "#a0a0a0",
-            WebkitTextStroke: "0.6px rgba(0,0,0,0.45)",
-            textShadow: "0 2px 6px rgba(0,0,0,0.35)",
-            letterSpacing: "0.2px",
+            color: theme === "dark" ? "#f5f5f5" : "#a0a0a0",
+            WebkitTextStroke:
+              theme === "dark" ? "0.6px rgba(255,255,255,0.25)" : "0.6px rgba(0,0,0,0.45)",
+            textShadow:
+              theme === "dark"
+                ? "0 2px 6px rgba(255,255,255,0.15)"
+                : "0 2px 6px rgba(0,0,0,0.35)",
           }}
         >
           {p.title}
@@ -124,7 +126,9 @@ export default function Projects() {
 
         {/* 📖 Descripción */}
         <p
-          className="text-sm text-gray-700 text-center px-2 transition-colors duration-300 hover:text-gray-900"
+          className={`text-sm text-center px-2 transition-colors duration-300 ${
+            theme === "dark" ? "text-gray-300 hover:text-gray-100" : "text-gray-700 hover:text-gray-900"
+          }`}
           style={{ fontFamily: "'Esteban', serif" }}
         >
           {p.description}
@@ -136,38 +140,27 @@ export default function Projects() {
             style={{
               fontFamily: "'Irish Grover', cursive",
               fontSize: "1.4rem",
-              color: "#111",
-              WebkitTextStroke: "0.6px #c4af37",
+              color: theme === "dark" ? "#fff" : "#111",
+              WebkitTextStroke: "0.6px #c4af37", // 💛 Dorado sin alterar
             }}
           >
             {lang === "es" ? "Lenguajes y herramientas" : "Languages and Tools"}
           </span>
         </div>
 
-        {/* ⚡ Botones de herramientas */}
+        {/* ⚡ Herramientas */}
         <div className="mt-3 flex flex-wrap gap-3 justify-start w-full">
           {p.tools.map((tool) => (
             <button
               key={tool}
               onClick={playThunderSound}
-              onTouchStart={(e) => {
-                (e.currentTarget as HTMLElement).style.border = "1px solid red";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                (e.currentTarget as HTMLElement).style.textShadow =
-                  "0 0 6px rgba(196,175,55,0.6)";
-              }}
-              onTouchEnd={(e) => {
-                (e.currentTarget as HTMLElement).style.border = "1px solid #c4af37";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.textShadow = "none";
-              }}
-              className="px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
+              className={`px-3 py-1 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                theme === "dark" ? "bg-[#111] text-white" : "bg-white text-[#111]"
+              }`}
               style={{
                 fontFamily: "'Esteban', serif",
-                color: "#111",
-                background: "#fff",
-                boxShadow: "0 6px 18px rgba(0,0,0,0.06)",
                 border: "1px solid #c4af37",
+                boxShadow: theme === "dark" ? "0 6px 18px rgba(255,255,255,0.06)" : "0 6px 18px rgba(0,0,0,0.06)",
               }}
             >
               <span style={{ WebkitTextStroke: "0.6px #c4af37" }}>{tool}</span>
@@ -196,7 +189,7 @@ export default function Projects() {
           </h2>
         </header>
 
-        {/* 📱 Carrusel en móviles */}
+        {/* 📱 Swiper móvil */}
         <div className="sm:hidden w-full">
           <Swiper
             modules={[Navigation]}
@@ -212,7 +205,7 @@ export default function Projects() {
           </Swiper>
         </div>
 
-        {/* 💻 Rejilla en escritorio */}
+        {/* 💻 Rejilla escritorio */}
         <main className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((p, i) => renderCard(p, i))}
         </main>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipo adaptado: solo hay una versión del idioma actual
+// ✅ Tipo adaptado
 interface FilosofiaData {
   title: string;
   text: string[];
@@ -14,10 +14,9 @@ interface FilosofiaData {
 }
 
 export default function Filosofia() {
-  const { lang } = useApp();
+  const { lang, theme } = useApp(); // ✅ añadimos theme
   const { content } = useContent();
 
-  // ✅ Ya no accedemos con [lang], porque el archivo ya es del idioma actual
   const data = content?.filosofia as FilosofiaData | undefined;
 
   const [speaking, setSpeaking] = useState(false);
@@ -80,6 +79,12 @@ export default function Filosofia() {
 
   if (!data) return null;
 
+  // 🎨 Modo claro/oscuro dinámico
+  const bgColor =
+    theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
+  const textColor =
+    theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
+
   return (
     <section
       className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
@@ -87,14 +92,14 @@ export default function Filosofia() {
     >
       <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5">
         {/* 🟥 Título */}
-        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
           {data.title}
         </h2>
 
         {/* 📜 Contenedor principal */}
         <div
-          className={`relative bg-[#f5f5f5] rounded-2xl shadow-[0_0_20px_#c4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
-            hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#c4af37]" : ""
+          className={`relative ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
+            hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#d4af37]" : ""
           }`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
@@ -125,12 +130,14 @@ export default function Filosofia() {
               alt="Filosofía"
               width={100}
               height={100}
-              className="object-cover rounded-full border-[3px] border-[#c4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600"
+              className="object-cover rounded-full border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600"
             />
           </div>
 
           {/* 📖 Texto */}
-          <div className="text-[17px] leading-relaxed font-esteban text-[#5c4c4c] transition-all duration-300 hover:tracking-wide text-justify">
+          <div
+            className={`text-[17px] leading-relaxed font-esteban ${textColor} transition-all duration-300 hover:tracking-wide text-justify`}
+          >
             {data.text.map((p, i) => (
               <p key={i} className="mb-4">
                 {p}

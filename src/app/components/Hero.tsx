@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🌐 Tipos
 interface HeroLang {
   brand: string;
   quote: string;
@@ -26,7 +25,6 @@ export default function Hero(): React.JSX.Element {
   const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
 
-  // 🎯 Traducción dinámica desde el JSON (✅ corregido)
   const t: HeroLang =
     (content?.hero as HeroLang) ?? {
       brand: "Daniers Solarte",
@@ -57,28 +55,39 @@ export default function Hero(): React.JSX.Element {
     }
   }, [setTheme]);
 
-  // 🗡 Navegar y reproducir sonido
+  // ⚔️ Sonido + navegación
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
       } catch {
-        /* autoplay blocked — ignore */
+        /* Ignorar autoplay bloqueado */
       }
     }
     router.push("/portfolio");
   };
 
-  // 📱 Efecto visual táctil
+  // 📱 Efecto táctil (tap)
   const handleTouchEffect = (id: string) => {
     if (!isMobile) return;
     setActiveTouch(id);
-    setTimeout(() => setActiveTouch(null), 1200);
+    setTimeout(() => setActiveTouch(null), 500);
   };
 
+  // 🎨 Paleta según tema
+  const isDark = theme === "dark";
+  const borderColor = "border-[#d4af37]"; // dorado
+  const textPrimary = isDark ? "text-white" : "text-[#1c1b19]";
+  const textSecondary = isDark ? "text-gray-300" : "text-[#4a4a44]";
+  const bgOverlay = isDark ? "bg-black/60" : "bg-[#eae6d9]/45";
+  const quoteBg = isDark ? "bg-[#121212]/80" : "bg-[#eae6d9]/85";
+  const btnBg = isDark ? "bg-white/10 text-white" : "bg-[#dbd6c5]/60 text-black";
+
   return (
-    <section className="relative w-screen h-screen box-border border-[8px] border-gold overflow-hidden">
+    <section
+      className={`relative w-screen h-screen box-border border-[8px] ${borderColor} overflow-hidden transition-colors duration-500`}
+    >
       {/* 🎥 Fondo */}
       <div className="absolute inset-0 z-0">
         <video
@@ -87,45 +96,55 @@ export default function Hero(): React.JSX.Element {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-all duration-700 ${
+            isDark ? "brightness-100" : "brightness-[0.78]"
+          }`}
         />
       </div>
 
-      {/* 🌓 Overlay según tema */}
-      <div
-        className={`absolute inset-0 z-10 ${
-          theme === "dark" ? "bg-black/60" : "bg-black/30"
-        }`}
-      />
+      {/* 🌓 Overlay */}
+      <div className={`absolute inset-0 z-10 ${bgOverlay} transition-all duration-500`} />
 
-      {/* 🔘 Botones de control */}
+      {/* 🔘 Controles */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
-        {/* Tema */}
+        {/* 🌗 Tema */}
         <button
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
           aria-label="Cambiar tema"
-          className={`px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 
+          className={`px-5 py-2.5 rounded-full ${borderColor} shadow-md ${btnBg} transition-all duration-300 
             ${
               activeTouch === "theme"
-                ? "scale-110 border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.4)]"
+                ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
                 : "hover:scale-110 hover:border-red-600"
             }`}
+          onMouseEnter={(e) =>
+            !isMobile && e.currentTarget.classList.add("border-red-600")
+          }
+          onMouseLeave={(e) =>
+            !isMobile && e.currentTarget.classList.remove("border-red-600")
+          }
         >
-          {theme === "dark" ? "🌙" : "☀️"}
+          {isDark ? "🌙" : "☀️"}
         </button>
 
-        {/* Idioma */}
+        {/* 🌐 Idioma */}
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
           aria-label="Cambiar idioma"
-          className={`px-5 py-2.5 rounded-full border border-gold shadow-md bg-white/10 text-white transition-all duration-300 
+          className={`px-5 py-2.5 rounded-full ${borderColor} shadow-md ${btnBg} transition-all duration-300 
             ${
               activeTouch === "lang"
-                ? "scale-110 border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.4)]"
+                ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
                 : "hover:scale-110 hover:border-red-600"
             }`}
+          onMouseEnter={(e) =>
+            !isMobile && e.currentTarget.classList.add("border-red-600")
+          }
+          onMouseLeave={(e) =>
+            !isMobile && e.currentTarget.classList.remove("border-red-600")
+          }
         >
           🌐 {lang === "es" ? "English" : "Español"}
         </button>
@@ -136,12 +155,12 @@ export default function Hero(): React.JSX.Element {
         {/* Marca */}
         <h1
           onTouchStart={() => handleTouchEffect("brand")}
-          className={`text-white text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform text-stroke-gold 
+          className={`${textPrimary} text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform text-stroke-gold
             ${
               activeTouch === "brand"
                 ? "scale-110 text-stroke-red"
                 : "hover:scale-110 hover:text-stroke-red"
-            }`}
+            } animate-pulse`}
         >
           {t.brand}
         </h1>
@@ -149,13 +168,17 @@ export default function Hero(): React.JSX.Element {
         {/* Frase */}
         <p
           onTouchStart={() => handleTouchEffect("quote")}
-          className={`text-gray-300 text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg bg-[#121212]/80 animate-pulse font-esteban transition-transform
+          className={`${textSecondary} text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg ${quoteBg} font-esteban transition-transform
             ${
               activeTouch === "quote"
                 ? "scale-105 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
                 : "hover:scale-105"
             }`}
-          style={{ textShadow: "0 0 10px rgba(255,255,255,0.3)" }}
+          style={{
+            textShadow: isDark
+              ? "0 0 10px rgba(255,255,255,0.3)"
+              : "0 0 8px rgba(0,0,0,0.2)",
+          }}
           dangerouslySetInnerHTML={{ __html: t.quote }}
         />
 
@@ -166,10 +189,14 @@ export default function Hero(): React.JSX.Element {
           className={`px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform font-[Instrument_Serif]
             ${
               activeTouch === "view"
-                ? "scale-110 border-gold shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
-                : "hover:scale-110 hover:border-gold hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
+                ? "scale-110 border-[#d4af37] shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
+                : "hover:scale-110 hover:border-[#d4af37] hover:shadow-[0_4px_20px_rgba(196,175,39,0.4)]"
             }
-            bg-[#c1c1c1] border-bloodRed text-[#605b2a]`}
+            ${
+              isDark
+                ? "bg-[#1a1a1a] text-[#d4af37]"
+                : "bg-[#dcd8c8] text-[#4a4520] border-red-600"
+            }`}
         >
           {t.view}
         </button>

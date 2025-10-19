@@ -5,7 +5,6 @@ import { FaVolumeUp, FaBriefcase } from "react-icons/fa";
 import { useContent } from "./ContentProvider";
 import { useApp } from "./ThemeLangContext";
 
-// ✅ Tipado para el JSON
 interface ExperienciaData {
   title: string;
   academic: string;
@@ -19,7 +18,7 @@ interface ExperienciaData {
 
 export default function Experiencia() {
   const { content, loading } = useContent();
-  const { lang } = useApp();
+  const { lang, theme } = useApp();
 
   const [speaking, setSpeaking] = useState<"academico" | "laboral" | null>(null);
   const [hovered, setHovered] = useState<"academico" | "laboral" | null>(null);
@@ -39,7 +38,6 @@ export default function Experiencia() {
 
   if (loading) return <p className="text-center text-white">Cargando...</p>;
 
-  // ✅ Tomamos el bloque "experiencia" directamente
   const experiencia = content?.experiencia as ExperienciaData | undefined;
   if (!experiencia) return null;
 
@@ -80,19 +78,37 @@ export default function Experiencia() {
     }
   };
 
+  const isDark = theme === "dark";
+  const cardBg = isDark ? "bg-[#1e1e1e]" : "bg-[#f5f5f5]";
+  const textColor = isDark ? "text-[#eaeaea]" : "text-[#5c4c4c]";
+  const titleColor = isDark ? "text-white" : "text-black";
+
   return (
     <section
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-10 bg-cover bg-center"
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-10 bg-cover bg-center transition-all duration-500"
+      // ✨ Fondo original, sin oscurecer
       style={{ backgroundImage: "url('/images/city.webp')" }}
     >
-      <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]">
+      {/* 🔴 Título */}
+      <h2
+        className={`text-4xl text-center px-6 py-2 rounded-full shadow-lg font-['Irish_Grover'] transition-all duration-500 ${
+          isDark
+            ? "bg-[#c4af37]/90 text-black hover:bg-red-600 hover:text-white"
+            : "bg-red-600/80 text-white hover:bg-[#d4af37] hover:text-black"
+        } hover:shadow-[0_0_25px_#c4af37]`}
+      >
         {experiencia.title}
       </h2>
 
       {/* 🎓 Experiencia Académica */}
       <div
-        className={`w-full mt-10 max-w-2xl bg-[#f5f5f5] shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 
-        ${hovered === "academico" ? "shadow-[0_0_25px_#c4af37] scale-105" : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"}`}
+        className={`w-full mt-10 max-w-2xl ${cardBg} shadow-lg p-6 mb-10 rounded-xl transition-all duration-300 border-2 ${
+          isDark ? "border-[#c4af37]/40" : "border-transparent"
+        } ${
+          hovered === "academico"
+            ? "shadow-[0_0_25px_#c4af37] scale-105"
+            : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"
+        }`}
         onTouchStart={() => handleTouchHover("academico")}
       >
         <div className="flex items-center justify-between mb-4">
@@ -105,7 +121,7 @@ export default function Experiencia() {
           />
 
           <h3
-            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
+            className={`text-xl font-['Irish_Grover'] ${titleColor} mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300`}
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
             {experiencia.academic}
@@ -119,19 +135,23 @@ export default function Experiencia() {
             className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
               speaking === "academico" || hovered === "academico"
                 ? "text-blue-600"
-                : "text-gray-500"
+                : "text-gray-400"
             }`}
           >
             <FaVolumeUp />
           </button>
         </div>
 
-        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{experiencia.academicText}</p>
+        <p className={`font-['Esteban'] ${textColor} mb-3`}>
+          {experiencia.academicText}
+        </p>
 
         <p className="font-['Esteban'] text-[#c4af37] font-bold mb-2">
           {experiencia.academicProjects}
         </p>
-        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
+        <ul
+          className={`list-disc pl-6 font-['Esteban'] ${textColor} space-y-1`}
+        >
           {experiencia.academicList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
@@ -140,15 +160,20 @@ export default function Experiencia() {
 
       {/* 💼 Experiencia Laboral */}
       <div
-        className={`w-full max-w-2xl bg-[#f5f5f5] shadow-lg p-6 rounded-xl transition-all duration-300 
-        ${hovered === "laboral" ? "shadow-[0_0_25px_#c4af37] scale-105" : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"}`}
+        className={`w-full max-w-2xl ${cardBg} shadow-lg p-6 rounded-xl transition-all duration-300 border-2 ${
+          isDark ? "border-[#c4af37]/40" : "border-transparent"
+        } ${
+          hovered === "laboral"
+            ? "shadow-[0_0_25px_#c4af37] scale-105"
+            : "hover:shadow-[0_0_25px_#c4af37] hover:scale-105"
+        }`}
         onTouchStart={() => handleTouchHover("laboral")}
       >
         <div className="flex items-center justify-between mb-4">
           <FaBriefcase className="text-4xl text-red-600 transition-all duration-300 hover:scale-110 hover:text-[#c4af37]" />
 
           <h3
-            className="text-xl font-['Irish_Grover'] text-black mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300"
+            className={`text-xl font-['Irish_Grover'] ${titleColor} mx-4 flex-1 text-center hover:text-[#c4af37] hover:scale-105 transition-all duration-300`}
             style={{ WebkitTextStroke: "0.8px #c4af37" }}
           >
             {experiencia.work}
@@ -162,16 +187,20 @@ export default function Experiencia() {
             className={`text-xl p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
               speaking === "laboral" || hovered === "laboral"
                 ? "text-blue-600"
-                : "text-gray-500"
+                : "text-gray-400"
             }`}
           >
             <FaVolumeUp />
           </button>
         </div>
 
-        <p className="font-['Esteban'] text-[#5c4c4c] mb-3">{experiencia.workText}</p>
+        <p className={`font-['Esteban'] ${textColor} mb-3`}>
+          {experiencia.workText}
+        </p>
 
-        <ul className="list-disc pl-6 font-['Esteban'] text-[#5c4c4c] space-y-1">
+        <ul
+          className={`list-disc pl-6 font-['Esteban'] ${textColor} space-y-1`}
+        >
           {experiencia.workList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}

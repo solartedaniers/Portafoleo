@@ -62,7 +62,7 @@ export default function Welcome() {
     router.push("/");
   };
 
-  // 🗣️ Voz
+  // 🗣️ Voz narrador
   const toggleSpeech = () => {
     if (!t) return;
     const synth = window.speechSynthesis;
@@ -97,9 +97,11 @@ export default function Welcome() {
 
   if (loading || !t) return <p>Cargando contenido...</p>;
 
-  // 🎨 Colores dinámicos según el modo
-  const bgBox = theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#5c4c4c]";
-  const bgWhiteBox = theme === "dark" ? "bg-black/70 text-white" : "bg-white/60 text-black";
+  // 🎨 Colores dinámicos
+  const bgBox =
+    theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#5c4c4c]";
+  const bgWhiteBox =
+    theme === "dark" ? "bg-black/70 text-white" : "bg-white/60 text-black";
   const hrColor = theme === "dark" ? "border-white" : "border-black";
 
   return (
@@ -107,7 +109,7 @@ export default function Welcome() {
       className={`relative min-h-screen flex flex-col items-center justify-start bg-cover bg-center px-4 py-6 sm:px-6 sm:py-10 transition-all duration-700`}
       style={{
         backgroundImage: "url('/images/temple.webp')",
-        filter: theme === "dark" ? "brightness(0.6)" : "brightness(1)",
+        filter: "brightness(1)", // ✅ Mantiene brillo igual en ambos modos
       }}
     >
       {/* 🏠 Botón Home */}
@@ -168,7 +170,7 @@ export default function Welcome() {
 
       <hr className={`w-1/2 border-t-2 mt-4 transition-colors duration-500 ${hrColor}`} />
 
-      {/* 🏷️ Subtítulo (Ingeniero de Software con parpadeo permanente) */}
+      {/* 🏷️ Subtítulo */}
       <h2
         className={`mt-2 font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] px-1 py-1 rounded-xl text-center cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse`}
       >
