@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useContent } from "./ContentProvider";
-import { useApp } from "./ThemeLangContext"; // ✅ Para modo oscuro/claro
+import { useApp } from "./ThemeLangContext";
 
+// 🧩 Tipos
 interface SocialLink {
   label: string;
   url: string;
@@ -26,39 +27,17 @@ interface FooterLang {
   };
 }
 
-export default function Footer() {
-  const { content } = useContent();
-  const { theme } = useApp(); // ✅ Tema dinámico
-  const footerData = content?.footer as FooterLang;
-
+// 🎯 Hook personalizado: lógica del reloj + sonido
+function useClockSound() {
   const [clockTime, setClockTime] = useState("");
   const [clockPeriod, setClockPeriod] = useState("");
   const [showClock, setShowClock] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [tapHighlight, setTapHighlight] = useState<string | null>(null);
   const clockAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const isDark = theme === "dark";
-
-  // 🎵 Sonido del reloj
   useEffect(() => {
     clockAudioRef.current = new Audio("/sounds/clock.mp3");
     clockAudioRef.current.loop = true;
-  }, []);
 
-  const handleClockSound = (play: boolean) => {
-    if (!clockAudioRef.current) return;
-    if (play) {
-      clockAudioRef.current.currentTime = 0;
-      clockAudioRef.current.play().catch(() => {});
-    } else {
-      clockAudioRef.current.pause();
-      clockAudioRef.current.currentTime = 0;
-    }
-  };
-
-  // ⏰ Actualización del reloj
-  useEffect(() => {
     const updateClock = () => {
       const now = new Date();
       let hours = now.getHours();
@@ -78,7 +57,26 @@ export default function Footer() {
     return () => clearInterval(interval);
   }, []);
 
-  // 📱 Detectar móvil
+  const toggleClockSound = (play: boolean) => {
+    const audio = clockAudioRef.current;
+    if (!audio) return;
+    if (play) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  };
+
+  return { clockTime, clockPeriod, showClock, setShowClock, toggleClockSound };
+}
+
+// 🎯 Hook para interacciones en móvil y sonido
+function useInteractive() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [tapHighlight, setTapHighlight] = useState<string | null>(null);
+
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -86,26 +84,40 @@ export default function Footer() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // 🔊 Sonidos
   const playSound = (file: string) => {
     const audio = new Audio(`/sounds/${file}`);
     audio.play().catch(() => {});
   };
 
-  // 👆 Tap effect
   const handleTap = (key: string) => {
     if (!isMobile) return;
     setTapHighlight(key);
     setTimeout(() => setTapHighlight(null), 400);
   };
 
+  return { isMobile, tapHighlight, handleTap, playSound };
+}
+
+// 🌐 Componente principal
+export default function Footer() {
+  const { content } = useContent();
+  const { theme } = useApp();
+  const footerData = content?.footer as FooterLang;
+  const { clockTime, clockPeriod, showClock, setShowClock, toggleClockSound } =
+    useClockSound();
+  const { isMobile, tapHighlight, handleTap, playSound } = useInteractive();
+
   if (!footerData) return null;
 
-  // 🎨 Estilos según modo
+  const isDark = theme === "dark";
+
+  // 🎨 Estilos base
   const baseText = isDark ? "text-gray-200" : "text-[#2a2a2a]";
   const phraseText = isDark ? "text-white" : "text-[#1c1b19]";
   const authorText = isDark ? "text-gray-300" : "text-[#333]";
   const filterBrightness = isDark ? "brightness(0.85)" : "brightness(1)";
+  const bgBase = isDark ? "bg-[#1a1a1a]" : "bg-[#f5f5f5]";
+  const borderGold = isDark ? "border-[#d4af37]" : "border-[#c4af37]";
 
   return (
     <footer
@@ -120,144 +132,139 @@ export default function Footer() {
         filter: filterBrightness,
       }}
     >
-      {/* 🔖 Título */}
-      <h2
-        className={`font-['Irish_Grover'] text-4xl px-6 py-2 rounded-full shadow-md transition-all duration-300 inline-block
-        ${isDark ? "bg-red-600 text-white" : "bg-red-600 text-white"}
-        ${
-          tapHighlight === "title"
-            ? "bg-[#d4af37] text-black scale-105"
-            : "hover:bg-[#d4af37] hover:text-black hover:border-red-600"
-        }`}
-        onClick={() => handleTap("title")}
-      >
-        {footerData.title}
-      </h2>
-
-      {/* 🕒 Reloj */}
-      <div className="mt-6 flex justify-center relative z-10">
-        <div
-          className="inline-block px-6 py-4 cursor-pointer select-none"
-          onClick={() => {
-            setShowClock((prev) => {
-              handleClockSound(!prev);
-              return !prev;
-            });
-          }}
-          onMouseEnter={() => {
-            if (!isMobile) {
-              setShowClock(true);
-              handleClockSound(true);
-            }
-          }}
-          onMouseLeave={() => {
-            if (!isMobile) {
-              setShowClock(false);
-              handleClockSound(false);
-            }
-          }}
-        >
-          <AnimatePresence>
-            {showClock && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4 }}
-                className={`px-6 py-3 rounded-xl border shadow-[0_0_20px_rgba(212,175,55,0.5)] inline-block ${
-                  isDark ? "bg-[#1e1e1e] border-[#d4af37]" : "bg-[#f5f5f5] border-[#c4af37]"
-                }`}
-              >
-                <span
-                  className={`font-['Esteban'] text-xl ${
-                    isDark ? "text-white" : "text-black"
-                  }`}
-                  style={{ WebkitTextStroke: "0.5px #d4af37" }}
-                >
-                  {clockTime}
-                </span>
-                <span className="ml-2 text-red-600 font-bold text-xl">
-                  {clockPeriod}
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Créditos */}
-      <div
-        className={`mt-8 text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
-          tapHighlight === "credits" ? "text-[#d4af37] scale-105" : ""
-        }`}
-        onClick={() => handleTap("credits")}
-      >
-        {footerData.credits}
-        <br />
-        {footerData.rights}
-      </div>
-
-      {/* Frase */}
-      <p
-        className={`mt-6 font-['Labrada'] text-xl ${phraseText} transition-all duration-300 hover:text-[#c4af37] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
-          tapHighlight === "phrase" ? "text-[#d4af37] scale-105" : ""
-        }`}
-        onClick={() => handleTap("phrase")}
-        style={{ WebkitTextStroke: "0.5px #d4af37" }}
-      >
-        {footerData.phrase}
-      </p>
-
-      {/* Autor */}
-      <p
-        className={`mt-4 font-['Esteban'] ${authorText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
-          tapHighlight === "author" ? "text-[#d4af37] scale-105" : ""
-        }`}
-        onClick={() => handleTap("author")}
-      >
-        {footerData.author}
-      </p>
-
-      {/* Redes Sociales */}
-      <div
-        className={`mt-8 flex ${
-          isMobile
-            ? "flex-col items-center gap-4"
-            : "flex-row justify-center gap-6"
-        }`}
-      >
-        {Object.entries(footerData.social).map(([key, social]) => (
-          <a
-            key={key}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              playSound(social.sound);
-              handleTap(key);
-            }}
-            className={`flex items-center gap-2 rounded-3xl px-5 py-3 border-2 transition-all duration-300 shadow-md ${
-              isDark
-                ? "bg-[#1a1a1a] border-[#d4af37] text-white"
-                : "bg-[#f5f5f5] border-[#c4af37] text-black"
-            } hover:border-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.4)] ${
-              tapHighlight === key ? "border-red-600 scale-105" : ""
+      <div className="grid grid-cols-1 gap-6 place-items-center">
+        {/* 🔖 Título */}
+        <h2
+          className={`font-['Irish_Grover'] text-4xl px-6 py-2 rounded-full shadow-md transition-all duration-300 inline-block
+            bg-red-600 text-white ${
+              tapHighlight === "title"
+                ? "bg-[#d4af37] text-black scale-105"
+                : "hover:bg-[#d4af37] hover:text-black"
             }`}
+          onClick={() => handleTap("title")}
+        >
+          {footerData.title}
+        </h2>
+
+        {/* 🕒 Reloj */}
+        <div className="flex justify-center relative z-10">
+          <div
+            className="inline-block px-6 py-4 cursor-pointer select-none"
+            onClick={() => {
+              setShowClock((prev) => {
+                toggleClockSound(!prev);
+                return !prev;
+              });
+            }}
+            onMouseEnter={() => {
+              if (!isMobile) {
+                setShowClock(true);
+                toggleClockSound(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!isMobile) {
+                setShowClock(false);
+                toggleClockSound(false);
+              }
+            }}
           >
-            {key === "linkedin" && (
-              <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
-            )}
-            {key === "whatsapp" && (
-              <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
-            )}
-            {key === "github" && (
-              <FaGithub className="text-[#333] dark:text-white text-2xl transition-all duration-300 hover:scale-125" />
-            )}
-            <span className="font-['Esteban'] hover:text-[#d4af37] transition-all duration-300">
-              {social.label}
-            </span>
-          </a>
-        ))}
+            <AnimatePresence>
+              {showClock && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  className={`px-6 py-3 rounded-xl border shadow-[0_0_20px_rgba(212,175,55,0.5)] inline-block ${bgBase} ${borderGold}`}
+                >
+                  <span
+                    className={`font-['Esteban'] text-xl ${
+                      isDark ? "text-white" : "text-black"
+                    }`}
+                    style={{ WebkitTextStroke: "0.5px #d4af37" }}
+                  >
+                    {clockTime}
+                  </span>
+                  <span className="ml-2 text-red-600 font-bold text-xl">
+                    {clockPeriod}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Créditos */}
+        <div
+          className={`text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
+            tapHighlight === "credits" ? "text-[#d4af37] scale-105" : ""
+          }`}
+          onClick={() => handleTap("credits")}
+        >
+          {footerData.credits}
+          <br />
+          {footerData.rights}
+        </div>
+
+        {/* Frase */}
+        <p
+          className={`font-['Labrada'] text-xl ${phraseText} transition-all duration-300 hover:text-[#c4af37] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
+            tapHighlight === "phrase" ? "text-[#d4af37] scale-105" : ""
+          }`}
+          onClick={() => handleTap("phrase")}
+          style={{ WebkitTextStroke: "0.5px #d4af37" }}
+        >
+          {footerData.phrase}
+        </p>
+
+        {/* Autor */}
+        <p
+          className={`font-['Esteban'] ${authorText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
+            tapHighlight === "author" ? "text-[#d4af37] scale-105" : ""
+          }`}
+          onClick={() => handleTap("author")}
+        >
+          {footerData.author}
+        </p>
+
+        {/* Redes Sociales */}
+        <div
+          className={`grid ${
+            isMobile ? "grid-cols-1 gap-4" : "grid-cols-3 gap-6"
+          } place-items-center mt-8`}
+        >
+          {Object.entries(footerData.social).map(([key, social]) => (
+            <a
+              key={key}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                playSound(social.sound);
+                handleTap(key);
+              }}
+              className={`flex items-center gap-2 rounded-3xl px-5 py-3 border-2 transition-all duration-300 shadow-md ${bgBase} ${borderGold} ${
+                isDark ? "text-white" : "text-black"
+              } hover:border-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.4)] ${
+                tapHighlight === key ? "border-red-600 scale-105" : ""
+              }`}
+            >
+              {key === "linkedin" && (
+                <FaLinkedin className="text-blue-600 text-2xl transition-all duration-300 hover:scale-125" />
+              )}
+              {key === "whatsapp" && (
+                <FaWhatsapp className="text-green-600 text-2xl transition-all duration-300 hover:scale-125" />
+              )}
+              {key === "github" && (
+                <FaGithub className="text-[#333] dark:text-white text-2xl transition-all duration-300 hover:scale-125" />
+              )}
+              <span className="font-['Esteban'] hover:text-[#d4af37] transition-all duration-300">
+                {social.label}
+              </span>
+            </a>
+          ))}
+        </div>
       </div>
     </footer>
   );

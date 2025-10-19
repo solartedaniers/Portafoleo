@@ -17,59 +17,71 @@ interface TestimonialsContent {
 }
 
 export default function Testimonials() {
-  const { theme, lang } = useApp(); // ✅ usamos theme
+  const { theme, lang } = useApp();
   const { content } = useContent();
   const sectionRef = useRef<HTMLDivElement | null>(null);
-  const [visibleCount, setVisibleCount] = useState(2);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [hasHover, setHasHover] = useState(true);
-  const [tappedIndex, setTappedIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    setHasHover(window.matchMedia("(hover: hover)").matches);
-  }, []);
+  // 🟢 Hook interno para manejar lógica de testimonios
+  const useTestimonials = () => {
+    const [visibleCount, setVisibleCount] = useState(2);
+    const [selected, setSelected] = useState<number | null>(null);
+    const [tappedIndex, setTappedIndex] = useState<number | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const [hasHover, setHasHover] = useState(true);
 
-  if (!content?.testimonials) return null;
-  const t = content.testimonials as TestimonialsContent;
-  const testimonials = t.list ?? [];
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      handleResize();
+      setHasHover(window.matchMedia("(hover: hover)").matches);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-  const renderCard = (testimonial: Testimonial, idx: number) => {
-    const isSelected = selected === idx;
-    const isTapped = tappedIndex === idx;
-
-    const handleInteraction = () => {
+    const handleSelect = (idx: number) => {
       if (!hasHover) {
         setTappedIndex(idx);
         setTimeout(() => setTappedIndex(null), 800);
       } else {
-        setSelected(isSelected ? null : idx);
+        setSelected(selected === idx ? null : idx);
       }
     };
+
+    return { visibleCount, setVisibleCount, selected, tappedIndex, isMobile, handleSelect };
+  };
+
+  // ✅ Llamada siempre al inicio
+  const { visibleCount, setVisibleCount, selected, tappedIndex, isMobile, handleSelect } =
+    useTestimonials();
+
+  // Early return si no hay contenido
+  if (!content?.testimonials) return null;
+  const t = content.testimonials as TestimonialsContent;
+  const testimonials = t.list ?? [];
+
+  // Render de cada tarjeta de testimonio
+  const renderCard = (testimonial: Testimonial, idx: number) => {
+    const isSelected = selected === idx;
+    const isTapped = tappedIndex === idx;
 
     return (
       <div
         key={idx}
-        onClick={handleInteraction}
-        onTouchStart={handleInteraction}
-        className={`rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer ${
-          theme === "dark"
-            ? "bg-[#0e0e0e] text-white"
-            : "bg-[#f5f5f5] text-black"
-        } ${
-          isSelected || isTapped
+        onClick={() => handleSelect(idx)}
+        onTouchStart={() => handleSelect(idx)}
+        className={`rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer
+          ${theme === "dark" ? "bg-[#0e0e0e] text-white" : "bg-[#f5f5f5] text-black"}
+          ${isSelected || isTapped
             ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-[#c4af37]"
-            : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"
-        }`}
+            : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"}
+        `}
       >
         {!isMobile && (
           <div
-            className={`flex-shrink-0 relative w-28 h-28 rounded-full border-[3px] overflow-hidden transition-all duration-500 ${
-              isSelected || isTapped
+            className={`flex-shrink-0 relative w-28 h-28 rounded-full border-[3px] overflow-hidden transition-all duration-500
+              ${isSelected || isTapped
                 ? "border-red-600 translate-y-[-4px]"
-                : "border-[#c4af37] hover:border-red-600 hover:-translate-y-1"
-            }`}
+                : "border-[#c4af37] hover:border-red-600 hover:-translate-y-1"}
+            `}
           >
             <Image
               src={testimonial.image}
@@ -82,13 +94,12 @@ export default function Testimonials() {
         )}
 
         <div
-          className={`flex flex-col transition-all duration-300 ${
-            isSelected || isTapped
+          className={`flex flex-col transition-all duration-300
+            ${isSelected || isTapped
               ? "translate-y-[-2px] shadow-md"
-              : "hover:-translate-y-1 hover:shadow-md"
-          }`}
+              : "hover:-translate-y-1 hover:shadow-md"}
+          `}
         >
-          {/* 🧠 Nombre con parpadeo constante */}
           <h3
             className={`font-['Irish_Grover'] text-2xl animate-blink ${
               theme === "dark" ? "text-white" : "text-black"
@@ -100,8 +111,6 @@ export default function Testimonials() {
           >
             {testimonial.name}
           </h3>
-
-          {/* 🗣 Texto */}
           <p
             className={`mt-2 font-['Esteban'] text-justify transition-colors duration-300 ${
               theme === "dark"
@@ -133,14 +142,12 @@ export default function Testimonials() {
 
       {/* 🧾 Lista de testimonios */}
       <div className="flex flex-col gap-10 w-full max-w-4xl mt-10">
-        {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(
-          (testimonial, idx) => renderCard(testimonial, idx)
-        )}
+        {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(renderCard)}
       </div>
 
       {/* 📱 Botón móvil */}
       {isMobile && testimonials.length > 2 && (
-        <div className="mt-10">
+        <div className="mt-10 flex justify-center">
           {visibleCount >= testimonials.length ? (
             <button
               onClick={() => {

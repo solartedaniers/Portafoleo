@@ -15,7 +15,21 @@ import {
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🧩 Tipado del contenido
+// 🧠 Hook personalizado para detectar móvil
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
+// 🧩 Tipado
 interface MenuItem {
   label: string;
   id: string;
@@ -28,50 +42,44 @@ interface NavbarLangContent {
 export default function Navbar() {
   const { lang, theme } = useApp();
   const { content } = useContent() as { content: { navbar?: NavbarLangContent } };
+  const isMobile = useIsMobile();
+
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // 📱 Detectar si es móvil
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // 📜 Contenido dinámico por idioma
+  const defaultMenus: Record<string, NavbarLangContent> = {
+    es: {
+      menu: [
+        { label: "Bienvenidos", id: "bienvenidos" },
+        { label: "Acerca de mí", id: "acercademi" },
+        { label: "Tecnologías", id: "tecnologias" },
+        { label: "Mis Proyectos", id: "misproyectos" },
+        { label: "Testimonios", id: "testimonios" },
+        { label: "CV", id: "cv" },
+        { label: "Experiencia Académica y Laboral", id: "experiencia" },
+        { label: "Mi Filosofía de Vida", id: "filosofia" },
+        { label: "Contacto", id: "contacto" },
+        { label: "Pie de Página", id: "PieDePágina" },
+      ],
+    },
+    en: {
+      menu: [
+        { label: "Welcome", id: "bienvenidos" },
+        { label: "About Me", id: "acercademi" },
+        { label: "Technologies", id: "tecnologias" },
+        { label: "My Projects", id: "misproyectos" },
+        { label: "Testimonials", id: "testimonios" },
+        { label: "Resume", id: "cv" },
+        { label: "Academic & Work Experience", id: "experiencia" },
+        { label: "My Life Philosophy", id: "filosofia" },
+        { label: "Contact", id: "contacto" },
+        { label: "Footer", id: "PieDePágina" },
+      ],
+    },
+  };
 
-  // 🌍 Cargar desde el JSON correcto según idioma
-  const navbarContent: NavbarLangContent =
-    content?.navbar ??
-    (lang === "es"
-      ? {
-          menu: [
-            { label: "Bienvenidos", id: "bienvenidos" },
-            { label: "Acerca de mí", id: "acercademi" },
-            { label: "Tecnologías", id: "tecnologias" },
-            { label: "Mis Proyectos", id: "misproyectos" },
-            { label: "Testimonios", id: "testimonios" },
-            { label: "CV", id: "cv" },
-            { label: "Experiencia Académica y Laboral", id: "experiencia" },
-            { label: "Mi Filosofía de Vida", id: "filosofia" },
-            { label: "Contacto", id: "contacto" },
-            { label: "Pie de Página", id: "PieDePágina" },
-          ],
-        }
-      : {
-          menu: [
-            { label: "Welcome", id: "bienvenidos" },
-            { label: "About Me", id: "acercademi" },
-            { label: "Technologies", id: "tecnologias" },
-            { label: "My Projects", id: "misproyectos" },
-            { label: "Testimonials", id: "testimonios" },
-            { label: "Resume", id: "cv" },
-            { label: "Academic & Work Experience", id: "experiencia" },
-            { label: "My Life Philosophy", id: "filosofia" },
-            { label: "Contact", id: "contacto" },
-            { label: "Footer", id: "PieDePágina" },
-          ],
-        });
+  const navbarContent = content?.navbar ?? defaultMenus[lang] ?? defaultMenus["en"];
 
   // 🧱 Íconos
   const icons = [
@@ -87,7 +95,7 @@ export default function Navbar() {
     <GiArchiveResearch key="10" />,
   ];
 
-  // 🎵 Sonido menú
+  // 🔊 Sonido del menú
   const playMenuSound = () => {
     const audio = new Audio("/sounds/menu.mp3");
     audio.play().catch(() => {});

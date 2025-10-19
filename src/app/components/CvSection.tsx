@@ -17,20 +17,20 @@ type CvContent = {
 };
 
 export default function CvSection() {
-  const { lang, theme } = useApp(); // ✅ Agregamos theme
+  const { lang, theme } = useApp();
   const { content } = useContent();
   const [showCv, setShowCv] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [hoverVideo, setHoverVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   if (!content?.cv) return null;
   const c = content.cv as CvContent;
 
+  // 🟢 Funciones de hover
   const handleMouseEnter = () => {
     setHoverVideo(true);
     videoRef.current?.play();
   };
-
   const handleMouseLeave = () => {
     setHoverVideo(false);
     if (videoRef.current) {
@@ -50,16 +50,12 @@ export default function CvSection() {
     <section
       id="cv"
       className="relative w-full min-h-screen flex flex-col items-center py-24 px-6 bg-cover bg-center transition-all duration-500"
-      // ✨ Fondo dorado mantiene su brillo original, no se altera
       style={{ backgroundImage: `url('${c.background}')` }}
     >
-      {/* 🔴 Título */}
+      {/* 🔴 Título Principal */}
       <h2
-        className={`text-4xl text-center px-6 py-2 rounded-full shadow-lg font-['Irish_Grover'] transition-all duration-500 ${
-          isDark
-            ? "bg-[#c4af37]/90 text-black hover:bg-red-600 hover:text-white"
-            : "bg-red-600/80 text-white hover:bg-[#d4af37] hover:text-black"
-        } hover:shadow-[0_0_25px_#c4af37]`}
+        className="text-4xl text-center px-6 py-2 rounded-full shadow-lg font-['Irish_Grover'] transition-all duration-500
+          bg-red-600 text-white hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
       >
         {c.title}
       </h2>
@@ -87,14 +83,8 @@ export default function CvSection() {
         onClick={() => setShowCv(!showCv)}
         className={`mt-6 flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)] ${bgButton} ${borderButton}`}
       >
-        {showCv ? (
-          <FaEye className={iconColor} />
-        ) : (
-          <FaEyeSlash className={iconColor} />
-        )}
-        <span
-          className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}
-        >
+        {showCv ? <FaEye className={iconColor} /> : <FaEyeSlash className={iconColor} />}
+        <span className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}>
           {showCv ? c.translations.close : c.translations.view}
         </span>
       </button>
@@ -117,9 +107,7 @@ export default function CvSection() {
         className={`mt-6 flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500 hover:scale-105 shadow-[0_0_20px_rgba(196,175,55,0.4)] ${bgButton} ${borderButton}`}
       >
         <FaDownload className={iconColor} />
-        <span
-          className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}
-        >
+        <span className={`font-esteban ${textButton} hover:text-[#c4af37] transition-all duration-300`}>
           {c.translations.download}
         </span>
       </a>

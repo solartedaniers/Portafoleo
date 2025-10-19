@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipo adaptado
 interface FilosofiaData {
   title: string;
   text: string[];
@@ -14,11 +13,10 @@ interface FilosofiaData {
 }
 
 export default function Filosofia() {
-  const { lang, theme } = useApp(); // ✅ añadimos theme
+  const { lang, theme } = useApp();
   const { content } = useContent();
 
   const data = content?.filosofia as FilosofiaData | undefined;
-
   const [speaking, setSpeaking] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [iconHovered, setIconHovered] = useState(false);
@@ -32,7 +30,7 @@ export default function Filosofia() {
   }, []);
 
   const speakText = () => {
-    if (typeof window === "undefined" || !window.speechSynthesis || !data) return;
+    if (!data || typeof window === "undefined" || !window.speechSynthesis) return;
 
     const synth = window.speechSynthesis;
     if (synth.speaking) {
@@ -79,26 +77,23 @@ export default function Filosofia() {
 
   if (!data) return null;
 
-  // 🎨 Modo claro/oscuro dinámico
-  const bgColor =
-    theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
-  const textColor =
-    theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
+  const bgColor = theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
+  const textColor = theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
 
   return (
     <section
-      className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
+      className="relative w-full min-h-screen grid place-items-center bg-cover bg-center"
       style={{ backgroundImage: `url('${data.background}')` }}
     >
-      <div className="relative max-w-3xl w-[90%] flex flex-col items-center gap-6 mt-5">
-        {/* 🟥 Título */}
-        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
+      <div className="relative max-w-3xl w-[90%] grid gap-6 mt-5">
+        {/* 🔴 Título */}
+        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
           {data.title}
         </h2>
 
         {/* 📜 Contenedor principal */}
         <div
-          className={`relative ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 md:p-10 text-center transition-all duration-500 border-4 border-transparent ${
+          className={`relative ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 md:p-10 transition-all duration-500 border-4 border-transparent ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#d4af37]" : ""
           }`}
           onMouseEnter={() => setHovered(true)}
@@ -119,12 +114,7 @@ export default function Filosofia() {
           </button>
 
           {/* 🖼️ Imagen */}
-          <div
-            className="flex justify-center mb-6"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            onTouchStart={handleTouch}
-          >
+          <div className="flex justify-center mb-6">
             <Image
               src={data.image}
               alt="Filosofía"
