@@ -71,7 +71,9 @@
       { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
       { "name": "Java", "icon": "FaJava", "color": "#f89820" },
       { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
-      { "name": "Unity", "icon": "SiUnity", "color": "#000000" }
+      { "name": "Unity", "icon": "SiUnity", "color": "#000000" },
+      { "name": "Spring Boot", "icon": "SiSpringboot", "color": "#6DB33F" },
+      { "name": "GitHub", "icon": "FaGithub", "color": "#181717" }
     ]
   },
   "projects": [
@@ -127,9 +129,9 @@
         "image": "/images/Daniel.webp"
       },
       {
-        "name": "Danier Fernando",
-        "text": "Working with Daniers Solarte has been an inspiring experience...",
-        "image": "/images/Daniel.webp"
+        "name": "David Fernando Ramírez de la Parra",
+        "text": "During the time I have spent with Daniers in the Software Engineering program, I have noticed that he is a very responsible, dedicated, and committed person in everything he does. He always shows a great interest in learning and improving, and his discipline is evident in every task or project he undertakes. I believe that these qualities, along with his perseverance and positive attitude, are what will lead him to achieve great things in his professional future.",
+        "image": "/images/Ramirez.webp"
       },
       {
         "name": "Danier Fernando",

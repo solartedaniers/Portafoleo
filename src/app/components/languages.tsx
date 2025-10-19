@@ -13,12 +13,13 @@ import {
   SiTailwindcss,
   SiNextdotjs,
   SiUnity,
+  SiSpringboot,
 } from "react-icons/si";
-import { FaJava } from "react-icons/fa";
+import { FaJava, FaGithub } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// ✅ Tipos
 interface Technology {
   name: string;
   icon: string;
@@ -43,36 +44,27 @@ export default function Languages() {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // ✅ Verificación segura de contenido
   if (!content?.technologies) return null;
-
   const techData = content.technologies as TechnologiesContent;
 
-  const title = techData.title;
-  const quote = techData.quote;
-
-  // ✅ Mapeo de íconos
   const iconMap: Record<string, React.ReactNode> = {
     SiAngular: <SiAngular size={60} className="text-[#dd0031]" />,
     SiTailwindcss: <SiTailwindcss size={60} className="text-[#38bdf8]" />,
-    SiNextdotjs: <SiNextdotjs size={60} className="text-black dark:text-white" />,
+    SiNextdotjs: <SiNextdotjs size={60} className="text-[#000000]" />, // negro fijo
     SiDjango: <SiDjango size={60} className="text-[#092e20]" />,
     SiPython: <SiPython size={60} className="text-[#3776AB]" />,
     SiMysql: <SiMysql size={60} className="text-[#00758f]" />,
     FaJava: <FaJava size={60} className="text-[#f89820]" />,
     SiSharp: <SiSharp size={60} className="text-[#9b4f96]" />,
-    SiUnity: <SiUnity size={60} className="text-black dark:text-white" />,
+    SiUnity: <SiUnity size={60} className="text-[#000000]" />, 
+    SiSpringboot: <SiSpringboot size={60} className="text-[#6DB33F]" />,
+    FaGithub: <FaGithub size={60} className="text-[#181717]" />,
   };
-
-  const techList = techData.list.map((tech) => ({
-    name: tech.name,
-    icon: iconMap[tech.icon] ?? <div className="text-gray-400">?</div>,
-  }));
 
   const handleHover = (name: string) => {
     if (isMobile) {
       setHovered(name);
-      setTimeout(() => setHovered(null), 800);
+      setTimeout(() => setHovered(null), 1200);
     } else {
       setHovered(name);
     }
@@ -97,7 +89,7 @@ export default function Languages() {
           className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
           onTouchStart={() => handleHover("title")}
         >
-          {title}
+          {techData.title}
         </h2>
 
         {/* 🌀 Carrusel */}
@@ -118,13 +110,13 @@ export default function Languages() {
                 1024: { slidesPerView: 3, spaceBetween: 30 },
               }}
             >
-              {techList.map((tech, idx) => (
+              {techData.list.map((tech, idx) => (
                 <SwiperSlide key={idx}>
                   <div
                     onMouseEnter={() => handleHover(tech.name)}
                     onMouseLeave={() => !isMobile && setHovered(null)}
                     onTouchStart={() => handleHover(tech.name)}
-                    className={`flex items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
+                    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
                       hovered === tech.name
                         ? "border-gold shadow-[0_0_25px_#c4af37] rotate-[10deg] scale-110"
                         : "border-red-600 shadow-[0_0_15px_#c4af37] rotate-0 scale-100"
@@ -137,8 +129,25 @@ export default function Languages() {
                           : "rotate-0 scale-100"
                       }`}
                     >
-                      {tech.icon}
+                      {iconMap[tech.icon] ?? (
+                        <div className="text-gray-400">?</div>
+                      )}
                     </div>
+
+                    {/* ✨ Nombre al hover */}
+                    <AnimatePresence>
+                      {hovered === tech.name && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-3 text-base font-semibold text-black bg-[#f5f5f5]/90 rounded-full px-3 py-1 border border-gold shadow-sm"
+                        >
+                          {tech.name}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </SwiperSlide>
               ))}
@@ -152,7 +161,7 @@ export default function Languages() {
 
         {/* 💬 Frase motivadora */}
         <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md transition-all duration-500 hover:scale-105 hover:text-gold hover:border-gold hover:shadow-[0_0_25px_#c4af37] text-center">
-          {quote}
+          {techData.quote}
         </p>
       </div>
     </section>

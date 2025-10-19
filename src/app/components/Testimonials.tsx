@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipos según el JSON por idioma
+// ✅ Tipos
 interface Testimonial {
   name: string;
   text: string;
@@ -24,25 +24,25 @@ export default function Testimonials() {
   const [selected, setSelected] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [hasHover, setHasHover] = useState(true);
+  const [tappedIndex, setTappedIndex] = useState<number | null>(null);
 
-  // ✅ Detectar tipo de dispositivo
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     setHasHover(window.matchMedia("(hover: hover)").matches);
   }, []);
 
-  // ✅ Si no hay contenido, no renderizar
   if (!content?.testimonials) return null;
   const t = content.testimonials as TestimonialsContent;
   const testimonials = t.list ?? [];
 
   const renderCard = (testimonial: Testimonial, idx: number) => {
     const isSelected = selected === idx;
+    const isTapped = tappedIndex === idx;
 
     const handleInteraction = () => {
       if (!hasHover) {
-        setSelected(isSelected ? null : idx);
-        setTimeout(() => setSelected(null), 1500);
+        setTappedIndex(idx);
+        setTimeout(() => setTappedIndex(null), 800);
       } else {
         setSelected(isSelected ? null : idx);
       }
@@ -54,29 +54,43 @@ export default function Testimonials() {
         onClick={handleInteraction}
         onTouchStart={handleInteraction}
         className={`bg-[#f5f5f5] rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer ${
-          isSelected
+          isSelected || isTapped
             ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-gold"
             : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"
         }`}
       >
         {!isMobile && (
           <div
-            className={`relative w-28 h-28 rounded-full border-[3px] overflow-hidden transition-all duration-500 ${
-              isSelected ? "border-red-600 scale-110" : "border-[#c4af37]"
+            className={`flex-shrink-0 relative w-28 h-28 rounded-full border-[3px] overflow-hidden transition-all duration-500 ${
+              isSelected || isTapped
+                ? "border-red-600 translate-y-[-4px]"
+                : "border-[#c4af37] hover:border-red-600 hover:-translate-y-1"
             }`}
           >
             <Image
               src={testimonial.image}
               alt={testimonial.name}
               fill
-              className="object-cover rounded-full"
+              className="object-cover rounded-full transition-all duration-300"
               sizes="112px"
             />
           </div>
         )}
 
-        <div className="flex flex-col">
-          <h3 className="font-['Irish_Grover'] text-2xl text-black">
+        <div
+          className={`flex flex-col transition-all duration-300 ${
+            isSelected || isTapped
+              ? "translate-y-[-2px] shadow-md"
+              : "hover:-translate-y-1 hover:shadow-md"
+          }`}
+        >
+          <h3
+            className="font-['Irish_Grover'] text-black text-2xl animate-blink"
+            style={{
+              WebkitTextStroke: "0.5px #d4af37",
+              textShadow: "0 0 4px #d4af37",
+            }}
+          >
             {testimonial.name}
           </h3>
           <p className="mt-2 font-['Esteban'] text-[#5c4c4c] text-justify">
