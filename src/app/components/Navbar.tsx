@@ -27,7 +27,7 @@ interface NavbarLangContent {
 
 export default function Navbar() {
   const { lang, theme } = useApp();
-  const { content } = useContent() as { content: {navbar?: NavbarLangContent } };
+  const { content } = useContent() as { content: { navbar?: NavbarLangContent } };
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -40,7 +40,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🌍 Cargar desde el JSON correcto según el idioma
+  // 🌍 Cargar desde el JSON correcto según idioma
   const navbarContent: NavbarLangContent =
     content?.navbar ??
     (lang === "es"
@@ -73,7 +73,7 @@ export default function Navbar() {
           ],
         });
 
-  // 🧱 Íconos en orden
+  // 🧱 Íconos
   const icons = [
     <FaSmile key="1" />,
     <GiFeather key="2" />,
@@ -100,22 +100,21 @@ export default function Navbar() {
     if (isMobile) setMenuOpen(false);
   };
 
+  // 🎨 Estilos dinámicos por tema
+  const bgMain = theme === "dark" ? "bg-black" : "bg-white";
+  const bgItem = theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-black";
+  const textMenu = theme === "dark" ? "text-[#d4af37]" : "text-black";
+
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 shadow-lg transition-colors duration-300 ${
-        theme === "dark" ? "bg-black" : "bg-white"
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 shadow-lg transition-all duration-500 ${bgMain}`}
     >
       {/* 🔘 Botón menú móvil */}
       <div
         className="flex items-center px-4 py-2 md:hidden cursor-pointer"
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        <span
-          className={`font-bold text-lg ${
-            theme === "dark" ? "text-[#d4af37]" : "text-black"
-          }`}
-        >
+        <span className={`font-bold text-lg transition-colors duration-300 ${textMenu}`}>
           ☰ Menú
         </span>
       </div>
@@ -134,14 +133,12 @@ export default function Navbar() {
               onClick={() => handleSelect(index)}
               className={`flex items-center gap-3 px-4 py-2 rounded-xl border transition-all duration-300 cursor-pointer ${
                 selectedIndex === index
-                  ? "border-red-600 shadow-[0_0_15px_rgba(0,0,0,0.8)] scale-105"
-                  : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
-              } bg-[#f5f5f5] text-black`}
+                  ? "border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.5)] scale-105"
+                  : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(255,0,0,0.4)] hover:scale-105"
+              } ${bgItem}`}
             >
               <span className="text-lg">{icons[index]}</span>
-              <span className="font-['Irish_Grover'] text-sm">
-                {item.label}
-              </span>
+              <span className="font-['Irish_Grover'] text-sm">{item.label}</span>
             </a>
           ))}
         </div>
@@ -149,7 +146,7 @@ export default function Navbar() {
 
       {/* 🖥 Menú escritorio */}
       <div className="hidden md:block md:px-2 md:pt-2">
-        <div className="bg-[#d4af37] max-w-[99%] mx-auto px-4 py-2">
+        <div className="max-w-[99%] mx-auto px-4 py-2 bg-[#d4af37] transition-all duration-500">
           <div className="grid grid-cols-10 gap-2 max-w-7xl mx-auto">
             {navbarContent.menu.map((item, index) => (
               <a
@@ -160,9 +157,9 @@ export default function Navbar() {
                 onClick={() => handleSelect(index)}
                 className={`flex flex-col items-center justify-center gap-1 px-3 py-1 rounded-xl border transition-all duration-300 cursor-pointer ${
                   selectedIndex === index
-                    ? "border-red-600 shadow-[0_0_15px_rgba(0,0,0,0.8)] scale-105"
-                    : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(0,0,0,0.6)] hover:scale-105"
-                } bg-[#f5f5f5] text-black`}
+                    ? "border-red-600 shadow-[0_0_15px_rgba(255,0,0,0.5)] scale-105"
+                    : "border-transparent hover:border-red-600 hover:shadow-[0_0_10px_rgba(255,0,0,0.4)] hover:scale-105"
+                } ${bgItem}`}
               >
                 <span className="text-lg">{icons[index]}</span>
                 <span className="font-['Irish_Grover'] text-xs sm:text-sm">
