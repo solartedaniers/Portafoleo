@@ -48,30 +48,28 @@ export default function Languages() {
   const techData = content.technologies as TechnologiesContent;
 
   const iconMap: Record<string, React.ReactNode> = {
-    SiAngular: <SiAngular size={60} className="text-[#dd0031]" />,
-    SiTailwindcss: <SiTailwindcss size={60} className="text-[#38bdf8]" />,
-    SiNextdotjs: <SiNextdotjs size={60} className="text-[#000000]" />, // negro fijo
-    SiDjango: <SiDjango size={60} className="text-[#092e20]" />,
-    SiPython: <SiPython size={60} className="text-[#3776AB]" />,
-    SiMysql: <SiMysql size={60} className="text-[#00758f]" />,
-    FaJava: <FaJava size={60} className="text-[#f89820]" />,
-    SiSharp: <SiSharp size={60} className="text-[#9b4f96]" />,
-    SiUnity: <SiUnity size={60} className="text-[#000000]" />, 
-    SiSpringboot: <SiSpringboot size={60} className="text-[#6DB33F]" />,
-    FaGithub: <FaGithub size={60} className="text-[#181717]" />,
+    SiAngular: <SiAngular size={60} className="text-red-600" />,
+    SiTailwindcss: <SiTailwindcss size={60} className="text-cyan-400" />,
+    SiNextdotjs: <SiNextdotjs size={60} className="text-black" />,
+    SiDjango: <SiDjango size={60} className="text-green-900" />,
+    SiPython: <SiPython size={60} className="text-blue-600" />,
+    SiMysql: <SiMysql size={60} className="text-blue-800" />,
+    FaJava: <FaJava size={60} className="text-orange-500" />,
+    SiSharp: <SiSharp size={60} className="text-purple-600" />,
+    SiUnity: <SiUnity size={60} className="text-black" />,
+    SiSpringboot: <SiSpringboot size={60} className="text-green-500" />,
+    FaGithub: <FaGithub size={60} className="text-gray-800" />,
   };
 
   const handleHover = (name: string) => {
+    setHovered(name);
     if (isMobile) {
-      setHovered(name);
       setTimeout(() => setHovered(null), 1200);
-    } else {
-      setHovered(name);
     }
   };
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-[6px] sm:border-[8px] border-gold box-border">
+    <section className="relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 border-yellow-500">
       {/* 🎥 Fondo */}
       <video
         src="/videos/stellar-wolf.mp4"
@@ -79,22 +77,23 @@ export default function Languages() {
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover object-center scale-[0.9] z-0"
+        className="absolute inset-0 w-full h-full object-cover object-center z-0"
+        style={{ transform: isMobile ? "scale(1)" : "scale(0.9)" }}
       />
 
       {/* Contenido */}
-      <div className="relative z-10 flex flex-col items-center w-full h-full pt-10 px-4 sm:px-6 gap-6">
+      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
         {/* 🏷️ Título */}
         <h2
-          className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]"
+          className="text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition duration-300 bg-red-600 text-white hover:bg-yellow-500 hover:text-black hover:shadow-xl"
           onTouchStart={() => handleHover("title")}
         >
           {techData.title}
         </h2>
 
         {/* 🌀 Carrusel */}
-        <div className="relative w-full flex items-center justify-center px-6 sm:px-10">
-          <div className="flex-grow max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
+        <div className="relative w-full flex items-center justify-center px-4 sm:px-10">
+          <div className="w-full max-w-[95%] sm:max-w-[80%] md:max-w-[70%]">
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -116,17 +115,15 @@ export default function Languages() {
                     onMouseEnter={() => handleHover(tech.name)}
                     onMouseLeave={() => !isMobile && setHovered(null)}
                     onTouchStart={() => handleHover(tech.name)}
-                    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl border-4 p-4 transition-all duration-500 overflow-hidden bg-[#f5f5f5] ${
+                    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-xl border-4 p-4 transition duration-300 bg-gray-100 ${
                       hovered === tech.name
-                        ? "border-gold shadow-[0_0_25px_#c4af37] rotate-[10deg] scale-110"
-                        : "border-red-600 shadow-[0_0_15px_#c4af37] rotate-0 scale-100"
+                        ? "border-yellow-500 shadow-lg scale-105 rotate-3"
+                        : "border-red-600 shadow-md"
                     }`}
                   >
                     <div
-                      className={`transition-transform duration-500 ${
-                        hovered === tech.name
-                          ? "rotate-[15deg] scale-110"
-                          : "rotate-0 scale-100"
+                      className={`transition duration-300 ${
+                        hovered === tech.name ? "scale-110 rotate-6" : ""
                       }`}
                     >
                       {iconMap[tech.icon] ?? (
@@ -139,10 +136,14 @@ export default function Languages() {
                       {hovered === tech.name && (
                         <motion.p
                           initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
+                          animate={{ opacity: 1, y: -2 }}
                           exit={{ opacity: 0, y: 10 }}
                           transition={{ duration: 0.3 }}
-                          className="mt-3 text-base font-semibold text-black bg-[#f5f5f5]/90 rounded-full px-3 py-1 border border-gold shadow-sm"
+                          className="mt-3 text-sm font-bold text-black bg-white rounded-full px-3 py-1 border border-yellow-500 shadow animate-blink"
+                          style={{
+                            WebkitTextStroke: "0.5px #facc15",
+                            textShadow: "0 0 4px #facc15",
+                          }}
                         >
                           {tech.name}
                         </motion.p>
@@ -155,12 +156,12 @@ export default function Languages() {
           </div>
 
           {/* Flechas */}
-          <div className="swiper-button-prev absolute top-1/2 -translate-y-1/2 left-2 !text-white !w-10 !h-10 sm:!w-12 sm:!h-12 after:!text-2xl sm:after:!text-3xl bg-black/40 rounded-full border-2 border-gold shadow-md transition-all duration-300 hover:scale-110 hover:border-red-600 z-20" />
-          <div className="swiper-button-next absolute top-1/2 -translate-y-1/2 right-2 !text-white !w-10 !h-10 sm:!w-12 sm:!h-12 after:!text-2xl sm:after:!text-3xl bg-black/40 rounded-full border-2 border-gold shadow-md transition-all duration-300 hover:scale-110 hover:border-red-600 z-20" />
+          <div className="swiper-button-prev absolute top-1/2 -translate-y-1/2 left-2 text-white w-10 h-10 sm:w-12 sm:h-12 after:text-2xl sm:after:text-3xl bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20" />
+          <div className="swiper-button-next absolute top-1/2 -translate-y-1/2 right-2 text-white w-10 h-10 sm:w-12 sm:h-12 after:text-2xl sm:after:text-3xl bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20" />
         </div>
 
         {/* 💬 Frase motivadora */}
-        <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-[#f5f5f5] shadow-md transition-all duration-500 hover:scale-105 hover:text-gold hover:border-gold hover:shadow-[0_0_25px_#c4af37] text-center">
+        <p className="hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 text-black border-red-600 bg-gray-100 shadow-md transition duration-300 hover:scale-105 hover:text-yellow-500 hover:border-yellow-500 hover:shadow-lg text-center">
           {techData.quote}
         </p>
       </div>

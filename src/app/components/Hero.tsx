@@ -39,7 +39,7 @@ export default function Hero(): React.JSX.Element {
       brand: "Daniers Solarte",
       quote: "El código es mi espada,<br />la lógica mi escudo.",
       view: "Ver Portafolio",
-      language: "English",
+      language: lang === "es" ? "English" : "Español",
     };
 
   // 📱 Detectar móvil
@@ -134,7 +134,7 @@ export default function Hero(): React.JSX.Element {
                 : "hover:scale-110 hover:border-red-600"
             }`}
         >
-          🌐 {t.language}
+          🌐 {lang === "es" ? "English" : "Español"}
         </button>
       </div>
 
