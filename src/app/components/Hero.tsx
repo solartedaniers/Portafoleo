@@ -12,17 +12,10 @@ interface HeroLang {
   language: string;
 }
 
-interface HeroContent {
-  es: HeroLang;
-  en: HeroLang;
-}
-
 interface SiteContent {
-  hero?: HeroContent;
+  hero?: HeroLang;
   [key: string]: unknown;
 }
-
-type LangType = "es" | "en";
 
 export default function Hero(): React.JSX.Element {
   const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
@@ -33,9 +26,9 @@ export default function Hero(): React.JSX.Element {
   const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
 
-  // 🎯 Traducción dinámica desde el JSON
+  // 🎯 Traducción dinámica desde el JSON (✅ corregido)
   const t: HeroLang =
-    content?.hero?.[lang as LangType] ?? {
+    (content?.hero as HeroLang) ?? {
       brand: "Daniers Solarte",
       quote: "El código es mi espada,<br />la lógica mi escudo.",
       view: "Ver Portafolio",
