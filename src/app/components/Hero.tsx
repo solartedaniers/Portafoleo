@@ -33,30 +33,26 @@ export default function Hero(): React.JSX.Element {
       language: lang === "es" ? "English" : "Español",
     };
 
-  // 🧩 Hook interno para detectar dispositivo
-  const useDeviceCheck = () => {
-    useEffect(() => {
-      const checkDevice = () => setIsMobile(window.innerWidth < 768);
-      checkDevice();
-      window.addEventListener("resize", checkDevice);
-      return () => window.removeEventListener("resize", checkDevice);
-    }, []);
-  };
-  useDeviceCheck();
+  // 🧩 Detecta si es móvil
+  useEffect(() => {
+    const checkDevice = () => setIsMobile(window.innerWidth < 768);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
-  // 🌓 Tema del sistema
+  // 🌓 Detecta tema del sistema
   useEffect(() => {
     if (typeof window === "undefined") return;
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
     setTheme(systemDark.matches ? "dark" : "light");
-
     const handleChange = (e: MediaQueryListEvent) =>
       setTheme(e.matches ? "dark" : "light");
     systemDark.addEventListener("change", handleChange);
     return () => systemDark.removeEventListener("change", handleChange);
   }, [setTheme]);
 
-  // ⚔️ Sonido + navegación
+  // ⚔️ Sonido y navegación
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
@@ -67,16 +63,16 @@ export default function Hero(): React.JSX.Element {
     router.push("/portfolio");
   };
 
-  // 📱 Efecto táctil
+  // 📱 Efecto táctil en móviles
   const handleTouchEffect = (id: string) => {
     if (!isMobile) return;
     setActiveTouch(id);
-    setTimeout(() => setActiveTouch(null), 500);
+    setTimeout(() => setActiveTouch(null), 400);
   };
 
-  // 🎨 Colores según tema
+  // 🎨 Estilos dependientes del tema
   const isDark = theme === "dark";
-  const borderColor = "border-[#d4af37]";
+  const borderColor = "border-[#d4af37]"; // Dorado por defecto
   const textPrimary = isDark ? "text-white" : "text-[#1c1b19]";
   const textSecondary = isDark ? "text-gray-300" : "text-[#4a4a44]";
   const bgOverlay = isDark ? "bg-black/60" : "bg-[#eae6d9]/45";
@@ -96,7 +92,7 @@ export default function Hero(): React.JSX.Element {
           loop
           playsInline
           className={`w-full h-full object-cover transition-all duration-700 ${
-            isDark ? "brightness-100" : "brightness-[0.78]"
+            isDark ? "brightness-100" : "brightness-[0.70]"
           }`}
         />
       </div>
@@ -106,12 +102,13 @@ export default function Hero(): React.JSX.Element {
 
       {/* 🔘 Controles */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
-        {/* 🌓 Tema */}
+        {/* 🌓 Botón de tema */}
         <button
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
           aria-label="Cambiar tema"
-          className={`px-5 py-2.5 rounded-full ${borderColor} shadow-md ${btnBg} transition-all duration-300 
+          className={`px-5 py-2.5 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor} 
+            transition-all duration-300 ease-in-out
             ${
               activeTouch === "theme"
                 ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
@@ -121,12 +118,13 @@ export default function Hero(): React.JSX.Element {
           {isDark ? "🌙" : "☀️"}
         </button>
 
-        {/* 🌐 Idioma */}
+        {/* 🌐 Botón de idioma */}
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
           aria-label="Cambiar idioma"
-          className={`px-5 py-2.5 rounded-full ${borderColor} shadow-md ${btnBg} transition-all duration-300 
+          className={`px-5 py-2.5 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor}
+            transition-all duration-300 ease-in-out
             ${
               activeTouch === "lang"
                 ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
@@ -138,14 +136,13 @@ export default function Hero(): React.JSX.Element {
       </div>
 
       {/* 🧍 Contenido principal */}
-      <div
-        className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6"
-      >
+      <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6">
         <div className="flex flex-col items-center text-center gap-6 translate-x-6 sm:translate-x-60">
           {/* Marca */}
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
-            className={`${textPrimary} text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] transition-transform text-stroke-gold
+            className={`${textPrimary} text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] 
+              transition-transform text-stroke-gold
               ${
                 activeTouch === "brand"
                   ? "scale-110 text-stroke-red"
@@ -158,7 +155,8 @@ export default function Hero(): React.JSX.Element {
           {/* Frase */}
           <p
             onTouchStart={() => handleTouchEffect("quote")}
-            className={`${textSecondary} text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] px-6 py-2 rounded-[30px] shadow-lg ${quoteBg} font-esteban transition-transform
+            className={`${textSecondary} text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] 
+              px-6 py-2 rounded-[30px] shadow-lg ${quoteBg} font-esteban transition-transform
               ${
                 activeTouch === "quote"
                   ? "scale-105 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
@@ -176,7 +174,8 @@ export default function Hero(): React.JSX.Element {
           <button
             onClick={handleViewClick}
             onTouchStart={() => handleTouchEffect("view")}
-            className={`px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg transition-transform font-[Instrument_Serif]
+            className={`px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg 
+              transition-transform font-[Instrument_Serif]
               ${
                 activeTouch === "view"
                   ? "scale-110 border-[#d4af37] shadow-[0_4px_20px_rgba(196,175,39,0.4)]"

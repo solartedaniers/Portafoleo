@@ -112,9 +112,9 @@ export default function Footer() {
   const isDark = theme === "dark";
 
   // 🎨 Estilos base
-  const baseText = isDark ? "text-gray-200" : "text-[#2a2a2a]";
-  const phraseText = isDark ? "text-white" : "text-[#1c1b19]";
-  const authorText = isDark ? "text-gray-300" : "text-[#333]";
+  const baseText = isDark ? "text-gray-200" : "text-white"; // ← blanco en modo claro
+  const phraseText = isDark ? "text-white" : "text-[#d4af37]"; // ← dorado en modo claro
+  const authorText = isDark ? "text-gray-300" : "text-white"; // ← blanco en modo claro
   const filterBrightness = isDark ? "brightness(0.85)" : "brightness(1)";
   const bgBase = isDark ? "bg-[#1a1a1a]" : "bg-[#f5f5f5]";
   const borderGold = isDark ? "border-[#d4af37]" : "border-[#c4af37]";
@@ -182,7 +182,7 @@ export default function Footer() {
                     className={`font-['Esteban'] text-xl ${
                       isDark ? "text-white" : "text-black"
                     }`}
-                    style={{ WebkitTextStroke: "0.5px #d4af37" }}
+                    style={{ WebkitTextStroke: isDark ? "0.5px #d4af37" : "none" }}
                   >
                     {clockTime}
                   </span>
@@ -195,7 +195,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Créditos */}
+        {/* Créditos y derechos */}
         <div
           className={`text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
             tapHighlight === "credits" ? "text-[#d4af37] scale-105" : ""
@@ -213,7 +213,9 @@ export default function Footer() {
             tapHighlight === "phrase" ? "text-[#d4af37] scale-105" : ""
           }`}
           onClick={() => handleTap("phrase")}
-          style={{ WebkitTextStroke: "0.5px #d4af37" }}
+          style={{
+            WebkitTextStroke: isDark ? "0.5px #d4af37" : "none", // ← sin borde en modo claro
+          }}
         >
           {footerData.phrase}
         </p>
