@@ -34,7 +34,6 @@ export default function Contact() {
   const { theme } = useApp();
   const { content } = useContent();
 
-  // ✅ Hooks declarados ANTES de cualquier condición
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [contenido, setContenido] = useState("");
@@ -49,7 +48,6 @@ export default function Contact() {
     }
   }, []);
 
-  // ⚠️ Después de los hooks, ahora sí puedes salir si no hay contenido
   if (!content?.contact) return null;
   const c = content.contact as ContactContent;
 
@@ -84,17 +82,25 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // --- Envío con FormData ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccessMsg(null);
+
     if (validateForm()) {
       playSendSound();
+
       try {
-        const res = await fetch("https://formsubmit.co/ajax/solartedaniers@gmail.com", {
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("nombre", nombre);
+        formData.append("contenido", contenido);
+
+        const res = await fetch("https://formsubmit.co/solartedaniers@gmail.com", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, nombre, contenido }),
+          body: formData,
         });
+
         if (res.ok) {
           setSuccessMsg(c.success);
           setEmail("");
@@ -106,6 +112,7 @@ export default function Contact() {
       } catch {
         setSuccessMsg(c.error);
       }
+
       setTimeout(() => setSuccessMsg(null), 4000);
     }
   };
@@ -130,7 +137,9 @@ export default function Contact() {
 
       {/* 💬 Mensaje */}
       <div className="hidden md:block">
-        <div className={`${boxBg} p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-[#d4af37] transition-all duration-300 hover:scale-105 max-w-xl w-full mb-12`}>
+        <div
+          className={`${boxBg} p-6 rounded-xl shadow-md border hover:border-red-600 hover:shadow-[#d4af37] transition-all duration-300 hover:scale-105 max-w-xl w-full mb-12`}
+        >
           <p
             className={`font-['Esteban'] ${textMain} text-lg drop-shadow-[0_0_1px_#d4af37] leading-relaxed transition-all duration-300`}
             dangerouslySetInnerHTML={{ __html: c.message }}
@@ -164,23 +173,44 @@ export default function Contact() {
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full">
           {/* 🌐 Redes sociales */}
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-            <div className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}>
+            {/* 🟦 LinkedIn */}
+            <div
+              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
+            >
               <FaLinkedin className="text-2xl text-blue-600 hover:scale-125 transition-all duration-300" />
-              <a href={c.social.linkedin.url} target="_blank" rel="noopener noreferrer" onClick={playLinkedInSound} className={`font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}>
+              <a
+                href={c.social.linkedin.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playLinkedInSound}
+                className={`font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}
+              >
                 {c.social.linkedin.label}
               </a>
             </div>
-            <div className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}>
-              <FaWhatsapp className="text-2xl text-green-600 hover:scale-125 transition-all duration-300" />
-              <a href={c.social.whatsapp.url} target="_blank" rel="noopener noreferrer" onClick={playWhatsAppSound} className={`font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}>
-                {c.social.whatsapp.label}
+
+            {/* 🟢 WhatsApp — ícono y texto SIEMPRE visibles */}
+            <div
+              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
+            >
+              <a
+                href={c.social.whatsapp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playWhatsAppSound}
+                className={`flex items-center justify-center gap-2 font-['Esteban'] ${textMain} hover:scale-110 hover:animate-pulse transition-all duration-300`}
+              >
+                <FaWhatsapp className="text-2xl text-green-600 sm:text-3xl hover:scale-125 transition-all duration-300" />
+                <span className="inline">{c.social.whatsapp.label}</span>
               </a>
             </div>
           </div>
 
           {/* ✉️ Formulario */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md text-left">
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">{c.fields.email.label}</label>
+            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+              {c.fields.email.label}
+            </label>
             <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 shadow-sm`}>
               <FaEnvelope className="text-gray-500" />
               <input
@@ -193,7 +223,9 @@ export default function Contact() {
             </div>
             {errors.email && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.email}</p>}
 
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">{c.fields.name.label}</label>
+            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+              {c.fields.name.label}
+            </label>
             <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 shadow-sm`}>
               <FaUser className="text-gray-500" />
               <input
@@ -206,7 +238,9 @@ export default function Contact() {
             </div>
             {errors.nombre && <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md animate-pulse">{errors.nombre}</p>}
 
-            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">{c.fields.content.label}</label>
+            <label className="font-['Esteban'] text-lg text-slate-200 drop-shadow-[0_0_1px_red] font-semibold">
+              {c.fields.content.label}
+            </label>
             <textarea
               placeholder={c.fields.content.placeholder}
               className={`${boxBg} p-3 rounded-xl border-2 border-red-600 shadow-sm w-full h-28 font-['Esteban'] ${placeholderColor} ${inputText}`}
@@ -223,7 +257,11 @@ export default function Contact() {
               <span className={`font-['Esteban'] ${inputText}`}>{c.fields.send}</span>
             </button>
 
-            {successMsg && <p className="text-black text-base bg-gray-200 mt-3 py-2 px-3 rounded-md shadow-md animate-fadeIn">{successMsg}</p>}
+            {successMsg && (
+              <p className="text-black text-base bg-gray-200 mt-3 py-2 px-3 rounded-md shadow-md animate-fadeIn">
+                {successMsg}
+              </p>
+            )}
           </form>
         </div>
       </div>

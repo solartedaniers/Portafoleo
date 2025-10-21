@@ -3,7 +3,8 @@
     "brand": "Daniers Solarte",
     "quote": "The code is my sword,<br />logic is my shield.",
     "view": "View Portfolio",
-    "language": "Español"
+    "language": "Español",
+    "video": "/videos/background-video.mp4"
   },
   "navbar": {
     "menu": [
@@ -62,6 +63,7 @@
   "technologies": {
     "title": "Technologies and Tools",
     "quote": "“Each language, a technique that I perfect every day.”",
+    "video": "/videos/stellar-wolf.mp4",
     "list": [
       { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
       { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
@@ -134,9 +136,9 @@
         "image": "/images/Ramirez.webp"
       },
       {
-        "name": "Danier Fernando",
-        "text": "Intentional repetition to keep uniform structure.",
-        "image": "/images/Daniel.webp"
+        "name": "Roiman Andres Romo Limas",
+        "text": "More than two years ago, while still a teenager, Daniers Solarte helped me complete an agricultural task, regardless of the fact that night had fallen long after his working hours. That gesture reflects his dedication, generosity, and commitment. Daniers has always been characterized by his humility, respect for others, and by carrying God in his heart. His honesty, personal values, and respect for people make him someone trustworthy and admirable. He possesses great skill in handling agricultural and mechanical tools, which has allowed him to pursue his dreams with full confidence. In any field he works in, he does so with agility, enthusiasm, and dedication, always giving his best.",
+        "image": "/images/Andres.webp"
       },
       {
         "name": "Danier Fernando",

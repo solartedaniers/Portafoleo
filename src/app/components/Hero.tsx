@@ -9,6 +9,7 @@ interface HeroLang {
   quote: string;
   view: string;
   language: string;
+  video: string; // 🎥 video agregado desde JSON
 }
 
 interface SiteContent {
@@ -21,9 +22,11 @@ export default function Hero(): React.JSX.Element {
   const { content } = useContent() as { content: SiteContent };
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
+  const [hoverVideo, setHoverVideo] = useState(false);
 
   const t: HeroLang =
     (content?.hero as HeroLang) ?? {
@@ -31,6 +34,7 @@ export default function Hero(): React.JSX.Element {
       quote: "El código es mi espada,<br />la lógica mi escudo.",
       view: "Ver Portafolio",
       language: lang === "es" ? "English" : "Español",
+      video: "/videos/background-video.mp4", // valor por defecto
     };
 
   // 🧩 Detecta si es móvil
@@ -63,16 +67,29 @@ export default function Hero(): React.JSX.Element {
     router.push("/portfolio");
   };
 
-  // 📱 Efecto táctil en móviles
+  // 📱 Efecto táctil
   const handleTouchEffect = (id: string) => {
     if (!isMobile) return;
     setActiveTouch(id);
     setTimeout(() => setActiveTouch(null), 400);
   };
 
+  // 🎥 Hover control (como en CvSection)
+  const handleMouseEnter = () => {
+    setHoverVideo(true);
+    videoRef.current?.play();
+  };
+  const handleMouseLeave = () => {
+    setHoverVideo(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   // 🎨 Estilos dependientes del tema
   const isDark = theme === "dark";
-  const borderColor = "border-[#d4af37]"; // Dorado por defecto
+  const borderColor = "border-[#d4af37]";
   const textPrimary = isDark ? "text-white" : "text-[#1c1b19]";
   const textSecondary = isDark ? "text-gray-300" : "text-[#4a4a44]";
   const bgOverlay = isDark ? "bg-black/60" : "bg-[#eae6d9]/45";
@@ -82,18 +99,21 @@ export default function Hero(): React.JSX.Element {
   return (
     <section
       className={`relative w-screen h-screen box-border border-[8px] ${borderColor} overflow-hidden transition-colors duration-500 grid`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* 🎥 Fondo */}
+      {/* 🎥 Fondo dinámico desde JSON */}
       <div className="absolute inset-0 z-0">
         <video
-          src="/videos/background-video.mp4"
-          autoPlay
+          ref={videoRef}
+          src={t.video}
           muted
           loop
           playsInline
+          autoPlay
           className={`w-full h-full object-cover transition-all duration-700 ${
             isDark ? "brightness-100" : "brightness-[0.70]"
-          }`}
+          } ${hoverVideo ? "scale-105" : "scale-100"}`}
         />
       </div>
 
@@ -102,7 +122,7 @@ export default function Hero(): React.JSX.Element {
 
       {/* 🔘 Controles */}
       <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
-        {/* 🌓 Botón de tema */}
+        {/* 🌓 Tema */}
         <button
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
@@ -118,7 +138,7 @@ export default function Hero(): React.JSX.Element {
           {isDark ? "🌙" : "☀️"}
         </button>
 
-        {/* 🌐 Botón de idioma */}
+        {/* 🌐 Idioma */}
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}

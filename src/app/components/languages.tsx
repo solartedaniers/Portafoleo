@@ -31,6 +31,7 @@ interface Technology {
 interface TechnologiesContent {
   title: string;
   quote: string;
+  video: string; // 🟢 nuevo campo para el video desde el JSON
   list: Technology[];
 }
 
@@ -63,7 +64,7 @@ const iconMap: Record<string, React.ReactNode> = {
   FaGithub: <FaGithub size={60} className="text-gray-800 dark:text-gray-300" />,
 };
 
-// 🌟 Componente separado para cada tarjeta de tecnología
+// 🌟 Tarjeta individual
 interface TechnologyCardProps {
   tech: Technology;
   hovered: string | null;
@@ -145,9 +146,9 @@ export default function Languages() {
     <section
       className={`relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 ${sectionBorder}`}
     >
-      {/* 🎥 Fondo de video */}
+      {/* 🎥 Fondo de video dinámico */}
       <video
-        src="/videos/stellar-wolf.mp4"
+        src={techData.video} // 🔥 ahora se carga desde el JSON
         autoPlay
         muted
         loop

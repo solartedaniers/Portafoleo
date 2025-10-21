@@ -3,7 +3,8 @@
     "brand": "Daniers Solarte",
     "quote": "El código es mi espada,<br />la lógica mi escudo.",
     "view": "Ver Portafolio",
-    "language": "English"
+    "language": "English",
+    "video": "/videos/background-video.mp4"
   },
   "navbar": {
     "menu": [
@@ -62,6 +63,7 @@
   "technologies": {
     "title": "Tecnologías y Herramientas",
     "quote": "“Cada lenguaje, una técnica que perfecciono cada día.”",
+    "video": "/videos/stellar-wolf.mp4",
     "list": [
       { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
       { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
@@ -134,9 +136,9 @@
         "image": "/images/Ramirez.webp"
       },
       {
-        "name": "Danier Fernando",
-        "text": "Repetición intencional para mantener estructura uniforme.",
-        "image": "/images/Daniel.webp"
+        "name": "Roiman Andres Romo Limas",
+        "text": "Hace más de dos años, siendo aún adolescente, Daniers Solarte me ayudó a completar una tarea agrícola, sin importar que la noche hubiera caído mucho después de su horario laboral. Ese gesto refleja su entrega, generosidad y compromiso.Daniers se ha caracterizado siempre por su humildad, respeto hacia los demás y por llevar a Dios en su corazón. Su honestidad y valores personales y respeto a las Personas lo convierten en alguien confiable y admirable. Posee una gran habilidad para manejar herramientas agrícolas y mecánicas, lo que le ha permitido perseguir sus sueños con plena confianza. En cualquier campo en el que trabaje, lo hace con agilidad, entusiasmo y dedicación, dando siempre lo mejor de sí mismo.",
+        "image": "/images/Andres.webp"
       },
       {
         "name": "Danier Fernando",
