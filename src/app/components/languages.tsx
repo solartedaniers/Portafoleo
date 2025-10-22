@@ -31,21 +31,19 @@ interface Technology {
 interface TechnologiesContent {
   title: string;
   quote: string;
-  video: string; // 🟢 nuevo campo para el video desde el JSON
+  video: string;
   list: Technology[];
 }
 
-// 🌟 Hook personalizado para detectar dispositivo móvil
+// 🌟 Hook para detectar si es móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < breakpoint);
     checkDevice();
     window.addEventListener("resize", checkDevice);
     return () => window.removeEventListener("resize", checkDevice);
   }, [breakpoint]);
-
   return isMobile;
 }
 
@@ -99,7 +97,7 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
           animate={{ opacity: 1, y: -2 }}
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.3 }}
-          className="mt-3 text-sm font-bold bg-white/90 text-black rounded-full px-3 py-1 border border-yellow-500 shadow animate-blink"
+          className="mt-3 text-sm font-bold bg-white/90 text-black rounded-full px-3 py-1 border border-yellow-500 shadow"
           style={{
             WebkitTextStroke: "0.5px #facc15",
             textShadow: "0 0 4px #facc15",
@@ -137,41 +135,50 @@ export default function Languages() {
       ? "text-white bg-black border-red-600 hover:text-yellow-500 hover:border-yellow-500"
       : "text-black bg-gray-100 border-red-600 hover:text-yellow-500 hover:border-yellow-500";
 
-  const handleHover = (name: string) => {
-    setHovered(name);
-    if (isMobile) setTimeout(() => setHovered(null), 1200);
-  };
-
   return (
     <section
       className={`relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 ${sectionBorder}`}
     >
-      {/* 🎥 Fondo de video dinámico */}
+      {/* 🎥 Fondo de video */}
       <video
-        src={techData.video} // 🔥 ahora se carga desde el JSON
+        src={techData.video}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover object-center z-0"
-        style={{ transform: isMobile ? "scale(1)" : "scale(0.9)" }}
+        className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
       {/* 🌟 Contenido */}
-      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6 transition-all duration-500">
+      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
         <h2
           className={`text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 font-['Irish_Grover'] cursor-pointer ${titleStyle}`}
-          onTouchStart={() => handleHover("title")}
         >
           {techData.title}
         </h2>
 
-        {/* 🌀 Carrusel */}
-        <div className="relative w-full flex items-center justify-center px-4 sm:px-10">
-          <div className="w-full max-w-[95%] sm:max-w-[80%] md:max-w-[70%]">
+        {/* 💬 Frase motivadora SOLO en móvil */}
+        {isMobile && (
+          <p
+            className={`block md:hidden italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 text-center ${quoteStyle}`}
+          >
+            {techData.quote}
+          </p>
+        )}
+
+        {/* 🌀 Carrusel centrado */}
+        <div className="relative flex items-center justify-center w-full px-8 sm:px-12">
+          {/* Flecha izquierda */}
+          <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-1 sm:left-4" />
+
+          {/* Carrusel */}
+          <div className="flex justify-center w-full max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
             <Swiper
               modules={[Navigation]}
-              navigation={{ nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
               loop
               centeredSlides
               spaceBetween={40}
@@ -181,7 +188,7 @@ export default function Languages() {
                 1024: { slidesPerView: 3, spaceBetween: 30 },
               }}
             >
-              {techData.list.map((tech: Technology, idx: number) => (
+              {techData.list.map((tech, idx) => (
                 <SwiperSlide key={idx}>
                   <TechnologyCard
                     tech={tech}
@@ -195,17 +202,18 @@ export default function Languages() {
             </Swiper>
           </div>
 
-          {/* Flechas */}
-          <div className="swiper-button-prev absolute top-1/2 -translate-y-1/2 left-2 text-white w-10 h-10 sm:w-12 sm:h-12 after:text-2xl sm:after:text-3xl bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20" />
-          <div className="swiper-button-next absolute top-1/2 -translate-y-1/2 right-2 text-white w-10 h-10 sm:w-12 sm:h-12 after:text-2xl sm:after:text-3xl bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20" />
+          {/* Flecha derecha */}
+          <div className="swiper-button-next flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute right-1 sm:right-4" />
         </div>
 
-        {/* 💬 Frase motivadora */}
-        <p
-          className={`hidden md:block mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 hover:scale-105 text-center ${quoteStyle}`}
-        >
-          {techData.quote}
-        </p>
+        {/* 💬 Frase motivadora SOLO en escritorio */}
+        {!isMobile && (
+          <p
+            className={`mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 hover:scale-105 text-center ${quoteStyle}`}
+          >
+            {techData.quote}
+          </p>
+        )}
       </div>
     </section>
   );
