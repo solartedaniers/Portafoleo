@@ -9,7 +9,7 @@ interface HeroLang {
   quote: string;
   view: string;
   language: string;
-  video: string; // 🎥 video agregado desde JSON
+  video: string;
 }
 
 interface SiteContent {
@@ -34,10 +34,9 @@ export default function Hero(): React.JSX.Element {
       quote: "El código es mi espada,<br />la lógica mi escudo.",
       view: "Ver Portafolio",
       language: lang === "es" ? "English" : "Español",
-      video: "/videos/background-video.mp4", // valor por defecto
+      video: "/videos/background-video.mp4",
     };
 
-  // 🧩 Detecta si es móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -45,7 +44,6 @@ export default function Hero(): React.JSX.Element {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // 🌓 Detecta tema del sistema
   useEffect(() => {
     if (typeof window === "undefined") return;
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
@@ -56,7 +54,6 @@ export default function Hero(): React.JSX.Element {
     return () => systemDark.removeEventListener("change", handleChange);
   }, [setTheme]);
 
-  // ⚔️ Sonido y navegación
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
@@ -67,14 +64,12 @@ export default function Hero(): React.JSX.Element {
     router.push("/portfolio");
   };
 
-  // 📱 Efecto táctil
   const handleTouchEffect = (id: string) => {
     if (!isMobile) return;
     setActiveTouch(id);
     setTimeout(() => setActiveTouch(null), 400);
   };
 
-  // 🎥 Hover control (como en CvSection)
   const handleMouseEnter = () => {
     setHoverVideo(true);
     videoRef.current?.play();
@@ -87,7 +82,6 @@ export default function Hero(): React.JSX.Element {
     }
   };
 
-  // 🎨 Estilos dependientes del tema
   const isDark = theme === "dark";
   const borderColor = "border-[#d4af37]";
   const textPrimary = isDark ? "text-white" : "text-[#1c1b19]";
@@ -98,11 +92,11 @@ export default function Hero(): React.JSX.Element {
 
   return (
     <section
-      className={`relative w-screen h-screen box-border border-[8px] ${borderColor} overflow-hidden transition-colors duration-500 grid`}
+      className={`relative w-screen h-screen border-[6px] sm:border-[8px] ${borderColor} overflow-hidden grid transition-colors duration-500`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* 🎥 Fondo dinámico desde JSON */}
+      {/* 🎥 Fondo */}
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
@@ -118,17 +112,18 @@ export default function Hero(): React.JSX.Element {
       </div>
 
       {/* 🌗 Overlay */}
-      <div className={`absolute inset-0 z-10 ${bgOverlay} transition-all duration-500`} />
+      <div
+        className={`absolute inset-0 z-10 ${bgOverlay} transition-all duration-500`}
+      />
 
       {/* 🔘 Controles */}
-      <div className="absolute top-6 left-6 z-30 flex gap-4 ml-2 sm:ml-[10px]">
-        {/* 🌓 Tema */}
+      <div className="absolute top-4 sm:top-6 left-4 sm:left-6 z-30 flex flex-wrap gap-3 sm:gap-4">
         <button
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
           aria-label="Cambiar tema"
-          className={`px-5 py-2.5 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor} 
-            transition-all duration-300 ease-in-out
+          className={`px-4 sm:px-5 py-2 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor}
+            transition-all duration-300 ease-in-out text-sm sm:text-base
             ${
               activeTouch === "theme"
                 ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
@@ -138,13 +133,12 @@ export default function Hero(): React.JSX.Element {
           {isDark ? "🌙" : "☀️"}
         </button>
 
-        {/* 🌐 Idioma */}
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
           aria-label="Cambiar idioma"
-          className={`px-5 py-2.5 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor}
-            transition-all duration-300 ease-in-out
+          className={`px-4 sm:px-5 py-2 rounded-full border-[2px] shadow-md ${btnBg} ${borderColor}
+            transition-all duration-300 ease-in-out text-sm sm:text-base
             ${
               activeTouch === "lang"
                 ? "scale-110 border-red-600 shadow-[0_0_12px_rgba(255,0,0,0.6)]"
@@ -157,17 +151,17 @@ export default function Hero(): React.JSX.Element {
 
       {/* 🧍 Contenido principal */}
       <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6">
-        <div className="flex flex-col items-center text-center gap-6 translate-x-6 sm:translate-x-60">
+        <div className="flex flex-col items-center text-center gap-5 sm:gap-6 md:gap-8 translate-x-0 sm:translate-x-10 md:translate-x-20 lg:translate-x-40">
           {/* Marca */}
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
-            className={`${textPrimary} text-4xl sm:text-5xl md:text-6xl mb-4 font-['Irish_Grover'] 
-              transition-transform text-stroke-gold
+            className={`${textPrimary} text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-3 font-['Irish_Grover'] 
+              transition-transform text-stroke-gold tracking-wide
               ${
                 activeTouch === "brand"
                   ? "scale-110 text-stroke-red"
                   : "hover:scale-110 hover:text-stroke-red"
-              } animate-pulse`}
+              } animate-pulse text-center leading-tight`}
           >
             {t.brand}
           </h1>
@@ -175,8 +169,8 @@ export default function Hero(): React.JSX.Element {
           {/* Frase */}
           <p
             onTouchStart={() => handleTouchEffect("quote")}
-            className={`${textSecondary} text-base sm:text-lg md:text-xl max-w-[90%] sm:max-w-[500px] 
-              px-6 py-2 rounded-[30px] shadow-lg ${quoteBg} font-esteban transition-transform
+            className={`${textSecondary} text-sm sm:text-base md:text-lg lg:text-xl max-w-[90%] sm:max-w-[480px] md:max-w-[600px] 
+              px-4 sm:px-6 py-2 rounded-[30px] shadow-lg ${quoteBg} font-esteban transition-transform
               ${
                 activeTouch === "quote"
                   ? "scale-105 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
@@ -190,11 +184,11 @@ export default function Hero(): React.JSX.Element {
             dangerouslySetInnerHTML={{ __html: t.quote }}
           />
 
-          {/* Botón Ver Portafolio */}
+          {/* Botón Portafolio */}
           <button
             onClick={handleViewClick}
             onTouchStart={() => handleTouchEffect("view")}
-            className={`px-6 sm:px-8 py-3 rounded-full border-[3px] font-bold text-base sm:text-lg 
+            className={`px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 rounded-full border-[3px] font-bold text-sm sm:text-lg md:text-xl 
               transition-transform font-[Instrument_Serif]
               ${
                 activeTouch === "view"
