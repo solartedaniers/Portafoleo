@@ -48,7 +48,6 @@ export default function Navbar() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // 📜 Contenido por idioma
   const defaultMenus: Record<string, NavbarLangContent> = {
     es: {
       menu: [
@@ -82,7 +81,6 @@ export default function Navbar() {
 
   const navbarContent = content?.navbar ?? defaultMenus[lang] ?? defaultMenus["en"];
 
-  // 🧱 Íconos
   const icons = [
     <FaSmile key="1" />,
     <GiFeather key="2" />,
@@ -106,9 +104,13 @@ export default function Navbar() {
     if (isMobile) setMenuOpen(false);
   };
 
-  // 🎨 Estilos dinámicos
+  // 🎨 Colores dinámicos
   const cardBg = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
   const borderGold = "border-[3px] border-[#d4af37]";
+  const buttonBase =
+    theme === "dark"
+      ? "bg-black text-[#d4af37] hover:bg-red-600 hover:text-white"
+      : "bg-gray-100 text-black hover:bg-red-600 hover:text-white";
 
   return (
     <nav
@@ -124,9 +126,9 @@ export default function Navbar() {
         <span className="font-bold text-lg text-[#d4af37]">☰ Menú</span>
       </div>
 
-      {/* 📱 Menú móvil desplegable */}
+      {/* 📱 Menú móvil */}
       <div
-        className={`fixed top-[60px] left-0 w-full bg-[#d4af37] transform transition-transform duration-300 ease-in-out md:hidden overflow-y-auto ${
+        className={`fixed top-[60px] left-0 w-full bg-[#d4af37] transform transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -145,17 +147,17 @@ export default function Navbar() {
             </a>
           ))}
 
-          {/* 🌐 Botones finales (Tema e idioma al lado) */}
+          {/* 🌗 Botones finales en móvil */}
           <div className="flex justify-center items-center gap-4 mt-6 pb-4">
             <button
               onClick={toggleTheme}
-              className="px-3 py-2 bg-black text-[#d4af37] rounded-xl hover:bg-red-600 hover:text-white transition-all flex items-center gap-2"
+              className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
             >
-              {theme === "light" ? <Sun /> : <Moon />} Tema
+              {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button
               onClick={toggleLang}
-              className="px-3 py-2 bg-black text-[#d4af37] rounded-xl hover:bg-red-600 hover:text-white transition-all"
+              className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
             >
               🌐 {lang === "es" ? "EN" : "ES"}
             </button>
@@ -166,7 +168,7 @@ export default function Navbar() {
       {/* 🖥 Escritorio */}
       <div className="hidden md:block">
         <div
-          className={`max-w-[98.5%] mx-auto mt-[2px] mb-[4px] rounded-xl shadow-md bg-[#d4af37] transition-all duration-500 px-[1px] py-[2px]`}
+          className={`max-w-[98.5%] mx-auto mt-[2px] mb-[4px] rounded-xl shadow-md bg-[#d4af37] px-[1px] py-[2px] transition-all duration-500`}
         >
           <div
             className={`grid grid-cols-11 justify-items-center items-center gap-[3px] w-full ${borderGold} rounded-xl p-[2px]`}
@@ -191,19 +193,19 @@ export default function Navbar() {
               </a>
             ))}
 
-            {/* 🌗 Último cuadro (tema e idioma centrados) */}
+            {/* 🌗 Cuadro final con botones */}
             <div
               className={`flex flex-col items-center justify-center w-full aspect-square min-h-[75px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 hover:border-red-600 hover:shadow-[0_0_10px_rgba(255,0,0,0.4)] hover:scale-105`}
             >
               <button
                 onClick={toggleTheme}
-                className="mb-2 px-3 py-1 bg-black text-[#d4af37] rounded-lg hover:bg-red-600 hover:text-white transition-all flex items-center gap-1 text-xs sm:text-sm"
+                className={`mb-2 p-2 rounded-lg transition-all flex items-center justify-center ${buttonBase}`}
               >
-                {theme === "light" ? <Sun size={14} /> : <Moon size={14} />} Tema
+                {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
               </button>
               <button
                 onClick={toggleLang}
-                className="px-3 py-1 bg-black text-[#d4af37] rounded-lg hover:bg-red-600 hover:text-white transition-all text-xs sm:text-sm"
+                className={`p-2 rounded-lg transition-all flex items-center justify-center ${buttonBase}`}
               >
                 🌐 {lang === "es" ? "EN" : "ES"}
               </button>

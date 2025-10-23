@@ -6,12 +6,12 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🌟 Hooks personalizados
+// 🎯 Rotación 3D
 function useRotation3D() {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = containerRef.current;
     if (!container) return;
     const { width, height, left, top } = container.getBoundingClientRect();
@@ -21,10 +21,10 @@ function useRotation3D() {
   };
 
   const onMouseLeave = () => setRotation({ x: 0, y: 0 });
-
   return { rotation, containerRef, onMouseMove, onMouseLeave };
 }
 
+// 🗣️ Narrador
 function useSpeechSynthesis(textArray: string[], lang: string) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -49,7 +49,7 @@ function useSpeechSynthesis(textArray: string[], lang: string) {
       voices.find(
         (v) =>
           v.lang.startsWith(lang) &&
-          /male|man|david|jorge|diego|pablo|john|mike|brian|daniel/i.test(v.name)
+          /male|man|david|jorge|john|mike|daniel/i.test(v.name)
       ) ?? voices.find((v) => v.lang.startsWith(lang));
 
     utterance.voice = maleVoice ?? null;
@@ -66,18 +66,18 @@ function useSpeechSynthesis(textArray: string[], lang: string) {
   return { isSpeaking, toggleSpeech };
 }
 
-// 🌟 Componente principal
+// 🌟 Tipos
 interface WelcomeLang {
   home: string;
   subtitle: string;
   welcomeTitle: string;
   description: string[];
 }
-
 interface WelcomeData {
   welcome: WelcomeLang;
 }
 
+// 🧠 Componente principal
 export default function Welcome() {
   const router = useRouter();
   const { lang, theme } = useApp();
@@ -85,8 +85,10 @@ export default function Welcome() {
   const t = (content as WelcomeData | null)?.welcome;
 
   const { rotation, containerRef, onMouseMove, onMouseLeave } = useRotation3D();
-  const { isSpeaking, toggleSpeech } = useSpeechSynthesis(t?.description ?? [], lang);
-
+  const { isSpeaking, toggleSpeech } = useSpeechSynthesis(
+    t?.description ?? [],
+    lang
+  );
   const [hovered, setHovered] = useState(false);
 
   const playSwordSound = () => new Audio("/sounds/sword.mp3").play().catch(() => {});
@@ -97,7 +99,6 @@ export default function Welcome() {
 
   if (loading || !t) return <p>Cargando contenido...</p>;
 
-  // 🎨 Colores dinámicos
   const bgBox =
     theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#5c4c4c]";
   const bgWhiteBox =
@@ -106,13 +107,13 @@ export default function Welcome() {
 
   return (
     <section
-      className="relative min-h-screen grid grid-rows-[auto_auto_auto_auto_auto] justify-items-center gap-6 px-4 py-6 sm:px-6 sm:py-10 transition-all duration-700 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/temple.webp')", filter: "brightness(1)" }}
+      className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-4 py-6 sm:px-6 sm:py-10 transition-all duration-700 bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
       {/* 🏠 Botón Home */}
       <div
         aria-label="Home"
-        className={`absolute top-2 left-2 flex items-center gap-1 px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)] ${bgBox}`}
+        className={`absolute top-[0.9rem] left-2 flex items-center gap-1 px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)] ${bgBox}`}
         onClick={handleHomeClick}
       >
         <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
@@ -132,13 +133,18 @@ export default function Welcome() {
       {/* 🧑 Imagen perfil */}
       <div
         ref={containerRef}
-        className="relative perspective-[1000px]"
+        className="relative perspective-[1000px] flex justify-center"
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
-        style={{ transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`, transition: "transform 0.1s ease-out" }}
+        style={{
+          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+          transition: "transform 0.1s ease-out",
+        }}
       >
         <div
-          className={`rounded-full border-4 overflow-hidden w-48 h-48 sm:w-64 sm:h-64 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 ${hovered ? "scale-110 border-red-600" : "border-yellow-500"}`}
+          className={`rounded-full border-4 overflow-hidden w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 ${
+            hovered ? "scale-110 border-red-600" : "border-yellow-500"
+          }`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onTouchStart={() => setHovered(true)}
@@ -155,36 +161,50 @@ export default function Welcome() {
       </div>
 
       {/* 👤 Nombre */}
-      <h1 className={`font-['Irish_Grover'] text-2xl sm:text-3xl drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer ${theme === "dark" ? "text-white" : "text-black"}`}>
+      <h1
+        className={`font-['Irish_Grover'] text-xl sm:text-3xl md:text-4xl drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer ${
+          theme === "dark" ? "text-white" : "text-black"
+        }`}
+      >
         Daniers Alexander Solarte Limas
       </h1>
 
       <hr className={`w-1/2 border-t-2 transition-colors duration-500 ${hrColor}`} />
 
       {/* 🏷️ Subtítulo */}
-      <h2 className={`font-['Esteban'] text-xl sm:text-2xl font-bold drop-shadow-[0_0_1px_gray] px-1 py-1 rounded-xl text-center cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse`}>
+      <h2
+        className={`font-['Esteban'] text-lg sm:text-xl md:text-2xl font-bold drop-shadow-[0_0_1px_gray] px-3 py-1 rounded-xl text-center cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse`}
+      >
         {t.subtitle}
       </h2>
 
       {/* 👋 Bienvenida */}
-      <h3 className={`font-['Irish_Grover'] text-2xl sm:text-4xl text-white ${theme === "dark" ? "bg-red-800/80" : "bg-red-600/70"} px-6 sm:px-10 py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center`}>
+      <h3
+        className={`font-['Irish_Grover'] text-xl sm:text-3xl md:text-4xl text-white ${
+          theme === "dark" ? "bg-red-800/80" : "bg-red-600/70"
+        } px-6 sm:px-10 py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center`}
+      >
         {t.welcomeTitle}
       </h3>
 
       {/* 📜 Descripción + narrador */}
-      <div className={`p-4 sm:p-6 rounded-2xl shadow-md border w-full max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-500 ${bgBox}`}>
+      <div
+        className={`p-3 sm:p-5 md:p-6 rounded-2xl shadow-md border w-full max-w-xl sm:max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-500 ${bgBox}`}
+      >
         <div
           aria-label="Toggle speech"
-          className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${isSpeaking ? "text-blue-600" : "text-gray-500 hover:text-blue-600"}`}
+          className={`absolute top-2 right-2 transition-all duration-300 cursor-pointer ${
+            isSpeaking ? "text-blue-600" : "text-gray-500 hover:text-blue-600"
+          }`}
           onClick={toggleSpeech}
         >
-          <FaVolumeUp className="text-xl hover:scale-125 transition-transform duration-300" />
+          <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
         </div>
 
         {t.description.map((text, i) => (
           <p
             key={i}
-            className={`mt-${i === 0 ? "0" : "4"} font-['Esteban'] text-base sm:text-lg leading-relaxed text-center`}
+            className="mt-3 font-['Esteban'] text-sm sm:text-base md:text-lg leading-relaxed text-center"
             dangerouslySetInnerHTML={{ __html: text }}
           />
         ))}
