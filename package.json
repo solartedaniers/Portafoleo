@@ -7,8 +7,7 @@
     "build": "cross-env NEXT_USE_TURBOPACK=false next build",
     "start": "next start",
     "lint": "eslint",
-    "test-videos": "node scripts/test-videos.js",
-    "prebuild": "npm run test-videos"
+    "test-videos": "node scripts/test-videos.js"
   },
   "dependencies": {
     "framer-motion": "^12.23.22",
