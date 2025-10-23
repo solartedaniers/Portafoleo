@@ -27,7 +27,7 @@ interface FooterLang {
   };
 }
 
-// 🎯 Hook personalizado: lógica del reloj + sonido
+// 🎯 Hook del reloj y sonido
 function useClockSound() {
   const [clockTime, setClockTime] = useState("");
   const [clockPeriod, setClockPeriod] = useState("");
@@ -72,7 +72,7 @@ function useClockSound() {
   return { clockTime, clockPeriod, showClock, setShowClock, toggleClockSound };
 }
 
-// 🎯 Hook para interacciones en móvil y sonido
+// 🎯 Hook para móvil + sonido
 function useInteractive() {
   const [isMobile, setIsMobile] = useState(false);
   const [tapHighlight, setTapHighlight] = useState<string | null>(null);
@@ -111,32 +111,31 @@ export default function Footer() {
 
   const isDark = theme === "dark";
 
-  // 🎨 Estilos base
-  const baseText = isDark ? "text-gray-200" : "text-white"; // ← blanco en modo claro
-  const phraseText = isDark ? "text-white" : "text-[#d4af37]"; // ← dorado en modo claro
-  const authorText = isDark ? "text-gray-300" : "text-white"; // ← blanco en modo claro
+  const baseText = isDark ? "text-gray-200" : "text-white";
+  const phraseText = isDark ? "text-white" : "text-[#d4af37]";
+  const authorText = isDark ? "text-gray-300" : "text-white";
   const filterBrightness = isDark ? "brightness(0.85)" : "brightness(1)";
   const bgBase = isDark ? "bg-[#1a1a1a]" : "bg-[#f5f5f5]";
   const borderGold = isDark ? "border-[#d4af37]" : "border-[#c4af37]";
 
   return (
     <footer
-      className={`relative text-center py-10 transition-all duration-500 ${
+      className={`relative text-center py-10 md:py-16 transition-all duration-500 overflow-hidden ${
         isDark ? "bg-[#0f0f0f]" : "bg-[#f3efe2]"
       }`}
       style={{
         backgroundImage: `url('${footerData.backgroundLeft}'), url('${footerData.backgroundRight}')`,
-        backgroundPosition: "left, right",
+        backgroundPosition: "left center, right center",
         backgroundRepeat: "no-repeat, no-repeat",
         backgroundSize: "50% 100%, 50% 100%",
         filter: filterBrightness,
       }}
     >
-      <div className="grid grid-cols-1 gap-6 place-items-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8 text-center">
         {/* 🔖 Título */}
         <h2
-          className={`font-['Irish_Grover'] text-4xl px-6 py-2 rounded-full shadow-md transition-all duration-300 inline-block
-            bg-red-600 text-white ${
+          className={`font-['Irish_Grover'] text-3xl sm:text-4xl md:text-5xl px-6 py-2 rounded-full shadow-md transition-all duration-300 bg-red-600 text-white cursor-pointer
+            ${
               tapHighlight === "title"
                 ? "bg-[#d4af37] text-black scale-105"
                 : "hover:bg-[#d4af37] hover:text-black"
@@ -149,7 +148,7 @@ export default function Footer() {
         {/* 🕒 Reloj */}
         <div className="flex justify-center relative z-10">
           <div
-            className="inline-block px-6 py-4 cursor-pointer select-none"
+            className="inline-block px-4 sm:px-6 py-4 cursor-pointer select-none"
             onClick={() => {
               setShowClock((prev) => {
                 toggleClockSound(!prev);
@@ -176,17 +175,17 @@ export default function Footer() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className={`px-6 py-3 rounded-xl border shadow-[0_0_20px_rgba(212,175,55,0.5)] inline-block ${bgBase} ${borderGold}`}
+                  className={`px-4 sm:px-6 py-3 rounded-xl border shadow-[0_0_20px_rgba(212,175,55,0.5)] inline-block ${bgBase} ${borderGold}`}
                 >
                   <span
-                    className={`font-['Esteban'] text-xl ${
+                    className={`font-['Esteban'] text-lg sm:text-xl ${
                       isDark ? "text-white" : "text-black"
                     }`}
                     style={{ WebkitTextStroke: isDark ? "0.5px #d4af37" : "none" }}
                   >
                     {clockTime}
                   </span>
-                  <span className="ml-2 text-red-600 font-bold text-xl">
+                  <span className="ml-2 text-red-600 font-bold text-lg sm:text-xl">
                     {clockPeriod}
                   </span>
                 </motion.div>
@@ -195,9 +194,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Créditos y derechos */}
+        {/* Créditos */}
         <div
-          className={`text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
+          className={`text-base sm:text-lg font-['Esteban'] ${baseText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 ${
             tapHighlight === "credits" ? "text-[#d4af37] scale-105" : ""
           }`}
           onClick={() => handleTap("credits")}
@@ -209,12 +208,12 @@ export default function Footer() {
 
         {/* Frase */}
         <p
-          className={`font-['Labrada'] text-xl ${phraseText} transition-all duration-300 hover:text-[#c4af37] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
+          className={`font-['Labrada'] text-lg sm:text-xl md:text-2xl ${phraseText} transition-all duration-300 hover:text-[#c4af37] hover:drop-shadow-[0_0_6px_red] hover:-translate-y-1 hover:scale-105 ${
             tapHighlight === "phrase" ? "text-[#d4af37] scale-105" : ""
           }`}
           onClick={() => handleTap("phrase")}
           style={{
-            WebkitTextStroke: isDark ? "0.5px #d4af37" : "none", // ← sin borde en modo claro
+            WebkitTextStroke: isDark ? "0.5px #d4af37" : "none",
           }}
         >
           {footerData.phrase}
@@ -222,7 +221,7 @@ export default function Footer() {
 
         {/* Autor */}
         <p
-          className={`font-['Esteban'] ${authorText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
+          className={`font-['Esteban'] text-base sm:text-lg md:text-xl ${authorText} drop-shadow-[0_0_2px_red] transition-all duration-300 hover:scale-105 hover:rotate-1 ${
             tapHighlight === "author" ? "text-[#d4af37] scale-105" : ""
           }`}
           onClick={() => handleTap("author")}
@@ -232,9 +231,7 @@ export default function Footer() {
 
         {/* Redes Sociales */}
         <div
-          className={`grid ${
-            isMobile ? "grid-cols-1 gap-4" : "grid-cols-3 gap-6"
-          } place-items-center mt-8`}
+          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 w-full max-w-lg mx-auto`}
         >
           {Object.entries(footerData.social).map(([key, social]) => (
             <a
@@ -246,7 +243,7 @@ export default function Footer() {
                 playSound(social.sound);
                 handleTap(key);
               }}
-              className={`flex items-center gap-2 rounded-3xl px-5 py-3 border-2 transition-all duration-300 shadow-md ${bgBase} ${borderGold} ${
+              className={`flex items-center justify-center gap-2 rounded-3xl px-5 py-3 border-2 transition-all duration-300 shadow-md ${bgBase} ${borderGold} ${
                 isDark ? "text-white" : "text-black"
               } hover:border-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.4)] ${
                 tapHighlight === key ? "border-red-600 scale-105" : ""
@@ -261,7 +258,7 @@ export default function Footer() {
               {key === "github" && (
                 <FaGithub className="text-[#333] dark:text-white text-2xl transition-all duration-300 hover:scale-125" />
               )}
-              <span className="font-['Esteban'] hover:text-[#d4af37] transition-all duration-300">
+              <span className="font-['Esteban'] text-sm sm:text-base md:text-lg hover:text-[#d4af37] transition-all duration-300">
                 {social.label}
               </span>
             </a>

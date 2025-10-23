@@ -82,18 +82,18 @@ export default function Filosofia() {
 
   return (
     <section
-      className="relative w-full min-h-screen grid place-items-center bg-cover bg-center"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-10 bg-cover bg-center"
       style={{ backgroundImage: `url('${data.background}')` }}
     >
-      <div className="relative max-w-3xl w-[90%] grid gap-6 mt-5">
+      <div className="relative w-full max-w-3xl flex flex-col items-center gap-8 mt-5">
         {/* 🔴 Título */}
-        <h2 className="text-4xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
           {data.title}
         </h2>
 
         {/* 📜 Contenedor principal */}
         <div
-          className={`relative ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 md:p-10 transition-all duration-500 border-4 border-transparent ${
+          className={`relative w-full ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 sm:p-8 md:p-10 transition-all duration-500 border-4 border-transparent ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#d4af37]" : ""
           }`}
           onMouseEnter={() => setHovered(true)}
@@ -113,20 +113,22 @@ export default function Filosofia() {
             <FaVolumeUp size={24} />
           </button>
 
-          {/* 🖼️ Imagen */}
+          {/* 🖼️ Imagen cuadrada centrada */}
           <div className="flex justify-center mb-6">
-            <Image
-              src={data.image}
-              alt="Filosofía"
-              width={100}
-              height={100}
-              className="object-cover rounded-full border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600"
-            />
+            <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-xl overflow-hidden border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600">
+              <Image
+                src={data.image}
+                alt="Filosofía"
+                fill
+                sizes="(max-width: 768px) 120px, (max-width: 1024px) 180px, 240px"
+                className="object-cover"
+              />
+            </div>
           </div>
 
           {/* 📖 Texto */}
           <div
-            className={`text-[17px] leading-relaxed font-esteban ${textColor} transition-all duration-300 hover:tracking-wide text-justify`}
+            className={`text-base sm:text-lg md:text-xl leading-relaxed font-['Esteban'] ${textColor} transition-all duration-300 hover:tracking-wide text-justify`}
           >
             {data.text.map((p, i) => (
               <p key={i} className="mb-4">

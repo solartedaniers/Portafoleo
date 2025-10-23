@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// ✅ Tipos
 interface Testimonial {
   name: string;
   text: string;
@@ -21,7 +20,7 @@ export default function Testimonials() {
   const { content } = useContent();
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  // 🟢 Hook interno para manejar lógica de testimonios
+  // 🟢 Hook interno
   const useTestimonials = () => {
     const [visibleCount, setVisibleCount] = useState(2);
     const [selected, setSelected] = useState<number | null>(null);
@@ -49,16 +48,14 @@ export default function Testimonials() {
     return { visibleCount, setVisibleCount, selected, tappedIndex, isMobile, handleSelect };
   };
 
-  // ✅ Llamada siempre al inicio
   const { visibleCount, setVisibleCount, selected, tappedIndex, isMobile, handleSelect } =
     useTestimonials();
 
-  // Early return si no hay contenido
   if (!content?.testimonials) return null;
   const t = content.testimonials as TestimonialsContent;
   const testimonials = t.list ?? [];
 
-  // Render de cada tarjeta de testimonio
+  // 🎴 Render de cada tarjeta
   const renderCard = (testimonial: Testimonial, idx: number) => {
     const isSelected = selected === idx;
     const isTapped = tappedIndex === idx;
@@ -68,16 +65,17 @@ export default function Testimonials() {
         key={idx}
         onClick={() => handleSelect(idx)}
         onTouchStart={() => handleSelect(idx)}
-        className={`rounded-2xl p-6 flex items-start gap-6 border-2 transition-all duration-500 cursor-pointer
+        className={`flex flex-col sm:flex-row sm:items-center gap-6 p-6 border-2 rounded-2xl w-full transition-all duration-500 cursor-pointer
           ${theme === "dark" ? "bg-[#0e0e0e] text-white" : "bg-[#f5f5f5] text-black"}
           ${isSelected || isTapped
             ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-[#c4af37]"
             : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"}
         `}
       >
-        {!isMobile && (
+        {/* 🖼 Imagen grande, circular, centrada a la izquierda */}
+        <div className="flex justify-center sm:justify-start w-full sm:w-auto">
           <div
-            className={`flex-shrink-0 relative w-28 h-28 rounded-full border-[3px] overflow-hidden transition-all duration-500
+            className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-full border-[4px] overflow-hidden flex-shrink-0 transition-all duration-500
               ${isSelected || isTapped
                 ? "border-red-600 translate-y-[-4px]"
                 : "border-[#c4af37] hover:border-red-600 hover:-translate-y-1"}
@@ -87,21 +85,22 @@ export default function Testimonials() {
               src={testimonial.image}
               alt={testimonial.name}
               fill
-              className="object-cover rounded-full transition-all duration-300"
-              sizes="112px"
+              className="object-cover rounded-full"
+              sizes="128px"
             />
           </div>
-        )}
+        </div>
 
+        {/* 📜 Texto */}
         <div
-          className={`flex flex-col transition-all duration-300
+          className={`flex flex-col text-center sm:text-left transition-all duration-300
             ${isSelected || isTapped
               ? "translate-y-[-2px] shadow-md"
               : "hover:-translate-y-1 hover:shadow-md"}
           `}
         >
           <h3
-            className={`font-['Irish_Grover'] text-2xl animate-blink ${
+            className={`font-['Irish_Grover'] text-2xl ${
               theme === "dark" ? "text-white" : "text-black"
             }`}
             style={{
@@ -145,7 +144,7 @@ export default function Testimonials() {
         {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(renderCard)}
       </div>
 
-      {/* 📱 Botón móvil */}
+      {/* 📱 Botón solo en móvil */}
       {isMobile && testimonials.length > 2 && (
         <div className="mt-10 flex justify-center">
           {visibleCount >= testimonials.length ? (
