@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "headers": [
     {
       "source": "/videos/(.*)",
@@ -35,12 +30,6 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/videos/:path*",
-      "destination": "/videos/:path*"
     }
   ]
 }
