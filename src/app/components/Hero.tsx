@@ -27,6 +27,8 @@ export default function Hero(): React.JSX.Element {
   const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
   const [hoverVideo, setHoverVideo] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const t: HeroLang =
     (content?.hero as HeroLang) ?? {
@@ -98,17 +100,36 @@ export default function Hero(): React.JSX.Element {
     >
       {/* 🎥 Fondo */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          src={t.video}
-          muted
-          loop
-          playsInline
-          autoPlay
-          className={`w-full h-full object-cover transition-all duration-700 ${
-            isDark ? "brightness-100" : "brightness-[0.70]"
-          } ${hoverVideo ? "scale-105" : "scale-100"}`}
-        />
+        {!videoError ? (
+          <video
+            ref={videoRef}
+            src={t.video}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="auto"
+            onError={() => setVideoError(true)}
+            onLoadedData={() => setVideoLoaded(true)}
+            onCanPlay={() => setVideoLoaded(true)}
+            className={`w-full h-full object-cover transition-all duration-700 ${
+              isDark ? "brightness-100" : "brightness-[0.70]"
+            } ${hoverVideo ? "scale-105" : "scale-100"} ${
+              videoLoaded ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ) : (
+          <div 
+            className={`w-full h-full bg-cover bg-center transition-all duration-700 ${
+              isDark ? "brightness-100" : "brightness-[0.70]"
+            } ${hoverVideo ? "scale-105" : "scale-100"}`}
+            style={{
+              backgroundImage: "url('/images/background.webp')",
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}
+          />
+        )}
       </div>
 
       {/* 🌗 Overlay */}

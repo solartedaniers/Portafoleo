@@ -115,6 +115,8 @@ export default function Languages() {
   const { theme } = useApp();
   const { content } = useContent();
   const [hovered, setHovered] = useState<string | null>(null);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const isMobile = useIsMobile();
 
   const techData = content?.technologies as TechnologiesContent | undefined;
@@ -140,14 +142,31 @@ export default function Languages() {
       className={`relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 ${sectionBorder}`}
     >
       {/* 🎥 Fondo de video */}
-      <video
-        src={techData.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      />
+      {!videoError ? (
+        <video
+          src={techData.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          onError={() => setVideoError(true)}
+          onLoadedData={() => setVideoLoaded(true)}
+          onCanPlay={() => setVideoLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-500 ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ) : (
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
+          style={{
+            backgroundImage: "url('/images/forest.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
+        />
+      )}
 
       {/* 🌟 Contenido */}
       <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
