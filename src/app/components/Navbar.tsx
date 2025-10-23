@@ -17,7 +17,8 @@ import { useContent } from "./ContentProvider";
 import { Sun, Moon } from "lucide-react";
 
 // 🔊 Sonido al hacer clic
-const clickSound = typeof Audio !== "undefined" ? new Audio("/sounds/menu.mp3") : null;
+const clickSound =
+  typeof Audio !== "undefined" ? new Audio("/sounds/menu.mp3") : null;
 
 // 📱 Hook para detectar móvil
 function useIsMobile(breakpoint = 768) {
@@ -79,7 +80,8 @@ export default function Navbar() {
     },
   };
 
-  const navbarContent = content?.navbar ?? defaultMenus[lang] ?? defaultMenus["en"];
+  const navbarContent =
+    content?.navbar ?? defaultMenus[lang] ?? defaultMenus["en"];
 
   const icons = [
     <FaSmile key="1" />,
@@ -128,11 +130,12 @@ export default function Navbar() {
 
       {/* 📱 Menú móvil */}
       <div
-        className={`fixed top-[60px] left-0 w-full bg-[#d4af37] transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] flex flex-col justify-between bg-[#d4af37] transform transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col gap-3 p-4">
+        {/* 🧭 Items del menú */}
+        <div className="flex flex-col gap-3 p-4 overflow-hidden flex-1">
           {navbarContent.menu.map((item, index) => (
             <a
               key={item.id}
@@ -146,22 +149,22 @@ export default function Navbar() {
               <span className="font-['Irish_Grover'] text-sm">{item.label}</span>
             </a>
           ))}
+        </div>
 
-          {/* 🌗 Botones finales en móvil */}
-          <div className="flex justify-center items-center gap-4 mt-6 pb-4">
-            <button
-              onClick={toggleTheme}
-              className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
-            >
-              {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button
-              onClick={toggleLang}
-              className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
-            >
-              🌐 {lang === "es" ? "EN" : "ES"}
-            </button>
-          </div>
+        {/* 🌗 Botones finales en móvil */}
+        <div className="flex justify-center items-center gap-4 mb-6">
+          <button
+            onClick={toggleTheme}
+            className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
+          >
+            {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button
+            onClick={toggleLang}
+            className={`p-3 rounded-xl transition-all flex items-center justify-center ${buttonBase}`}
+          >
+            🌐 {lang === "es" ? "EN" : "ES"}
+          </button>
         </div>
       </div>
 

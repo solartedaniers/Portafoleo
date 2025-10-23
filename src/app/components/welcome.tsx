@@ -91,7 +91,8 @@ export default function Welcome() {
   );
   const [hovered, setHovered] = useState(false);
 
-  const playSwordSound = () => new Audio("/sounds/sword.mp3").play().catch(() => {});
+  const playSwordSound = () =>
+    new Audio("/sounds/sword.mp3").play().catch(() => {});
   const handleHomeClick = () => {
     playSwordSound();
     router.push("/");
@@ -102,21 +103,27 @@ export default function Welcome() {
   const bgBox =
     theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#5c4c4c]";
   const bgWhiteBox =
-    theme === "dark" ? "bg-black/70 text-white" : "bg-white/60 text-black";
+    theme === "dark"
+      ? "bg-black/70 text-white"
+      : "bg-white/60 text-black";
   const hrColor = theme === "dark" ? "border-white" : "border-black";
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-4 py-6 sm:px-6 sm:py-10 transition-all duration-700 bg-cover bg-center"
+      className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-3 sm:px-6 py-6 sm:py-10 transition-all duration-700 bg-cover bg-center overflow-hidden"
       style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
       {/* 🏠 Botón Home */}
       <div
         aria-label="Home"
-        className={`absolute top-[0.9rem] left-2 flex items-center gap-1 px-1 py-0.5 rounded-lg shadow-md border transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)] ${bgBox}`}
+        className={`absolute flex items-center gap-1 rounded-lg shadow-md border cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]
+        ${bgBox}
+        top-2 left-2
+        sm:top-3 sm:left-3
+        px-2 py-1 sm:px-3 sm:py-2`}
         onClick={handleHomeClick}
       >
-        <div className="w-8 h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
           <Image
             src="/images/fire.webp"
             alt={t.home}
@@ -125,7 +132,7 @@ export default function Welcome() {
             className="object-cover w-full h-full"
           />
         </div>
-        <span className="font-['Irish_Grover'] text-sm drop-shadow-[0_0_1px_silver] transition-all duration-300">
+        <span className="font-['Irish_Grover'] text-[10px] sm:text-sm drop-shadow-[0_0_1px_silver]">
           {t.home}
         </span>
       </div>
@@ -133,7 +140,7 @@ export default function Welcome() {
       {/* 🧑 Imagen perfil */}
       <div
         ref={containerRef}
-        className="relative perspective-[1000px] flex justify-center"
+        className="relative flex justify-center items-center"
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         style={{
@@ -142,9 +149,10 @@ export default function Welcome() {
         }}
       >
         <div
-          className={`rounded-full border-4 overflow-hidden w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 ${
-            hovered ? "scale-110 border-red-600" : "border-yellow-500"
-          }`}
+          className={`rounded-full border-[4px] overflow-hidden 
+            w-32 h-32 sm:w-44 sm:h-44 md:w-56 md:h-56 lg:w-64 lg:h-64 
+            shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 
+            ${hovered ? "scale-110 border-red-600" : "border-yellow-500"}`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onTouchStart={() => setHovered(true)}
@@ -155,41 +163,43 @@ export default function Welcome() {
             alt="Perfil"
             width={256}
             height={256}
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
           />
         </div>
       </div>
 
       {/* 👤 Nombre */}
       <h1
-        className={`font-['Irish_Grover'] text-xl sm:text-3xl md:text-4xl drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 text-center cursor-pointer ${
+        className={`font-['Irish_Grover'] text-lg sm:text-2xl md:text-3xl lg:text-4xl text-center drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 cursor-pointer ${
           theme === "dark" ? "text-white" : "text-black"
         }`}
       >
         Daniers Alexander Solarte Limas
       </h1>
 
-      <hr className={`w-1/2 border-t-2 transition-colors duration-500 ${hrColor}`} />
+      <hr
+        className={`w-2/3 sm:w-1/2 border-t-2 transition-colors duration-500 ${hrColor}`}
+      />
 
       {/* 🏷️ Subtítulo */}
       <h2
-        className={`font-['Esteban'] text-lg sm:text-xl md:text-2xl font-bold drop-shadow-[0_0_1px_gray] px-3 py-1 rounded-xl text-center cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse`}
+        className={`font-['Esteban'] text-base sm:text-lg md:text-xl lg:text-2xl font-bold drop-shadow-[0_0_1px_gray] px-3 py-1 rounded-xl text-center cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse`}
       >
         {t.subtitle}
       </h2>
 
       {/* 👋 Bienvenida */}
       <h3
-        className={`font-['Irish_Grover'] text-xl sm:text-3xl md:text-4xl text-white ${
+        className={`font-['Irish_Grover'] text-lg sm:text-2xl md:text-3xl lg:text-4xl text-white ${
           theme === "dark" ? "bg-red-800/80" : "bg-red-600/70"
-        } px-6 sm:px-10 py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center`}
+        } px-4 sm:px-8 md:px-10 py-2 sm:py-3 rounded-full shadow-md hover:bg-[#d4af37] hover:text-black transition-all duration-300 text-center`}
       >
         {t.welcomeTitle}
       </h3>
 
       {/* 📜 Descripción + narrador */}
       <div
-        className={`p-3 sm:p-5 md:p-6 rounded-2xl shadow-md border w-full max-w-xl sm:max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-500 ${bgBox}`}
+        className={`p-3 sm:p-4 md:p-6 rounded-2xl shadow-md border w-full max-w-md sm:max-w-lg md:max-w-2xl relative hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-500 ${bgBox}`}
       >
         <div
           aria-label="Toggle speech"
@@ -198,7 +208,7 @@ export default function Welcome() {
           }`}
           onClick={toggleSpeech}
         >
-          <FaVolumeUp className="text-xl sm:text-2xl hover:scale-125 transition-transform duration-300" />
+          <FaVolumeUp className="text-lg sm:text-xl md:text-2xl hover:scale-125 transition-transform duration-300" />
         </div>
 
         {t.description.map((text, i) => (
