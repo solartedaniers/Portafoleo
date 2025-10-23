@@ -172,18 +172,18 @@ export default function Contact() {
 
         {/* 📨 Formulario + Redes */}
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full px-2 sm:px-4">
-          {/* 🌐 Redes sociales (ocultas en móvil) */}
-          <div className="hidden sm:flex flex-row justify-center gap-6 w-full max-w-md">
+          {/* 🌐 Redes sociales */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md">
             <a
               href={c.social.linkedin.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={playLinkedInSound}
-              className={`${boxBg} flex items-center justify-center gap-2 px-5 py-3 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
+              className={`${boxBg} flex items-center justify-center gap-3 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300 w-full sm:w-auto`}
             >
-              <FaLinkedin className="text-2xl text-blue-600" />
+              <FaLinkedin className="text-3xl text-blue-600" />
               <span
-                className={`font-['Esteban'] ${textMain} text-base md:text-lg`}
+                className={`font-['Esteban'] ${textMain} text-sm sm:text-base md:text-lg`}
               >
                 {c.social.linkedin.label}
               </span>
@@ -194,11 +194,11 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={playWhatsAppSound}
-              className={`${boxBg} flex items-center justify-center gap-2 px-5 py-3 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
+              className={`${boxBg} flex items-center justify-center gap-3 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300 w-full sm:w-auto`}
             >
-              <FaWhatsapp className="text-2xl text-green-600" />
+              <FaWhatsapp className="text-3xl text-green-600" />
               <span
-                className={`font-['Esteban'] ${textMain} text-base md:text-lg`}
+                className={`font-['Esteban'] ${textMain} text-sm sm:text-base md:text-lg`}
               >
                 {c.social.whatsapp.label}
               </span>
