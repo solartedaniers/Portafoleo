@@ -21,8 +21,6 @@ export default function CvSection() {
   const { content } = useContent();
   const [showCv, setShowCv] = useState(false);
   const [hoverVideo, setHoverVideo] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   if (!content?.cv) return null;
@@ -70,31 +68,14 @@ export default function CvSection() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {!videoError ? (
-          <video
-            ref={videoRef}
-            src={c.video}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            onError={() => setVideoError(true)}
-            onLoadedData={() => setVideoLoaded(true)}
-            onCanPlay={() => setVideoLoaded(true)}
-            className={`w-full h-full object-cover transition-opacity duration-500 ${
-              videoLoaded ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ) : (
-          <div 
-            className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/images/parchment.webp')",
-              backgroundSize: "cover",
-              backgroundPosition: "center"
-            }}
-          />
-        )}
+        <video
+          ref={videoRef}
+          src={c.video}
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* 👁️ Botón Ver/Cerrar */}

@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "cross-env NEXT_USE_TURBOPACK=false next build",
     "start": "next start",
-    "lint": "eslint",
-    "test-videos": "node scripts/test-videos.js"
+    "lint": "eslint"
   },
   "dependencies": {
     "framer-motion": "^12.23.22",

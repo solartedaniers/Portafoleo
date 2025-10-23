@@ -10,7 +10,7 @@ module.exports = {
         irish: ["'Irish Grover'", "cursive"],
         esteban: ["'Esteban'", "serif"],
         Instrument_Serif: ["'Instrument Serif'", "serif"],
-
+        Labrada: ["'Labrada'", "serif"],
       },
       colors: {
         gold: "#c4af27",
