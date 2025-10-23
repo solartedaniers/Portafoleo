@@ -150,10 +150,10 @@ export default function Contact() {
 
       {/* 🟨 Contenedor principal */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 w-full max-w-7xl items-center justify-center">
-        {/* 👤 Imagen */}
-        <div className="flex justify-center items-center">
+        {/* 👤 Imagen (oculta en móvil) */}
+        <div className="hidden md:flex justify-center items-center">
           <div
-            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 transition-all duration-300 cursor-pointer ${
+            className={`rounded-full border-4 border-yellow-500 overflow-hidden w-64 h-64 lg:w-72 lg:h-72 transition-all duration-300 cursor-pointer ${
               hovered ? "shadow-[0_0_30px_10px_gold] scale-110" : "shadow-lg"
             }`}
             onMouseEnter={() => hasHover && setHovered(true)}
@@ -163,8 +163,8 @@ export default function Contact() {
             <Image
               src={hovered ? c.profile.hover : c.profile.default}
               alt="Perfil"
-              width={320}
-              height={320}
+              width={300}
+              height={300}
               className="w-full h-full object-cover"
             />
           </div>
@@ -172,18 +172,18 @@ export default function Contact() {
 
         {/* 📨 Formulario + Redes */}
         <div className="flex flex-col items-center justify-center text-center gap-8 w-full px-2 sm:px-4">
-          {/* 🌐 Redes sociales */}
-          <div className="flex flex-wrap justify-center gap-4 w-full max-w-md">
+          {/* 🌐 Redes sociales (ocultas en móvil) */}
+          <div className="hidden sm:flex flex-row justify-center gap-6 w-full max-w-md">
             <a
               href={c.social.linkedin.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={playLinkedInSound}
-              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300 w-[48%] sm:w-auto`}
+              className={`${boxBg} flex items-center justify-center gap-2 px-5 py-3 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaLinkedin className="text-2xl text-blue-600" />
               <span
-                className={`font-['Esteban'] ${textMain} text-sm sm:text-base md:text-lg`}
+                className={`font-['Esteban'] ${textMain} text-base md:text-lg`}
               >
                 {c.social.linkedin.label}
               </span>
@@ -194,11 +194,11 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={playWhatsAppSound}
-              className={`${boxBg} flex items-center justify-center gap-2 p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300 w-[48%] sm:w-auto`}
+              className={`${boxBg} flex items-center justify-center gap-2 px-5 py-3 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaWhatsapp className="text-2xl text-green-600" />
               <span
-                className={`font-['Esteban'] ${textMain} text-sm sm:text-base md:text-lg`}
+                className={`font-['Esteban'] ${textMain} text-base md:text-lg`}
               >
                 {c.social.whatsapp.label}
               </span>
