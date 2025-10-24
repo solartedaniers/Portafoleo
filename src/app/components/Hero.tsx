@@ -103,7 +103,7 @@ export default function Hero(): React.JSX.Element {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* 🎥 Fondo de video */}
+      {/* 🎥 Fondo de video m */}
       <video
         ref={videoRef}
         src={t.video}
