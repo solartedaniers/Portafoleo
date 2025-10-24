@@ -37,6 +37,7 @@ export default function Hero(): React.JSX.Element {
       video: "/videos/background-video.mp4",
     };
 
+  // 🧭 Detectar dispositivo
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -44,22 +45,27 @@ export default function Hero(): React.JSX.Element {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
+  // 🌗 Adaptarse al modo del sistema automáticamente
   useEffect(() => {
     if (typeof window === "undefined") return;
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-    setTheme(systemDark.matches ? "dark" : "light");
-    const handleChange = (e: MediaQueryListEvent) =>
-      setTheme(e.matches ? "dark" : "light");
-    systemDark.addEventListener("change", handleChange);
-    return () => systemDark.removeEventListener("change", handleChange);
+    const updateTheme = (isDark: boolean) =>
+      setTheme(isDark ? "dark" : "light");
+
+    updateTheme(systemDark.matches);
+    systemDark.addEventListener("change", (e) => updateTheme(e.matches));
+    return () => systemDark.removeEventListener("change", (e) => updateTheme(e.matches));
   }, [setTheme]);
 
+  // 🎵 Reproducir sonido y navegar
   const handleViewClick = async () => {
     if (audioRef.current) {
       try {
         audioRef.current.currentTime = 0;
         await audioRef.current.play();
-      } catch {}
+      } catch (err) {
+        console.warn("No se pudo reproducir el sonido:", err);
+      }
     }
     router.push("/portfolio");
   };
@@ -74,6 +80,7 @@ export default function Hero(): React.JSX.Element {
     setHoverVideo(true);
     videoRef.current?.play();
   };
+
   const handleMouseLeave = () => {
     setHoverVideo(false);
     if (videoRef.current) {
@@ -92,29 +99,26 @@ export default function Hero(): React.JSX.Element {
 
   return (
     <section
-      className={`relative w-full h-[100dvh] border-[4px] sm:border-[6px] lg:border-[8px] ${borderColor} overflow-hidden grid transition-colors duration-500`}
+      className={`relative w-screen min-h-screen border-[4px] sm:border-[6px] lg:border-[8px] ${borderColor} overflow-hidden grid transition-colors duration-500`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* 🎥 Fondo */}
-      <div className="absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          src={t.video}
-          muted
-          loop
-          playsInline
-          autoPlay
-          className={`w-full h-full object-cover transition-all duration-700 ${
-            isDark ? "brightness-100" : "brightness-[0.70]"
-          } ${hoverVideo ? "scale-105" : "scale-100"}`}
-        />
-      </div>
-
-      {/* 🌗 Overlay */}
-      <div
-        className={`absolute inset-0 z-10 ${bgOverlay} transition-all duration-500`}
+      {/* 🎥 Fondo de video */}
+      <video
+        ref={videoRef}
+        src={t.video}
+        muted
+        loop
+        autoPlay
+        playsInline
+        preload="auto"
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
+          isDark ? "brightness-100" : "brightness-[0.75]"
+        } ${hoverVideo ? "scale-105" : "scale-100"}`}
       />
+
+      {/* 🌗 Capa de superposición */}
+      <div className={`absolute inset-0 z-10 ${bgOverlay} transition-all duration-500`} />
 
       {/* 🔘 Controles */}
       <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex flex-wrap gap-2 sm:gap-4">
@@ -152,7 +156,6 @@ export default function Hero(): React.JSX.Element {
       {/* 🧍 Contenido principal */}
       <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6 lg:px-12">
         <div className="flex flex-col items-center text-center gap-4 sm:gap-6 md:gap-8 translate-x-0 sm:translate-x-8 md:translate-x-20 lg:translate-x-40">
-          {/* Marca */}
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
             className={`${textPrimary} text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-2 sm:mb-4 font-['Irish_Grover'] 
@@ -166,7 +169,6 @@ export default function Hero(): React.JSX.Element {
             {t.brand}
           </h1>
 
-          {/* Frase */}
           <p
             onTouchStart={() => handleTouchEffect("quote")}
             className={`${textSecondary} text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl max-w-[95%] sm:max-w-[500px] md:max-w-[650px] 
@@ -184,7 +186,6 @@ export default function Hero(): React.JSX.Element {
             dangerouslySetInnerHTML={{ __html: t.quote }}
           />
 
-          {/* Botón Portafolio */}
           <button
             onClick={handleViewClick}
             onTouchStart={() => handleTouchEffect("view")}
