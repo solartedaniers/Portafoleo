@@ -27,10 +27,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const storedTheme = localStorage.getItem("site-theme") as Theme | null;
 
     if (storedLang) setLang(storedLang);
-
     if (storedTheme) {
       setTheme(storedTheme);
     } else {
+      // Si no hay tema guardado, usa el del sistema
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       setTheme(prefersDark ? "dark" : "light");
     }
@@ -50,15 +50,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem("site-lang", lang);
   }, [lang]);
 
+  // 🌓 Escuchar cambios del sistema *solo si el usuario no fijó tema manualmente*
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const storedTheme = localStorage.getItem("site-theme");
+    if (storedTheme) return; // si ya hay uno, no escuchar el sistema
+
+    const handler = (e: MediaQueryListEvent) => {
+      setTheme(e.matches ? "dark" : "light");
+    };
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
   // 🔘 Funciones toggle
   const toggleLang = () => setLang((s) => (s === "en" ? "es" : "en"));
-  const toggleTheme = () => {
-    setTheme((t) => {
-      const newTheme = t === "dark" ? "light" : "dark";
-      localStorage.setItem("site-theme", newTheme);
-      return newTheme;
-    });
-  };
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <AppContext.Provider value={{ lang, setLang, toggleLang, theme, toggleTheme, setTheme }}>
