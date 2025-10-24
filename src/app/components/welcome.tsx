@@ -98,7 +98,8 @@ export default function Welcome() {
     router.push("/");
   };
 
-  if (loading || !t) return <p className="text-center py-10">Cargando contenido...</p>;
+  if (loading || !t)
+    return <p className="text-center py-10">Cargando contenido...</p>;
 
   const bgBox =
     theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-[#5c4c4c]";
@@ -108,16 +109,23 @@ export default function Welcome() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-4 sm:px-6 md:px-10 py-8 sm:py-12 transition-all duration-700 bg-cover bg-center bg-no-repeat overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-3 sm:px-6 md:px-10 py-8 sm:py-12 transition-all duration-700 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
       {/* 🏠 Botón Home */}
       <div
         aria-label="Home"
-        className={`absolute flex items-center gap-2 rounded-lg shadow-md border cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]
-        ${bgBox}
-        top-3 left-3
-        px-2 sm:px-3 py-1 sm:py-2`}
+        className={`absolute flex items-center gap-2 rounded-lg shadow-md border cursor-pointer transition-all duration-300
+          hover:scale-105 hover:shadow-[0_4px_15px_rgba(218,165,32,0.6)]
+          ${bgBox}
+          top-3 left-3 sm:top-4 sm:left-4 md:top-5 md:left-6
+          px-2 sm:px-3 py-1 sm:py-2
+        `}
+        style={{
+          zIndex: 20, // siempre visible en la sección
+          pointerEvents: "auto",
+          backdropFilter: "blur(2px)",
+        }}
         onClick={handleHomeClick}
       >
         <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-md overflow-hidden border-2 border-transparent transition-all duration-300">
@@ -129,7 +137,7 @@ export default function Welcome() {
             className="object-cover w-full h-full"
           />
         </div>
-        <span className="font-['Irish_Grover'] text-xs sm:text-sm drop-shadow-[0_0_1px_silver]">
+        <span className="font-['Irish_Grover'] text-xs sm:text-sm drop-shadow-[0_0_1px_silver] whitespace-nowrap">
           {t.home}
         </span>
       </div>
