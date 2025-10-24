@@ -17,14 +17,8 @@ interface SiteContent {
   [key: string]: unknown;
 }
 
-// ✅ No extiende directamente, solo define las props opcionales
-type SafeMediaQueryList = MediaQueryList & {
-  addListener?: (callback: (ev: MediaQueryListEvent) => void) => void;
-  removeListener?: (callback: (ev: MediaQueryListEvent) => void) => void;
-};
-
 export default function Hero(): React.JSX.Element {
-  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
+  const { lang, toggleLang, theme, toggleTheme } = useApp();
   const { content } = useContent() as { content: SiteContent };
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -50,33 +44,6 @@ export default function Hero(): React.JSX.Element {
     window.addEventListener("resize", checkDevice);
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
-
-  // 🌙 Detectar tema del sistema sin usar any
-  useEffect(() => {
-    if (typeof window === "undefined" || !setTheme) return;
-
-    const mq: SafeMediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const applySystemTheme = (matches: boolean) => {
-      setTheme(matches ? "dark" : "light");
-    };
-
-    applySystemTheme(mq.matches);
-
-    const onChange = (e: MediaQueryListEvent) => applySystemTheme(e.matches);
-
-    if (typeof mq.addEventListener === "function") {
-      mq.addEventListener("change", onChange);
-      return () => mq.removeEventListener?.("change", onChange);
-    }
-
-    if (typeof mq.addListener === "function") {
-      mq.addListener(onChange);
-      return () => mq.removeListener?.(onChange);
-    }
-
-    return undefined;
-  }, [setTheme]);
 
   const handleViewClick = async () => {
     if (audioRef.current) {
@@ -165,10 +132,7 @@ export default function Hero(): React.JSX.Element {
             transition-transform duration-300 text-xs sm:text-sm md:text-base
             ${activeTouch === "lang" ? "scale-110 border-red-600" : "hover:scale-110 hover:border-red-600"}`}
         >
-          <span className="inline-flex items-center gap-2">
-            <span aria-hidden>🌐</span>
-            <span className="hidden sm:inline">{lang === "es" ? "English" : "Español"}</span>
-          </span>
+          🌐 {lang === "es" ? "EN" : "ES"}
         </button>
       </div>
 
