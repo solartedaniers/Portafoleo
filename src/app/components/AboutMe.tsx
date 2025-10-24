@@ -5,7 +5,7 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🔊 Hook personalizado para síntesis de voz
+// 🔊 Hook de voz
 function useSpeechSynthesis(lang: string) {
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
 
@@ -38,7 +38,7 @@ function useSpeechSynthesis(lang: string) {
   return { speakingIndex, speakText };
 }
 
-// 🖱 Hook para detectar soporte hover
+// 🖱 Detección hover
 function useHoverDetection() {
   const [hasHover, setHasHover] = useState(true);
   useEffect(() => {
@@ -87,37 +87,36 @@ export default function AboutMe() {
     }
   };
 
-  if (loading) return <p>Cargando contenido...</p>;
-  if (!about) return <p>No hay contenido disponible.</p>;
+  if (loading) return <p className="text-center py-10 text-lg">Cargando contenido...</p>;
+  if (!about) return <p className="text-center py-10 text-lg">No hay contenido disponible.</p>;
 
-  // 🎨 Estilos dinámicos
   const cardBg = theme === "dark" ? "bg-black text-white" : "bg-[#f5f5f5] text-black";
   const forestFilter = theme === "dark" ? "brightness(0.6)" : "brightness(1)";
 
   return (
     <section className="w-full overflow-x-hidden transition-all duration-500">
-      {/* 🌲 Fondo general */}
+      {/* Fondo */}
       <div className="relative w-full z-0">
         <div
           className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-500"
           style={{ backgroundImage: "url('/images/forest-2.webp')", filter: forestFilter }}
         />
-        <div className="relative z-10 py-16 px-4 sm:px-8 md:px-16 lg:px-24 flex flex-col items-center">
+        <div className="relative z-10 py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10 lg:px-20 flex flex-col items-center">
           {/* 🔸 Título */}
           <h2
-            className="text-2xl sm:text-4xl text-center mb-12 px-4 py-2 rounded-full shadow-lg cursor-pointer transition-all duration-500
-                       bg-red-600/60 text-white hover:bg-[#d4af37] hover:text-black font-['Irish_Grover']"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-10 sm:mb-12 px-6 py-3 rounded-full shadow-lg cursor-pointer transition-all duration-500
+                       bg-red-600/70 text-white hover:bg-[#d4af37] hover:text-black font-['Irish_Grover']"
           >
             {about.title ?? "About Me"}
           </h2>
 
-          {/* 🔹 Contenido horizontal: imagen izquierda / texto derecha */}
-          <div className="flex flex-col gap-10 w-full max-w-5xl">
+          {/* 🔹 Cards */}
+          <div className="flex flex-col gap-8 sm:gap-10 w-full max-w-6xl">
             {items.map((item, i) => (
               <div
                 key={i}
                 onTouchStart={() => handleTouch(i)}
-                className={`relative flex flex-col md:flex-row items-center md:items-center md:justify-between gap-6 p-6 rounded-xl shadow-lg border transition-all duration-500 ${cardBg} ${
+                className={`relative flex flex-col md:flex-row items-center md:items-center md:justify-between gap-6 sm:gap-8 p-5 sm:p-6 md:p-8 rounded-xl shadow-lg border transition-all duration-500 ${cardBg} ${
                   hoveredIndex === i
                     ? "scale-[1.02] border-[#d4af37]"
                     : "hover:scale-[1.02] hover:border-[#d4af37]"
@@ -129,7 +128,7 @@ export default function AboutMe() {
                       : "0px 4px 20px rgba(212, 175, 55, 0.3)",
                 }}
               >
-                {/* 🔊 Botón de voz */}
+                {/* 🔊 Botón voz */}
                 <div
                   aria-label="Toggle speech"
                   onClick={() => speakText(item.text, i)}
@@ -141,11 +140,11 @@ export default function AboutMe() {
                       : "text-gray-500"
                   }`}
                 >
-                  <FaVolumeUp className="text-xl sm:text-2xl" />
+                  <FaVolumeUp className="text-lg sm:text-xl md:text-2xl" />
                 </div>
 
-                {/* 🖼 Imagen circular izquierda */}
-                <div className="flex-shrink-0 w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 flex items-center justify-center">
+                {/* 🖼 Imagen */}
+                <div className="flex-shrink-0 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52 flex items-center justify-center">
                   <div className="w-full h-full rounded-full overflow-hidden border-4 border-red-600 hover:border-[#d4af37] transition-all duration-500">
                     <Image
                       src={item.img}
@@ -159,18 +158,18 @@ export default function AboutMe() {
                   </div>
                 </div>
 
-                {/* 📝 Texto a la derecha con efecto hover/tap */}
+                {/* 📝 Texto */}
                 <div
-                  className={`flex-1 text-center md:text-left transition-transform duration-500 ${
+                  className={`flex-1 text-center md:text-left transition-transform duration-500 px-2 sm:px-4 md:px-6 ${
                     hasHover
-                      ? "hover:-translate-y-2" // escritorio
+                      ? "hover:-translate-y-2"
                       : textLiftIndex === i
-                      ? "-translate-y-2" // móvil (tap)
+                      ? "-translate-y-2"
                       : "translate-y-0"
                   }`}
                 >
                   <p
-                    className="text-base sm:text-lg md:text-xl leading-relaxed transition-colors duration-500 px-2 sm:px-4"
+                    className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed transition-colors duration-500"
                     style={{ fontFamily: "'Esteban', serif" }}
                   >
                     {item.text}

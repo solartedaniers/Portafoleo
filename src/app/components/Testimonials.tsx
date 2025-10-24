@@ -65,19 +65,19 @@ export default function Testimonials() {
         key={idx}
         onClick={() => handleSelect(idx)}
         onTouchStart={() => handleSelect(idx)}
-        className={`flex flex-col sm:flex-row sm:items-center gap-6 p-6 border-2 rounded-2xl w-full transition-all duration-500 cursor-pointer
+        className={`flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 p-5 sm:p-6 md:p-8 border-2 rounded-2xl w-full transition-all duration-500 cursor-pointer
           ${theme === "dark" ? "bg-[#0e0e0e] text-white" : "bg-[#f5f5f5] text-black"}
           ${isSelected || isTapped
             ? "scale-[1.02] shadow-[0_0_25px_#c4af37] border-[#c4af37]"
             : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"}
         `}
       >
-        {/* 🖼 Imagen grande, circular, centrada a la izquierda */}
+        {/* 🖼 Imagen del testimonio */}
         <div className="flex justify-center sm:justify-start w-full sm:w-auto">
           <div
-            className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-full border-[4px] overflow-hidden flex-shrink-0 transition-all duration-500
+            className={`relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full border-[5px] overflow-hidden flex-shrink-0 transition-all duration-500
               ${isSelected || isTapped
-                ? "border-red-600 translate-y-[-4px]"
+                ? "border-red-600 translate-y-[-3px]"
                 : "border-[#c4af37] hover:border-red-600 hover:-translate-y-1"}
             `}
           >
@@ -86,23 +86,22 @@ export default function Testimonials() {
               alt={testimonial.name}
               fill
               className="object-cover rounded-full"
-              sizes="128px"
+              sizes="(max-width: 640px) 128px, (max-width: 1024px) 192px, 224px"
             />
           </div>
         </div>
 
         {/* 📜 Texto */}
         <div
-          className={`flex flex-col text-center sm:text-left transition-all duration-300
+          className={`flex flex-col text-center sm:text-left transition-all duration-300 flex-1
             ${isSelected || isTapped
               ? "translate-y-[-2px] shadow-md"
               : "hover:-translate-y-1 hover:shadow-md"}
           `}
         >
           <h3
-            className={`font-['Irish_Grover'] text-2xl ${
-              theme === "dark" ? "text-white" : "text-black"
-            }`}
+            className={`font-['Irish_Grover'] text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2
+              ${theme === "dark" ? "text-white" : "text-black"}`}
             style={{
               WebkitTextStroke: "0.5px #d4af37",
               textShadow: "0 0 4px #d4af37",
@@ -111,11 +110,11 @@ export default function Testimonials() {
             {testimonial.name}
           </h3>
           <p
-            className={`mt-2 font-['Esteban'] text-justify transition-colors duration-300 ${
-              theme === "dark"
+            className={`font-['Esteban'] text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-justify transition-colors duration-300
+              ${theme === "dark"
                 ? "text-gray-300 hover:text-gray-100"
-                : "text-[#5c4c4c] hover:text-black"
-            }`}
+                : "text-[#5c4c4c] hover:text-black"}
+            `}
           >
             {testimonial.text}
           </p>
@@ -127,7 +126,7 @@ export default function Testimonials() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center py-16 px-6 bg-cover bg-center transition-colors duration-500"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center py-12 sm:py-16 px-4 sm:px-6 md:px-10 lg:px-20 bg-cover bg-center bg-no-repeat transition-colors duration-500 overflow-hidden"
       style={{
         backgroundImage: "url('/images/parchment.webp')",
         backgroundBlendMode: theme === "dark" ? "multiply" : "normal",
@@ -135,12 +134,17 @@ export default function Testimonials() {
       }}
     >
       {/* 🔴 Título */}
-      <h2 className="text-4xl text-center bg-red-600/60 text-white font-['Irish_Grover'] px-6 py-3 rounded-full shadow-md hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] transition-all duration-300">
+      <h2
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center bg-red-600/70 text-white font-['Irish_Grover']
+        px-6 sm:px-10 py-3 sm:py-4 rounded-full shadow-md
+        hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]
+        transition-all duration-300 mb-10 sm:mb-12"
+      >
         {t.title}
       </h2>
 
       {/* 🧾 Lista de testimonios */}
-      <div className="flex flex-col gap-10 w-full max-w-4xl mt-10">
+      <div className="flex flex-col gap-8 sm:gap-10 w-full max-w-[95%] sm:max-w-3xl md:max-w-4xl lg:max-w-5xl px-2">
         {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(renderCard)}
       </div>
 
@@ -153,7 +157,7 @@ export default function Testimonials() {
                 setVisibleCount(2);
                 sectionRef.current?.scrollIntoView({ behavior: "smooth" });
               }}
-              className={`px-6 py-3 rounded-full border-2 font-['Esteban'] transition-all duration-300 ${
+              className={`px-6 sm:px-8 py-2 sm:py-3 rounded-full border-2 font-['Esteban'] text-sm sm:text-base transition-all duration-300 ${
                 theme === "dark"
                   ? "border-[#c4af37] bg-[#111] text-white hover:bg-[#c4af37] hover:text-black"
                   : "border-red-600 bg-white text-black hover:bg-[#c4af37] hover:text-black"
@@ -164,7 +168,7 @@ export default function Testimonials() {
           ) : (
             <button
               onClick={() => setVisibleCount((prev) => prev + 2)}
-              className={`px-6 py-3 rounded-full border-2 font-['Esteban'] transition-all duration-300 ${
+              className={`px-6 sm:px-8 py-2 sm:py-3 rounded-full border-2 font-['Esteban'] text-sm sm:text-base transition-all duration-300 ${
                 theme === "dark"
                   ? "border-[#c4af37] bg-[#111] text-white hover:bg-[#c4af37] hover:text-black"
                   : "border-red-600 bg-white text-black hover:bg-[#c4af37] hover:text-black"

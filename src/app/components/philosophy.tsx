@@ -57,7 +57,6 @@ export default function Filosofia() {
 
     utterance.onstart = () => setSpeaking(true);
     utterance.onend = () => setSpeaking(false);
-
     synth.speak(utterance);
   };
 
@@ -77,7 +76,7 @@ export default function Filosofia() {
 
   if (!data) return null;
 
-  const bgColor = theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
+  const bgColor = theme === "dark" ? "bg-[#111]" : "bg-[#f5f5f5]";
   const textColor = theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
 
   return (
@@ -85,56 +84,67 @@ export default function Filosofia() {
       className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-10 bg-cover bg-center"
       style={{ backgroundImage: `url('${data.background}')` }}
     >
-      <div className="relative w-full max-w-3xl flex flex-col items-center gap-8 mt-5">
-        {/* 🔴 Título */}
+      {/* Fondo translúcido */}
+      <div
+        className={`absolute inset-0 ${
+          theme === "dark" ? "bg-black/50" : "bg-white/40"
+        } z-0`}
+      />
+
+      <div className="relative z-10 w-full max-w-6xl flex flex-col items-center gap-10 mt-5">
+        {/* 🔴 Título centrado */}
         <h2 className="text-3xl sm:text-4xl md:text-5xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
           {data.title}
         </h2>
 
         {/* 📜 Contenedor principal */}
         <div
-          className={`relative w-full ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 sm:p-8 md:p-10 transition-all duration-500 border-4 border-transparent ${
+          className={`relative w-full ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 sm:p-8 md:p-10 transition-all duration-500 border-4 border-transparent flex flex-col md:flex-row items-center gap-8 ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#d4af37]" : ""
           }`}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onTouchStart={handleTouch}
         >
-          {/* 🔊 Icono de voz */}
+          {/* 🔊 Icono de audio — sin fondo, visible siempre */}
           <button
             onClick={speakText}
             onMouseEnter={() => setIconHovered(true)}
             onMouseLeave={() => setIconHovered(false)}
             onTouchStart={handleIconTouch}
-            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-md ${
-              speaking || iconHovered ? "text-blue-600" : "text-gray-500"
+            className={`absolute top-3 right-3 transition-all duration-300 hover:scale-125 ${
+              speaking || iconHovered
+                ? "text-blue-600 drop-shadow-[0_0_10px_#3b82f6]"
+                : "text-gray-600 hover:text-red-600"
             }`}
           >
-            <FaVolumeUp size={24} />
+            <FaVolumeUp size={28} />
           </button>
 
-          {/* 🖼️ Imagen cuadrada centrada */}
-          <div className="flex justify-center mb-6">
-            <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-xl overflow-hidden border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600">
+          {/* 🖼️ Imagen */}
+          <div className="flex justify-center md:justify-start w-full md:w-1/2">
+            <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-xl overflow-hidden border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600">
               <Image
                 src={data.image}
                 alt="Filosofía"
                 fill
-                sizes="(max-width: 768px) 120px, (max-width: 1024px) 180px, 240px"
+                sizes="(max-width: 640px) 160px, (max-width: 1024px) 240px, 300px"
                 className="object-cover"
               />
             </div>
           </div>
 
-          {/* 📖 Texto */}
-          <div
-            className={`text-base sm:text-lg md:text-xl leading-relaxed font-['Esteban'] ${textColor} transition-all duration-300 hover:tracking-wide text-justify`}
-          >
-            {data.text.map((p, i) => (
-              <p key={i} className="mb-4">
-                {p}
-              </p>
-            ))}
+          {/* 📖 Texto — desplazado a la izquierda */}
+          <div className="relative w-full md:w-1/2 md:pr-10">
+            <div
+              className={`text-base sm:text-lg md:text-xl leading-relaxed font-['Esteban'] ${textColor} transition-all duration-300 hover:tracking-wide text-justify md:-translate-x-3`}
+            >
+              {data.text.map((p, i) => (
+                <p key={i} className="mb-4 hover:text-red-600">
+                  {p}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
