@@ -16,10 +16,10 @@ import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { Sun, Moon } from "lucide-react";
 
-// 🔊 Sonido de clic
+// 🔊 Sonido clic
 const clickSound = typeof Audio !== "undefined" ? new Audio("/sounds/menu.mp3") : null;
 
-// 📱 Hook: detectar si es móvil
+// 📱 Hook detectar móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -135,53 +135,61 @@ export default function Navbar() {
               onClick={handleSelect}
               className={`flex items-center gap-3 px-4 py-2 rounded-xl ${borderGold} ${cardBg} transition-all duration-300 hover:border-red-600 hover:scale-105`}
             >
-              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#d4af37] text-black">
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#d4af37] text-black shrink-0">
                 {icons[index]}
               </div>
-              <span className="font-['Irish_Grover'] text-sm">{item.label}</span>
+              <span className="font-['Irish_Grover'] text-sm break-words">{item.label}</span>
             </a>
           ))}
         </div>
 
-        <div className="flex justify-center items-center gap-5 mb-8">
-          <button onClick={toggleTheme} className={`p-3 rounded-xl ${buttonBase}`}>
+        <div className="flex justify-center items-center gap-4 mb-8 flex-wrap px-4">
+          <button onClick={toggleTheme} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
             {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button onClick={toggleLang} className={`p-3 rounded-xl ${buttonBase}`}>
+          <button onClick={toggleLang} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
             🌐 {lang === "es" ? "EN" : "ES"}
           </button>
         </div>
       </div>
 
-      {/* 🖥 Escritorio (sin tocar tu layout original) */}
+      {/* 🖥 Escritorio */}
       {!isMobile && (
         <div className="hidden md:block">
-          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[2px] transition-all duration-500">
+          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[2px] transition-all duration-500 overflow-hidden">
             <div
-              className={`grid grid-cols-11 justify-items-center items-center gap-[3px] w-full ${borderGold} rounded-xl p-[2px]`}
+              className={`grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-11 justify-items-center items-center gap-[4px] w-full ${borderGold} rounded-xl p-[3px]`}
             >
               {navbarContent.menu.map((item, index) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={handleSelect}
-                  className={`flex flex-col items-center justify-center w-full aspect-square min-h-[75px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 cursor-pointer hover:scale-105`}
+                  className={`flex flex-col items-center justify-center w-full min-h-[70px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 cursor-pointer hover:scale-105`}
                 >
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#d4af37] text-black">
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#d4af37] text-black shrink-0">
                     {icons[index]}
                   </div>
-                  <span className="font-['Irish_Grover'] text-[0.7rem] text-center">{item.label}</span>
+                  <span className="font-['Irish_Grover'] text-[0.7rem] text-center break-words">
+                    {item.label}
+                  </span>
                 </a>
               ))}
 
-              {/* 🌗 Botones finales */}
+              {/* 🌗 Botones */}
               <div
-                className={`flex flex-col items-center justify-center w-full aspect-square min-h-[75px] rounded-xl ${cardBg} ${borderGold}`}
+                className={`flex flex-col items-center justify-center w-full min-h-[70px] rounded-xl ${cardBg} ${borderGold} overflow-hidden`}
               >
-                <button onClick={toggleTheme} className={`mb-2 p-2 rounded-lg ${buttonBase}`}>
+                <button
+                  onClick={toggleTheme}
+                  className={`mb-2 p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}
+                >
                   {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
-                <button onClick={toggleLang} className={`p-2 rounded-lg ${buttonBase}`}>
+                <button
+                  onClick={toggleLang}
+                  className={`p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}
+                >
                   🌐 {lang === "es" ? "EN" : "ES"}
                 </button>
               </div>
