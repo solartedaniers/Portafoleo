@@ -41,27 +41,11 @@ interface NavbarLangContent {
 }
 
 export default function Navbar() {
-  const { lang, theme, setTheme, toggleTheme, toggleLang } = useApp();
+  const { lang, theme, toggleTheme, toggleLang } = useApp();
   const { content } = useContent() as { content: { navbar?: NavbarLangContent } };
 
   const isMobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // 🌙 Detectar y aplicar el modo del sistema al cargar
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "light" || storedTheme === "dark") {
-      setTheme(storedTheme as "light" | "dark");
-    } else {
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(systemPrefersDark ? "dark" : "light");
-    }
-  }, [setTheme]);
-
-  // 🌗 Usar la función toggleTheme del contexto global
-  const handleToggleTheme = () => {
-    toggleTheme(); // Usar la función del contexto que ya maneja localStorage
-  };
 
   const defaultMenus: Record<string, NavbarLangContent> = {
     es: {
@@ -115,7 +99,6 @@ export default function Navbar() {
       ? "bg-black text-[#d4af37] hover:bg-red-600 hover:text-white"
       : "bg-gray-100 text-black hover:bg-red-600 hover:text-white";
 
-  // 🔈 Reproduce sonido y cierra menú en móvil
   const handleSelect = () => {
     if (clickSound) {
       clickSound.currentTime = 0;
@@ -161,7 +144,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex justify-center items-center gap-5 mb-8">
-          <button onClick={handleToggleTheme} className={`p-3 rounded-xl ${buttonBase}`}>
+          <button onClick={toggleTheme} className={`p-3 rounded-xl ${buttonBase}`}>
             {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           <button onClick={toggleLang} className={`p-3 rounded-xl ${buttonBase}`}>
@@ -170,7 +153,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* 🖥 Escritorio */}
+      {/* 🖥 Escritorio (sin tocar tu layout original) */}
       {!isMobile && (
         <div className="hidden md:block">
           <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[2px] transition-all duration-500">
@@ -195,7 +178,7 @@ export default function Navbar() {
               <div
                 className={`flex flex-col items-center justify-center w-full aspect-square min-h-[75px] rounded-xl ${cardBg} ${borderGold}`}
               >
-                <button onClick={handleToggleTheme} className={`mb-2 p-2 rounded-lg ${buttonBase}`}>
+                <button onClick={toggleTheme} className={`mb-2 p-2 rounded-lg ${buttonBase}`}>
                   {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
                 <button onClick={toggleLang} className={`p-2 rounded-lg ${buttonBase}`}>

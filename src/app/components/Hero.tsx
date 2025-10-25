@@ -17,7 +17,7 @@ interface SiteContent {
   [key: string]: unknown;
 }
 
-export default function Hero(): React.JSX.Element {
+export default function Hero(): React.JSX.Element | null {
   const { lang, toggleLang, theme, toggleTheme } = useApp();
   const { content } = useContent() as { content: SiteContent };
   const router = useRouter();
@@ -27,6 +27,7 @@ export default function Hero(): React.JSX.Element {
   const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
   const [hoverVideo, setHoverVideo] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const t: HeroLang =
     (content?.hero as HeroLang) ?? {
@@ -37,7 +38,10 @@ export default function Hero(): React.JSX.Element {
       video: "/videos/background-video.mp4",
     };
 
-  // 📱 Detectar si es móvil
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -79,6 +83,8 @@ export default function Hero(): React.JSX.Element {
   const isDark = theme === "dark";
   const borderColor = "border-[#d4af37]";
 
+  if (!isMounted) return <></>; // Cambiado null a Fragment para TS
+
   return (
     <section
       className={`relative w-full min-h-screen box-border border-[4px] sm:border-[6px] lg:border-[8px] ${borderColor} overflow-hidden transition-colors duration-500`}
@@ -86,7 +92,7 @@ export default function Hero(): React.JSX.Element {
       onMouseLeave={handleMouseLeave}
       aria-label="Hero section"
     >
-      {/* 🎥 Video de fondo */}
+      {/* Resto del contenido tal cual tu código original */}
       <video
         ref={videoRef}
         src={t.video}
@@ -100,16 +106,12 @@ export default function Hero(): React.JSX.Element {
           ${hoverVideo ? "scale-105" : "scale-100"}`}
         aria-hidden
       />
-
-      {/* 🔲 Overlay */}
       <div
         className={`absolute inset-0 z-10 ${
           isDark ? "bg-black/60" : "bg-[#eae6d9]/45"
         } transition-opacity duration-500`}
         aria-hidden
       />
-
-      {/* 🌐 Controles */}
       <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={toggleTheme}
@@ -122,7 +124,6 @@ export default function Hero(): React.JSX.Element {
         >
           {isDark ? "🌙" : "☀️"}
         </button>
-
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
@@ -135,8 +136,7 @@ export default function Hero(): React.JSX.Element {
           🌐 {lang === "es" ? "EN" : "ES"}
         </button>
       </div>
-
-      {/* 🧍 Contenido principal */}
+      {/* Contenido principal */}
       <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6 lg:px-12">
         <div className="flex flex-col items-center text-center gap-3 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
           <h1
@@ -148,7 +148,6 @@ export default function Hero(): React.JSX.Element {
           >
             {t.brand}
           </h1>
-
           <div
             onTouchStart={() => handleTouchEffect("quote")}
             className={`max-w-[95%] sm:max-w-[640px] md:max-w-[820px] px-3 sm:px-6 py-2 sm:py-3 rounded-2xl
@@ -158,7 +157,6 @@ export default function Hero(): React.JSX.Element {
             dangerouslySetInnerHTML={{ __html: t.quote }}
             aria-live="polite"
           />
-
           <div className="mt-2 sm:mt-4">
             <button
               onClick={handleViewClick}
@@ -174,8 +172,6 @@ export default function Hero(): React.JSX.Element {
           </div>
         </div>
       </div>
-
-      {/* 🔊 Sonido */}
       <audio ref={audioRef} preload="auto" aria-hidden>
         <source src="/sounds/sword.mp3" type="audio/mpeg" />
       </audio>
