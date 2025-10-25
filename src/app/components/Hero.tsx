@@ -18,7 +18,7 @@ interface SiteContent {
 }
 
 export default function Hero(): React.JSX.Element | null {
-  const { lang, toggleLang, theme, toggleTheme } = useApp();
+  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
   const { content } = useContent() as { content: SiteContent };
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -38,8 +38,23 @@ export default function Hero(): React.JSX.Element | null {
       video: "/videos/background-video.mp4",
     };
 
-  useEffect(() => setIsMounted(true), []);
+  // ✅ Detecta tema del sistema al montar
+  useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined") {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+      setTheme(prefersDark.matches ? "dark" : "light");
 
+      // Escucha cambios del sistema
+      const handleSystemChange = (e: MediaQueryListEvent) => {
+        setTheme(e.matches ? "dark" : "light");
+      };
+      prefersDark.addEventListener("change", handleSystemChange);
+      return () => prefersDark.removeEventListener("change", handleSystemChange);
+    }
+  }, [setTheme]);
+
+  // Detecta si es móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -47,7 +62,7 @@ export default function Hero(): React.JSX.Element | null {
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  const handleViewClick = async () => {
+  const handleViewClick = async (): Promise<void> => {
     if (audioRef.current) {
       try {
         audioRef.current.currentTime = 0;
@@ -59,18 +74,18 @@ export default function Hero(): React.JSX.Element | null {
     router.push("/portfolio");
   };
 
-  const handleTouchEffect = (id: string) => {
+  const handleTouchEffect = (id: string): void => {
     if (!isMobile) return;
     setActiveTouch(id);
     setTimeout(() => setActiveTouch(null), 400);
   };
 
-  const handleMouseEnter = useCallback(() => {
+  const handleMouseEnter = useCallback((): void => {
     setHoverVideo(true);
     videoRef.current?.play().catch(() => {});
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseLeave = useCallback((): void => {
     setHoverVideo(false);
     if (videoRef.current) {
       videoRef.current.pause();
@@ -90,6 +105,7 @@ export default function Hero(): React.JSX.Element | null {
       onMouseLeave={handleMouseLeave}
       aria-label="Hero section"
     >
+      {/* 🎥 Video de fondo */}
       <video
         ref={videoRef}
         src={t.video}
@@ -104,6 +120,7 @@ export default function Hero(): React.JSX.Element | null {
         aria-hidden
       />
 
+      {/* 🩶 Capa de color según tema */}
       <div
         className={`absolute inset-0 z-10 ${
           isDark ? "bg-black/60" : "bg-[#eae6d9]/45"
@@ -111,7 +128,7 @@ export default function Hero(): React.JSX.Element | null {
         aria-hidden
       />
 
-      {/* 🔘 Botones de idioma y tema */}
+      {/* 🔘 Botones */}
       <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={toggleTheme}
@@ -138,10 +155,9 @@ export default function Hero(): React.JSX.Element | null {
         </button>
       </div>
 
-      {/* 🔹 Contenido principal */}
-      <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6 lg:px-12">
+      {/* 🪄 Contenido principal */}
+      <div className="absolute inset-0 z-20 grid place-items-center px-3 sm:px-6 lg:px-12">
         <div className="flex flex-col items-center text-center gap-3 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
-          {/* 🔸 Nombre con borde dorado y hover rojo */}
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
             className={`font-['Irish_Grover'] leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem]
@@ -154,22 +170,21 @@ export default function Hero(): React.JSX.Element | null {
               transition: "all 0.4s ease-in-out",
             } as React.CSSProperties}
             onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.webkitTextStroke = "1.5px red";
-              el.style.textShadow =
+              const el = e.currentTarget.style;
+              el.webkitTextStroke = "1.5px red";
+              el.textShadow =
                 "0 0 12px rgba(255,0,0,0.7), 0 0 24px rgba(255,0,0,0.4)";
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget;
-              el.style.webkitTextStroke = "1.5px #d4af37";
-              el.style.textShadow =
+              const el = e.currentTarget.style;
+              el.webkitTextStroke = "1.5px #d4af37";
+              el.textShadow =
                 "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)";
             }}
           >
             {t.brand}
           </h1>
 
-          {/* 🔹 Frase motivadora */}
           <div
             onTouchStart={() => handleTouchEffect("quote")}
             className={`max-w-[95%] sm:max-w-[640px] md:max-w-[820px] px-4 sm:px-6 py-3 sm:py-4 rounded-[2.5rem]
@@ -177,10 +192,8 @@ export default function Hero(): React.JSX.Element | null {
               text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed shadow-lg transition-transform duration-300
               ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_rgba(255,215,0,0.25)]" : "hover:scale-102"}`}
             dangerouslySetInnerHTML={{ __html: t.quote }}
-            aria-live="polite"
           />
 
-          {/* 🔹 Botón Ver Portafolio */}
           <div className="mt-2 sm:mt-4">
             <button
               onClick={handleViewClick}
@@ -189,7 +202,6 @@ export default function Hero(): React.JSX.Element | null {
                 transition-transform duration-300 text-sm sm:text-base md:text-lg
                 ${activeTouch === "view" ? "scale-110 border-[#d4af37]" : "hover:scale-110 hover:border-[#d4af37]"}
                 ${isDark ? "bg-[rgba(26,26,26,0.9)] text-[#d4af37]" : "bg-[rgba(220,216,200,0.9)] text-[#4a4520] border-red-600"}`}
-              aria-label={t.view}
             >
               {t.view}
             </button>
@@ -197,8 +209,7 @@ export default function Hero(): React.JSX.Element | null {
         </div>
       </div>
 
-      {/* Sonido */}
-      <audio ref={audioRef} preload="auto" aria-hidden>
+      <audio ref={audioRef} preload="auto">
         <source src="/sounds/sword.mp3" type="audio/mpeg" />
       </audio>
     </section>
