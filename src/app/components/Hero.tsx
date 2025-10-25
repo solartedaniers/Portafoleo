@@ -38,9 +38,7 @@ export default function Hero(): React.JSX.Element | null {
       video: "/videos/background-video.mp4",
     };
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  useEffect(() => setIsMounted(true), []);
 
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
@@ -83,7 +81,7 @@ export default function Hero(): React.JSX.Element | null {
   const isDark = theme === "dark";
   const borderColor = "border-[#d4af37]";
 
-  if (!isMounted) return <></>; // Cambiado null a Fragment para TS
+  if (!isMounted) return null;
 
   return (
     <section
@@ -92,7 +90,6 @@ export default function Hero(): React.JSX.Element | null {
       onMouseLeave={handleMouseLeave}
       aria-label="Hero section"
     >
-      {/* Resto del contenido tal cual tu código original */}
       <video
         ref={videoRef}
         src={t.video}
@@ -106,12 +103,15 @@ export default function Hero(): React.JSX.Element | null {
           ${hoverVideo ? "scale-105" : "scale-100"}`}
         aria-hidden
       />
+
       <div
         className={`absolute inset-0 z-10 ${
           isDark ? "bg-black/60" : "bg-[#eae6d9]/45"
         } transition-opacity duration-500`}
         aria-hidden
       />
+
+      {/* 🔘 Botones de idioma y tema */}
       <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={toggleTheme}
@@ -124,6 +124,7 @@ export default function Hero(): React.JSX.Element | null {
         >
           {isDark ? "🌙" : "☀️"}
         </button>
+
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
@@ -136,27 +137,50 @@ export default function Hero(): React.JSX.Element | null {
           🌐 {lang === "es" ? "EN" : "ES"}
         </button>
       </div>
-      {/* Contenido principal */}
+
+      {/* 🔹 Contenido principal */}
       <div className="absolute inset-0 z-20 grid place-items-center px-4 sm:px-6 lg:px-12">
         <div className="flex flex-col items-center text-center gap-3 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
+          {/* 🔸 Nombre con borde dorado y hover rojo */}
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
             className={`font-['Irish_Grover'] leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem]
-              transition-transform duration-300 ${activeTouch === "brand" ? "scale-105" : "hover:scale-105"}
+              transition-all duration-300 ${activeTouch === "brand" ? "scale-105" : "hover:scale-105"}
               ${isDark ? "text-white" : "text-[#1c1b19]"}`}
-            style={{ WebkitTextStroke: "0.8px rgba(212,175,55,0.8)" }}
+            style={{
+              webkitTextStroke: "1.5px #d4af37",
+              textShadow:
+                "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)",
+              transition: "all 0.4s ease-in-out",
+            } as React.CSSProperties}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget;
+              el.style.webkitTextStroke = "1.5px red";
+              el.style.textShadow =
+                "0 0 12px rgba(255,0,0,0.7), 0 0 24px rgba(255,0,0,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget;
+              el.style.webkitTextStroke = "1.5px #d4af37";
+              el.style.textShadow =
+                "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)";
+            }}
           >
             {t.brand}
           </h1>
+
+          {/* 🔹 Frase motivadora */}
           <div
             onTouchStart={() => handleTouchEffect("quote")}
-            className={`max-w-[95%] sm:max-w-[640px] md:max-w-[820px] px-3 sm:px-6 py-2 sm:py-3 rounded-2xl
+            className={`max-w-[95%] sm:max-w-[640px] md:max-w-[820px] px-4 sm:px-6 py-3 sm:py-4 rounded-[2.5rem]
               ${isDark ? "bg-[rgba(18,18,18,0.8)] text-gray-200" : "bg-[rgba(234,230,217,0.85)] text-[#4a4a44]"}
               text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed shadow-lg transition-transform duration-300
               ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_rgba(255,215,0,0.25)]" : "hover:scale-102"}`}
             dangerouslySetInnerHTML={{ __html: t.quote }}
             aria-live="polite"
           />
+
+          {/* 🔹 Botón Ver Portafolio */}
           <div className="mt-2 sm:mt-4">
             <button
               onClick={handleViewClick}
@@ -172,6 +196,8 @@ export default function Hero(): React.JSX.Element | null {
           </div>
         </div>
       </div>
+
+      {/* Sonido */}
       <audio ref={audioRef} preload="auto" aria-hidden>
         <source src="/sounds/sword.mp3" type="audio/mpeg" />
       </audio>
