@@ -30,23 +30,26 @@ export default function PortfolioPage() {
   const { theme } = useApp();
 
   return (
-    <main
-      className={`min-h-screen flex flex-col gap-10 scroll-smooth px-4 py-6 pt-24 
-        ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+    <div
+      className={`min-h-screen flex flex-col scroll-smooth ${
+        theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+      }`}
     >
-      {/* ✅ Barra de navegación fija */}
+      {/* ✅ Navbar fuera del flujo normal */}
       <Navbar />
 
-      {/* ✅ Secciones */}
-      {sections.map(({ id, component }) => (
-        <section
-          key={id}
-          id={id}
-          className="scroll-mt-24 border-[15px] border-[#d4af37] p-4 box-border"
-        >
-          {component}
-        </section>
-      ))}
-    </main>
+      {/* ✅ Contenido principal con padding superior igual a la altura del Navbar */}
+      <main className="flex flex-col gap-10 px-4 py-6 pt-24 md:pt-28 lg:pt-32">
+        {sections.map(({ id, component }) => (
+          <section
+            key={id}
+            id={id}
+            className="scroll-mt-24 border-[15px] border-[#d4af37] p-4 box-border"
+          >
+            {component}
+          </section>
+        ))}
+      </main>
+    </div>
   );
 }
