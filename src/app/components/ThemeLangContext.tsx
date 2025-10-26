@@ -11,6 +11,7 @@ interface AppContextType {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
+  isSystemTheme: boolean; // 🆕 Indica si sigue el sistema
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [lang, setLang] = useState<Lang>("en");
   const [theme, setTheme] = useState<Theme>("light");
+  const [isSystemTheme, setIsSystemTheme] = useState(true); // 🆕 Por defecto sigue el sistema
 
   // 🧠 Cargar preferencias iniciales
   useEffect(() => {
@@ -27,48 +29,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const storedTheme = localStorage.getItem("site-theme") as Theme | null;
 
     if (storedLang) setLang(storedLang);
+
     if (storedTheme) {
+      // Si hay tema guardado, el usuario lo fijó manualmente
       setTheme(storedTheme);
+      setIsSystemTheme(false);
     } else {
-      // Si no hay tema guardado, usa el del sistema
+      // Sin tema guardado = seguir el sistema
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       setTheme(prefersDark ? "dark" : "light");
+      setIsSystemTheme(true);
     }
   }, []);
 
-  // 🎨 Aplicar tema global y guardar en localStorage
+  // 🎨 Aplicar tema global (sin guardarlo si sigue el sistema)
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") root.classList.add("dark");
     else root.classList.remove("dark");
 
-    localStorage.setItem("site-theme", theme);
-  }, [theme]);
+    // Solo guardar si el usuario lo fijó manualmente
+    if (!isSystemTheme) {
+      localStorage.setItem("site-theme", theme);
+    }
+  }, [theme, isSystemTheme]);
 
   // 🌐 Guardar idioma
   useEffect(() => {
     localStorage.setItem("site-lang", lang);
   }, [lang]);
 
-  // 🌓 Escuchar cambios del sistema *solo si el usuario no fijó tema manualmente*
+  // 🌓 Escuchar cambios del sistema SOLO si sigue el modo automático
   useEffect(() => {
+    if (!isSystemTheme) return; // Si está manual, no escuchar
+
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const storedTheme = localStorage.getItem("site-theme");
-    if (storedTheme) return; // si ya hay uno, no escuchar el sistema
 
     const handler = (e: MediaQueryListEvent) => {
       setTheme(e.matches ? "dark" : "light");
     };
+
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
+  }, [isSystemTheme]);
 
   // 🔘 Funciones toggle
   const toggleLang = () => setLang((s) => (s === "en" ? "es" : "en"));
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  
+  const toggleTheme = () => {
+    // Cuando el usuario hace clic, fijamos el tema manualmente
+    setIsSystemTheme(false);
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  };
 
   return (
-    <AppContext.Provider value={{ lang, setLang, toggleLang, theme, toggleTheme, setTheme }}>
+    <AppContext.Provider value={{ 
+      lang, 
+      setLang, 
+      toggleLang, 
+      theme, 
+      toggleTheme, 
+      setTheme,
+      isSystemTheme 
+    }}>
       {children}
     </AppContext.Provider>
   );

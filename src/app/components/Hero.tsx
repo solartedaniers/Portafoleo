@@ -18,7 +18,7 @@ interface SiteContent {
 }
 
 export default function Hero(): React.JSX.Element | null {
-  const { lang, toggleLang, theme, toggleTheme, setTheme } = useApp();
+  const { lang, toggleLang, theme, toggleTheme } = useApp();
   const { content } = useContent() as { content: SiteContent };
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -38,21 +38,10 @@ export default function Hero(): React.JSX.Element | null {
       video: "/videos/background-video.mp4",
     };
 
-  // ✅ Detecta tema del sistema al montar
+  // ✅ Solo marcar como montado (el tema ya se maneja en el contexto)
   useEffect(() => {
     setIsMounted(true);
-    if (typeof window !== "undefined") {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-      setTheme(prefersDark.matches ? "dark" : "light");
-
-      // Escucha cambios del sistema
-      const handleSystemChange = (e: MediaQueryListEvent) => {
-        setTheme(e.matches ? "dark" : "light");
-      };
-      prefersDark.addEventListener("change", handleSystemChange);
-      return () => prefersDark.removeEventListener("change", handleSystemChange);
-    }
-  }, [setTheme]);
+  }, []);
 
   // Detecta si es móvil
   useEffect(() => {
