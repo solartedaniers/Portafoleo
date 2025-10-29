@@ -30,7 +30,7 @@ export default function AdminPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl mb-4 font-bold">📝 Editor de contenido ({lang.toUpperCase()})</h1>
 
-      {/* 🌍 Selector de idioma */}
+      {/*Selector de idioma */}
       <select
         value={lang}
         onChange={(e) => setLang(e.target.value as "es" | "en")}

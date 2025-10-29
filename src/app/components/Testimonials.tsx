@@ -20,7 +20,7 @@ export default function Testimonials() {
   const { content } = useContent();
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
-  // 🟢 Hook interno
+  // Hook interno para manejar la lógica del componente
   const useTestimonials = () => {
     const [visibleCount, setVisibleCount] = useState(2);
     const [selected, setSelected] = useState<number | null>(null);
@@ -55,7 +55,7 @@ export default function Testimonials() {
   const t = content.testimonials as TestimonialsContent;
   const testimonials = t.list ?? [];
 
-  // 🎴 Render de cada tarjeta
+  // El Render de cada tarjeta
   const renderCard = (testimonial: Testimonial, idx: number) => {
     const isSelected = selected === idx;
     const isTapped = tappedIndex === idx;
@@ -72,7 +72,7 @@ export default function Testimonials() {
             : "hover:scale-[1.02] hover:shadow-[0_0_25px_#c4af37] border-red-600"}
         `}
       >
-        {/* 🖼 Imagen del testimonio */}
+        {/* Imagen del testimonio */}
         <div className="flex justify-center sm:justify-start w-full sm:w-auto">
           <div
             className={`relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full border-[5px] overflow-hidden flex-shrink-0 transition-all duration-500
@@ -91,7 +91,7 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* 📜 Texto */}
+        {/* Texto del testimonio */}
         <div
           className={`flex flex-col text-center sm:text-left transition-all duration-300 flex-1
             ${isSelected || isTapped
@@ -133,7 +133,6 @@ export default function Testimonials() {
         backgroundColor: theme === "dark" ? "rgba(0,0,0,0.4)" : "transparent",
       }}
     >
-      {/* 🔴 Título */}
       <h2
         className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center bg-red-600/70 text-white font-['Irish_Grover']
         px-6 sm:px-10 py-3 sm:py-4 rounded-full shadow-md
@@ -143,12 +142,12 @@ export default function Testimonials() {
         {t.title}
       </h2>
 
-      {/* 🧾 Lista de testimonios */}
+      {/* Lista de testimonios */}
       <div className="flex flex-col gap-8 sm:gap-10 w-full max-w-[95%] sm:max-w-3xl md:max-w-4xl lg:max-w-5xl px-2">
         {(isMobile ? testimonials.slice(0, visibleCount) : testimonials).map(renderCard)}
       </div>
 
-      {/* 📱 Botón solo en móvil */}
+      {/* Botón ver más / ver menos en móvil */}
       {isMobile && testimonials.length > 2 && (
         <div className="mt-10 flex justify-center">
           {visibleCount >= testimonials.length ? (

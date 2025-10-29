@@ -16,10 +16,10 @@ import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { Sun, Moon } from "lucide-react";
 
-// 🔊 Sonido clic
+// Sonido clic del menú
 const clickSound = typeof Audio !== "undefined" ? new Audio("/sounds/menu.mp3") : null;
 
-// 📱 Hook detectar móvil
+// Hook para detectar si es móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Navbar() {
         { label: "Technologies", id: "tecnologias" },
         { label: "My Projects", id: "misproyectos" },
         { label: "Testimonials", id: "testimonios" },
-        { label: "Resume", id: "cv" },
+        { label: "Cv", id: "cv" },
         { label: "Experience", id: "experiencia" },
         { label: "Philosophy", id: "filosofia" },
         { label: "Contact", id: "contacto" },
@@ -113,7 +113,7 @@ export default function Navbar() {
         theme === "dark" ? "bg-black" : "bg-white"
       }`}
     >
-      {/* 🔘 Menú móvil */}
+      {/* Menú móvil */}
       <div
         className="flex items-center justify-between px-5 py-3 md:hidden cursor-pointer"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -121,7 +121,7 @@ export default function Navbar() {
         <span className="font-bold text-lg text-[#d4af37]">☰ Menú</span>
       </div>
 
-      {/* 📱 Panel móvil */}
+      {/* Panel móvil */}
       <div
         className={`fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] flex flex-col justify-between bg-[#d4af37] transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -153,7 +153,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* 🖥 Escritorio */}
       {!isMobile && (
         <div className="hidden md:block">
           <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[2px] transition-all duration-500 overflow-hidden">
@@ -176,7 +175,7 @@ export default function Navbar() {
                 </a>
               ))}
 
-              {/* 🌗 Botones */}
+              {/* Botones de idioma y tema */}
               <div
                 className={`flex flex-col items-center justify-center w-full min-h-[70px] rounded-xl ${cardBg} ${borderGold} overflow-hidden`}
               >

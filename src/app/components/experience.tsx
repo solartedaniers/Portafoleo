@@ -30,6 +30,7 @@ export default function Experiencia() {
     }
   }, []);
 
+  // Inicializa las voces disponibles para speechSynthesis
   useEffect(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       const synth: SpeechSynthesis = window.speechSynthesis;
@@ -113,7 +114,6 @@ export default function Experiencia() {
         role="region"
         aria-labelledby={`${type}-title`}
       >
-        {/* Header */}
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3 min-w-0">
             <div className="flex-shrink-0">{icon}</div>
@@ -150,19 +150,16 @@ export default function Experiencia() {
           </div>
         </div>
 
-        {/* Texto principal */}
         <p className={`mt-4 font-['Esteban'] text-sm sm:text-base md:text-lg leading-relaxed text-justify`}>
           {text}
         </p>
 
-        {/* Proyectos */}
         {projectsTitle && (
           <p className="mt-4 font-['Esteban'] text-sm sm:text-base font-semibold text-[#c4af37]">
             {projectsTitle}
           </p>
         )}
 
-        {/* Lista */}
         <ul className="mt-3 list-disc pl-5 sm:pl-8 space-y-1 text-sm sm:text-base font-['Esteban']">
           {list.map((item, i) => (
             <li key={i} className="break-words">
@@ -179,7 +176,6 @@ export default function Experiencia() {
       className="w-full min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 md:px-12 py-10 bg-cover bg-center transition-all duration-500"
       style={{ backgroundImage: "url('/images/city.webp')" }}
     >
-      {/* Título principal */}
       <h2
         className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-4 sm:px-6 py-2 rounded-full shadow-md font-['Irish_Grover'] transition-all duration-300
           bg-red-600 text-white hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37]`}
@@ -187,7 +183,6 @@ export default function Experiencia() {
         {experiencia.title}
       </h2>
 
-      {/* Tarjetas */}
       <div className="w-full flex flex-col items-center gap-10 mt-10">
         {renderCard(
           "academico",

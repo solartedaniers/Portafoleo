@@ -4,7 +4,7 @@ import path from "path";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
-// 📖 GET /api/content?lang=es|en
+//  GET /api/content?lang=es|en
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -20,7 +20,7 @@ export async function GET(req: Request) {
   }
 }
 
-// 💾 POST /api/content?lang=es|en
+//  POST /api/content?lang=es|en
 export async function POST(req: Request) {
   try {
     const { searchParams } = new URL(req.url);

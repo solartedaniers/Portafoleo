@@ -46,7 +46,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }}
   >
     <div className="p-6 flex flex-col items-center gap-5">
-      {/* 🖼 Imagen */}
       <div className="relative w-full flex justify-center">
         <div className="rounded-xl overflow-hidden border-[2px] border-[#c4af37]/40 shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_#c4af37]">
           <Image
@@ -59,7 +58,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
       </div>
 
-      {/* 🧭 GitHub */}
+      {/* Botón de acceso al repositorio */}
       <div className="w-full flex justify-center">
         <a
           href={project.gitUrl}
@@ -80,7 +79,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </a>
       </div>
 
-      {/* 🧾 Título */}
+      {/* Título */}
       <h3
         className="text-center text-2xl font-['Irish_Grover'] mt-2"
         style={{
@@ -91,7 +90,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {project.title}
       </h3>
 
-      {/* 💬 Descripción */}
+      {/* Descripción */}
       <p
         className={`text-sm text-center leading-relaxed px-3 transition-colors duration-300 ${
           theme === "dark"
@@ -103,7 +102,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {project.description}
       </p>
 
-      {/* ⚒ Herramientas */}
+      {/* Lenguajes y herramientas */}
       <div className="w-full mt-4 text-center">
         <span
           className="block text-lg mb-2"
@@ -176,17 +175,17 @@ export default function Projects() {
         backgroundPosition: "center",
       }}
     >
+      {/* Capa oscura de fondo */}
       <span className="absolute inset-0 bg-black/40 z-0" />
 
       <div className="relative z-10 w-full max-w-6xl">
-        {/* 🔴 Título */}
         <header className="flex justify-center mb-10">
           <h2 className="text-4xl text-center px-6 py-3 rounded-full shadow-md bg-red-600/60 text-white font-['Irish_Grover'] hover:bg-[#c4af37] hover:text-black hover:shadow-[0_0_25px_#c4af37] transition-all duration-300">
             {lang === "es" ? "Mis proyectos" : "My Projects"}
           </h2>
         </header>
 
-        {/* 📱 Swiper en móvil con autoplay + flechas */}
+        {/* Carrusel móvil con autoplay */}
         <div className="sm:hidden w-full">
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -211,7 +210,6 @@ export default function Projects() {
           </Swiper>
         </div>
 
-        {/* 💻 Grid de 2 columnas en escritorio */}
         <main className="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-10">
           {projects.map((p, i) => (
             <ProjectCard
@@ -226,7 +224,6 @@ export default function Projects() {
         </main>
       </div>
 
-      {/* 🎵 Audios */}
       <audio ref={audioRef} preload="auto" />
       <audio ref={thunderRef} preload="auto" />
     </section>

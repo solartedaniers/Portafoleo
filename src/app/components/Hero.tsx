@@ -38,12 +38,10 @@ export default function Hero(): React.JSX.Element | null {
       video: "/videos/background-video.mp4",
     };
 
-  // ✅ Solo marcar como montado (el tema ya se maneja en el contexto)
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Detecta si es móvil
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < 768);
     checkDevice();
@@ -94,7 +92,7 @@ export default function Hero(): React.JSX.Element | null {
       onMouseLeave={handleMouseLeave}
       aria-label="Hero section"
     >
-      {/* 🎥 Video de fondo */}
+      {/* Video de fondo */}
       <video
         ref={videoRef}
         src={t.video}
@@ -109,7 +107,7 @@ export default function Hero(): React.JSX.Element | null {
         aria-hidden
       />
 
-      {/* 🩶 Capa de color según tema */}
+      {/* Capa de color según el tema */}
       <div
         className={`absolute inset-0 z-10 ${
           isDark ? "bg-black/60" : "bg-[#eae6d9]/45"
@@ -117,7 +115,7 @@ export default function Hero(): React.JSX.Element | null {
         aria-hidden
       />
 
-      {/* 🔘 Botones */}
+      {/* Botones de control de idioma y tema */}
       <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={toggleTheme}
@@ -144,7 +142,7 @@ export default function Hero(): React.JSX.Element | null {
         </button>
       </div>
 
-      {/* 🪄 Contenido principal */}
+      {/* Contenido principal */}
       <div className="absolute inset-0 z-20 grid place-items-center px-3 sm:px-6 lg:px-12">
         <div className="flex flex-col items-center text-center gap-3 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
           <h1

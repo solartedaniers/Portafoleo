@@ -84,7 +84,6 @@ export default function Filosofia() {
       className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-10 bg-cover bg-center"
       style={{ backgroundImage: `url('${data.background}')` }}
     >
-      {/* Fondo translúcido */}
       <div
         className={`absolute inset-0 ${
           theme === "dark" ? "bg-black/50" : "bg-white/40"
@@ -92,12 +91,10 @@ export default function Filosofia() {
       />
 
       <div className="relative z-10 w-full max-w-6xl flex flex-col items-center gap-10 mt-5">
-        {/* 🔴 Título centrado */}
         <h2 className="text-3xl sm:text-4xl md:text-5xl text-center px-6 py-2 rounded-full shadow-lg transition-all duration-500 bg-red-600 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black hover:shadow-[0_0_25px_#d4af37]">
           {data.title}
         </h2>
 
-        {/* 📜 Contenedor principal */}
         <div
           className={`relative w-full ${bgColor} rounded-2xl shadow-[0_0_20px_#d4af37] p-6 sm:p-8 md:p-10 transition-all duration-500 border-4 border-transparent flex flex-col md:flex-row items-center gap-8 ${
             hovered ? "scale-105 border-red-600 shadow-[0_0_30px_#d4af37]" : ""
@@ -106,7 +103,7 @@ export default function Filosofia() {
           onMouseLeave={() => setHovered(false)}
           onTouchStart={handleTouch}
         >
-          {/* 🔊 Icono de audio — sin fondo, visible siempre */}
+          {/* Botón de lectura en voz alta */}
           <button
             onClick={speakText}
             onMouseEnter={() => setIconHovered(true)}
@@ -121,7 +118,7 @@ export default function Filosofia() {
             <FaVolumeUp size={28} />
           </button>
 
-          {/* 🖼️ Imagen */}
+          {/* Imagen decorativa */}
           <div className="flex justify-center md:justify-start w-full md:w-1/2">
             <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-xl overflow-hidden border-[3px] border-[#d4af37] shadow-lg transition-all duration-500 hover:scale-110 hover:shadow-black hover:border-red-600">
               <Image
@@ -134,7 +131,7 @@ export default function Filosofia() {
             </div>
           </div>
 
-          {/* 📖 Texto — desplazado a la izquierda */}
+          {/* Texto descriptivo */}
           <div className="relative w-full md:w-1/2 md:pr-10">
             <div
               className={`text-base sm:text-lg md:text-xl leading-relaxed font-['Esteban'] ${textColor} transition-all duration-300 hover:tracking-wide text-justify md:-translate-x-3`}

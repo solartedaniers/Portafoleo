@@ -21,7 +21,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// 🌟 Interfaces
 interface Technology {
   name: string;
   icon: string;
@@ -34,8 +33,7 @@ interface TechnologiesContent {
   video: string;
   list: Technology[];
 }
-
-// 🌟 Hook para detectar si es móvil
+// Hook para detectar si es móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -47,7 +45,7 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-// 🌟 Mapeo de íconos
+// Mapeo de íconos
 const iconMap: Record<string, React.ReactNode> = {
   SiAngular: <SiAngular size={60} className="text-red-600" />,
   SiTailwindcss: <SiTailwindcss size={60} className="text-cyan-400" />,
@@ -62,7 +60,7 @@ const iconMap: Record<string, React.ReactNode> = {
   FaGithub: <FaGithub size={60} className="text-gray-800 dark:text-gray-300" />,
 };
 
-// 🌟 Tarjeta individual
+// Tarjeta individual
 interface TechnologyCardProps {
   tech: Technology;
   hovered: string | null;
@@ -110,7 +108,7 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
   </div>
 );
 
-// 🌟 Componente principal
+// Componente principal
 export default function Languages() {
   const { theme } = useApp();
   const { content } = useContent();
@@ -120,7 +118,6 @@ export default function Languages() {
   const techData = content?.technologies as TechnologiesContent | undefined;
   if (!techData) return null;
 
-  // 🎨 Estilos
   const sectionBorder = "border-yellow-500";
   const titleStyle =
     theme === "dark"
@@ -139,7 +136,7 @@ export default function Languages() {
     <section
       className={`relative w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center overflow-hidden border-4 sm:border-8 ${sectionBorder}`}
     >
-      {/* 🎥 Fondo de video */}
+      {/* Fondo de video */}
       <video
         src={techData.video}
         autoPlay
@@ -149,7 +146,6 @@ export default function Languages() {
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
-      {/* 🌟 Contenido */}
       <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
         <h2
           className={`text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 font-['Irish_Grover'] cursor-pointer ${titleStyle}`}
@@ -157,7 +153,6 @@ export default function Languages() {
           {techData.title}
         </h2>
 
-        {/* 💬 Frase motivadora SOLO en móvil */}
         {isMobile && (
           <p
             className={`block md:hidden italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 text-center ${quoteStyle}`}
@@ -166,12 +161,10 @@ export default function Languages() {
           </p>
         )}
 
-        {/* 🌀 Carrusel centrado */}
+        {/* Carrusel */}
         <div className="relative flex items-center justify-center w-full px-8 sm:px-12">
-          {/* Flecha izquierda */}
           <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-1 sm:left-4" />
 
-          {/* Carrusel */}
           <div className="flex justify-center w-full max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
             <Swiper
               modules={[Navigation]}
@@ -202,11 +195,9 @@ export default function Languages() {
             </Swiper>
           </div>
 
-          {/* Flecha derecha */}
           <div className="swiper-button-next flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute right-1 sm:right-4" />
         </div>
 
-        {/* 💬 Frase motivadora SOLO en escritorio */}
         {!isMobile && (
           <p
             className={`mt-4 italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 hover:scale-105 text-center ${quoteStyle}`}

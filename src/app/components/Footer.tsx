@@ -5,7 +5,7 @@ import { FaLinkedin, FaWhatsapp, FaGithub } from "react-icons/fa";
 import { useContent } from "./ContentProvider";
 import { useApp } from "./ThemeLangContext";
 
-// 🧩 Tipos
+// Tipos principales
 interface SocialLink {
   label: string;
   url: string;
@@ -27,7 +27,7 @@ interface FooterLang {
   };
 }
 
-// 🎯 Hook del reloj y sonido
+// Hook para reloj y sonido
 function useClockSound() {
   const [clockTime, setClockTime] = useState("");
   const [clockPeriod, setClockPeriod] = useState("");
@@ -72,7 +72,7 @@ function useClockSound() {
   return { clockTime, clockPeriod, showClock, setShowClock, toggleClockSound };
 }
 
-// 🎯 Hook para móvil + sonido
+// Hook para detección móvil e interacción con sonido
 function useInteractive() {
   const [isMobile, setIsMobile] = useState(false);
   const [tapHighlight, setTapHighlight] = useState<string | null>(null);
@@ -98,7 +98,7 @@ function useInteractive() {
   return { isMobile, tapHighlight, handleTap, playSound };
 }
 
-// 🌐 Componente principal
+// Componente principal del footer
 export default function Footer() {
   const { content } = useContent();
   const { theme } = useApp();
@@ -132,7 +132,7 @@ export default function Footer() {
       }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-8 text-center">
-        {/* 🔖 Título */}
+        {/* Título */}
         <h2
           className={`font-['Irish_Grover'] text-3xl sm:text-4xl md:text-5xl px-6 py-2 rounded-full shadow-md transition-all duration-300 bg-red-600 text-white cursor-pointer
             ${
@@ -145,7 +145,7 @@ export default function Footer() {
           {footerData.title}
         </h2>
 
-        {/* 🕒 Reloj */}
+        {/* Reloj interactivo */}
         <div className="flex justify-center relative z-10">
           <div
             className="inline-block px-4 sm:px-6 py-4 cursor-pointer select-none"
@@ -229,7 +229,7 @@ export default function Footer() {
           {footerData.author}
         </p>
 
-        {/* Redes Sociales */}
+        {/* Redes sociales */}
         <div
           className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 w-full max-w-lg mx-auto`}
         >

@@ -12,7 +12,7 @@ import Filosofia from "../components/philosophy";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
-// 🌟 Lista de secciones para mapear
+// Lista de secciones para mapear
 const sections = [
   { id: "bienvenidos", component: <Welcome /> },
   { id: "acercademi", component: <AboutMe /> },
@@ -35,10 +35,8 @@ export default function PortfolioPage() {
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
-      {/* ✅ Navbar fuera del flujo normal */}
       <Navbar />
 
-      {/* ✅ Contenido principal con padding superior igual a la altura del Navbar */}
       <main className="flex flex-col gap-10 px-4 py-6 pt-24 md:pt-28 lg:pt-32">
         {sections.map(({ id, component }) => (
           <section

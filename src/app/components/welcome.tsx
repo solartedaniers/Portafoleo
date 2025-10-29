@@ -6,7 +6,6 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🎯 Rotación 3D
 function useRotation3D() {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +23,6 @@ function useRotation3D() {
   return { rotation, containerRef, onMouseMove, onMouseLeave };
 }
 
-// 🗣️ Narrador
 function useSpeechSynthesis(textArray: string[], lang: string) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -66,7 +64,6 @@ function useSpeechSynthesis(textArray: string[], lang: string) {
   return { isSpeaking, toggleSpeech };
 }
 
-// 🌟 Tipos
 interface WelcomeLang {
   home: string;
   subtitle: string;
@@ -77,7 +74,6 @@ interface WelcomeData {
   welcome: WelcomeLang;
 }
 
-// 🧠 Componente principal
 export default function Welcome() {
   const router = useRouter();
   const { lang, theme } = useApp();
@@ -112,7 +108,7 @@ export default function Welcome() {
       className="relative min-h-screen flex flex-col items-center justify-center gap-6 px-3 sm:px-6 md:px-10 py-8 sm:py-12 transition-all duration-700 bg-cover bg-center bg-no-repeat overflow-hidden"
       style={{ backgroundImage: "url('/images/temple.webp')" }}
     >
-      {/* 🏠 Botón Home */}
+      {/* Botón Home */}
       <div
         aria-label="Home"
         className={`absolute flex items-center gap-2 rounded-lg shadow-md border cursor-pointer transition-all duration-300
@@ -122,7 +118,7 @@ export default function Welcome() {
           px-2 sm:px-3 py-1 sm:py-2
         `}
         style={{
-          zIndex: 20, // siempre visible en la sección
+          zIndex: 20, 
           pointerEvents: "auto",
           backdropFilter: "blur(2px)",
         }}
@@ -142,7 +138,6 @@ export default function Welcome() {
         </span>
       </div>
 
-      {/* 🧑 Imagen perfil */}
       <div
         ref={containerRef}
         className="relative flex justify-center items-center"
@@ -173,8 +168,7 @@ export default function Welcome() {
           />
         </div>
       </div>
-
-      {/* 👤 Nombre */}
+      {/* Nombre lo dejo porque pues ese no va a cambiar por eso esta literal hay*/}
       <h1
         className={`font-['Irish_Grover'] text-center drop-shadow-[0_0_2px_gold] hover:scale-110 hover:drop-shadow-[0_0_5px_red] transition-all duration-300 cursor-pointer 
         ${theme === "dark" ? "text-white" : "text-black"}
@@ -187,7 +181,6 @@ export default function Welcome() {
         className={`w-3/4 sm:w-2/3 md:w-1/2 border-t-2 transition-colors duration-500 ${hrColor}`}
       />
 
-      {/* 🏷️ Subtítulo */}
       <h2
         className={`font-['Esteban'] text-center font-bold drop-shadow-[0_0_1px_gray] px-3 py-1 rounded-xl cursor-pointer transition-all duration-500 ${bgWhiteBox} animate-pulse 
         text-sm sm:text-base md:text-lg lg:text-xl`}
@@ -195,7 +188,6 @@ export default function Welcome() {
         {t.subtitle}
       </h2>
 
-      {/* 👋 Bienvenida */}
       <h3
         className={`font-['Irish_Grover'] text-center px-4 sm:px-6 md:px-10 py-2 sm:py-3 rounded-full shadow-md transition-all duration-300 
         ${theme === "dark" ? "bg-red-800/80 text-white" : "bg-red-600/70 text-white"} 
@@ -205,7 +197,7 @@ export default function Welcome() {
         {t.welcomeTitle}
       </h3>
 
-      {/* 📜 Descripción + narrador */}
+      {/* Descripción con narrador */}
       <div
         className={`relative p-3 sm:p-4 md:p-6 rounded-2xl shadow-md border w-full max-w-[95%] sm:max-w-lg md:max-w-2xl lg:max-w-3xl 
         hover:border-yellow-500 hover:shadow-lg hover:scale-[1.02] transition-all duration-500 ${bgBox}`}
