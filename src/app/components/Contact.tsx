@@ -67,17 +67,18 @@ export default function Contact() {
   const placeholderColor =
     theme === "dark" ? "placeholder-gray-400" : "placeholder-gray-500";
 
+  // Validación del formulario
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    const emailRegex = /^[\\w._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/;
-    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\\s]{3,}$/;
+    const emailRegex = /^[\w._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$/;
 
     if (!email) newErrors.email = c.errors.email;
     else if (!emailRegex.test(email)) newErrors.email = c.errors.email;
 
     if (!nombre) newErrors.nombre = c.errors.nombre;
     else if (!nameRegex.test(nombre)) {
-      newErrors.nombre = /\\d/.test(nombre)
+      newErrors.nombre = /\d/.test(nombre)
         ? c.errors.onlyLetters
         : c.errors.nombre;
     }
@@ -87,6 +88,7 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccessMsg(null);
@@ -119,6 +121,7 @@ export default function Contact() {
     }
   };
 
+  // Control del efecto hover en dispositivos táctiles
   const handleHoverToggle = () => {
     if (!hasHover) {
       setHovered((prev) => !prev);
@@ -131,12 +134,12 @@ export default function Contact() {
       className="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-12 py-10 md:py-16 transition-all duration-500"
       style={{ backgroundImage: `url(${c.background})` }}
     >
-      {/* 🔴 Título */}
+      {/* Título */}
       <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-6 py-2 mb-6 rounded-full shadow-lg bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black transition-all duration-500">
         {c.title}
       </h2>
 
-      {/* 💬 Mensaje (solo escritorio) */}
+      {/* Mensaje informativo */}
       <div className="hidden md:block mb-10 w-full max-w-3xl mx-auto">
         <div
           className={`${boxBg} p-6 rounded-2xl shadow-md border hover:border-red-600 hover:shadow-[#d4af37] transition-all duration-300`}
@@ -148,9 +151,9 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* 🟨 Contenedor general */}
+      {/* Contenedor principal */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 w-full max-w-7xl items-center">
-        {/* 👤 Imagen (oculta en móviles) */}
+        {/* Imagen de perfil */}
         <div className="hidden lg:flex justify-center">
           <div
             className={`rounded-full border-4 border-yellow-500 overflow-hidden w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 transition-all duration-300 cursor-pointer ${
@@ -170,9 +173,9 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* 📨 Formulario y redes */}
+        {/* Formulario y redes */}
         <div className="flex flex-col items-center gap-8 w-full px-2 sm:px-6">
-          {/* 🌐 Redes sociales */}
+          {/* Redes sociales */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full max-w-md">
             <a
               href={c.social.linkedin.url}
@@ -201,12 +204,12 @@ export default function Contact() {
             </a>
           </div>
 
-          {/* ✉️ Formulario */}
+          {/* Formulario de contacto */}
           <form
             onSubmit={handleSubmit}
             className="flex flex-col gap-4 w-full max-w-md text-left"
           >
-            {/* Email */}
+            {/* Campo: Email */}
             <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
               {c.fields.email.label}
             </label>
@@ -224,7 +227,7 @@ export default function Contact() {
               <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.email}</p>
             )}
 
-            {/* Nombre */}
+            {/* Campo: Nombre */}
             <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
               {c.fields.name.label}
             </label>
@@ -242,7 +245,7 @@ export default function Contact() {
               <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.nombre}</p>
             )}
 
-            {/* Contenido */}
+            {/* Campo: Contenido */}
             <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
               {c.fields.content.label}
             </label>

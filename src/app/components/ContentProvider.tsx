@@ -22,11 +22,11 @@ const ContentContext = createContext<ContentCtx | undefined>(undefined);
 export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { lang } = useApp(); // 🧠 idioma actual ("es" o "en")
+  const { lang } = useApp(); // idioma actual ("es" o "en")
   const [content, setContent] = useState<Content | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Función para cargar el JSON correcto según idioma
+  // Carga el JSON según el idioma seleccionado
   const load = useCallback(async () => {
     setLoading(true);
     try {
@@ -45,7 +45,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
     load();
   }, [load]);
 
-  // ✅ Guardar cambios y recargar desde disco
+  // Guarda los cambios y recarga el contenido desde disco
   const saveContent = async (c: Content) => {
     try {
       const res = await fetch(`/api/content?lang=${lang}`, {
@@ -55,7 +55,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       const data = await res.json();
       if (data.ok) {
-        await load(); // recargar desde disco para evitar caché
+        await load();
         return true;
       }
       return false;

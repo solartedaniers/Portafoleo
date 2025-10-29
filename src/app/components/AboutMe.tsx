@@ -5,7 +5,7 @@ import { FaVolumeUp } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 
-// 🔊 Hook de voz
+// Hook para síntesis de voz según el idioma
 function useSpeechSynthesis(lang: string) {
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
 
@@ -38,7 +38,7 @@ function useSpeechSynthesis(lang: string) {
   return { speakingIndex, speakText };
 }
 
-// 🖱 Detección hover
+// Detecta si el dispositivo soporta hover
 function useHoverDetection() {
   const [hasHover, setHasHover] = useState(true);
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function AboutMe() {
           style={{ backgroundImage: "url('/images/forest-2.webp')", filter: forestFilter }}
         />
         <div className="relative z-10 py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10 lg:px-20 flex flex-col items-center">
-          {/* 🔸 Título */}
+          {/* Título */}
           <h2
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-10 sm:mb-12 px-6 py-3 rounded-full shadow-lg cursor-pointer transition-all duration-500
                        bg-red-600/70 text-white hover:bg-[#d4af37] hover:text-black font-['Irish_Grover']"
@@ -110,7 +110,7 @@ export default function AboutMe() {
             {about.title ?? "About Me"}
           </h2>
 
-          {/* 🔹 Cards */}
+          {/* Tarjetas de información */}
           <div className="flex flex-col gap-8 sm:gap-10 w-full max-w-6xl">
             {items.map((item, i) => (
               <div
@@ -128,7 +128,7 @@ export default function AboutMe() {
                       : "0px 4px 20px rgba(212, 175, 55, 0.3)",
                 }}
               >
-                {/* 🔊 Botón voz */}
+                {/* Botón de voz */}
                 <div
                   aria-label="Toggle speech"
                   onClick={() => speakText(item.text, i)}
@@ -143,7 +143,7 @@ export default function AboutMe() {
                   <FaVolumeUp className="text-lg sm:text-xl md:text-2xl" />
                 </div>
 
-                {/* 🖼 Imagen */}
+                {/* Imagen */}
                 <div className="flex-shrink-0 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-52 lg:h-52 flex items-center justify-center">
                   <div className="w-full h-full rounded-full overflow-hidden border-4 border-red-600 hover:border-[#d4af37] transition-all duration-500">
                     <Image
@@ -158,7 +158,7 @@ export default function AboutMe() {
                   </div>
                 </div>
 
-                {/* 📝 Texto */}
+                {/* Texto descriptivo */}
                 <div
                   className={`flex-1 text-center md:text-left transition-transform duration-500 px-2 sm:px-4 md:px-6 ${
                     hasHover
