@@ -87,17 +87,17 @@
       "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
     },
     {
-      "image": "/images/fermentation.webp",
-      "title": "Coca-Cola Company",
-      "description": "Programa que calcula los días de vacaciones según puesto y antigüedad.",
-      "tools": ["Java"],
-      "gitUrl": "https://github.com/solartedaniers/Coca-cola.git"
+      "image": "/images/player.webp",
+      "title": "Reproductor de Música",
+      "description": "Aplicación web para reproducir música local en formato MP3, con funciones de búsqueda, favoritos y controles de reproducción. Incluye modo oscuro y manejo de canciones mediante API básica. Se ejecuta en servidor local con interfaz web intuitiva.",
+      "tools": ["JavaScript", "Python", "HTML", "Flask", "CSS"],
+      "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
     },
     {
-      "image": "/images/fermentation.webp",
+      "image": "/images/plantsim.webp",
       "title": "PlantSim",
-      "description": "PlantSim modela el crecimiento de plantas en función de variables ambientales.",
-      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Angular", "Node.js"],
+      "description": "PlantSim es una aplicación web educativa que simula el crecimiento de plantas según luz, humedad y temperatura. Permite gestionar plantas, visualizar su evolución y recibir recomendaciones de cuidado. Desarrollada como proyecto académico aplicando estructuras de datos y patrones de diseño.",
+      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Maven", "Angular", "Node.js"],
       "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
     },
     {
@@ -108,15 +108,15 @@
       "gitUrl": "https://github.com/solartedaniers/interface.git"
     },
     {
-      "image": "/images/fermentation.webp",
-      "title": "Fermentation Monitoring",
-      "description": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café.",
-      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
-      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
+      "image": "/images/clock.webp",
+      "title": "Reloj Analogico",
+      "description": "Este proyecto muestra un reloj analógico 2D completamente funcional, con animación de agujas, sonido de tic y cambio automático de imagen cada hora. Incluye números romanos y se actualiza en tiempo real según la zona horaria seleccionada. El usuario puede cambiar entre países para ver la hora local al instante.",
+      "tools": ["Python", "Pygame", "math", "Listas doblemente enlazadas circulares", "datetime, pytz"],
+      "gitUrl": "https://github.com/solartedaniers/Reloj.git"
     },
     {
       "image": "/images/fermentation.webp",
-      "title": "Fermentation Monitoring",
+      "title": "Apocalipsis Zombie",
       "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
       "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
       "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
