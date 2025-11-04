@@ -20,6 +20,62 @@ Más que una simple carta de presentación, es una **experiencia visual y funcio
 
 ---
 
+
+## 🎨 **Inspiración del Diseño: El Samurái y el Lobo**
+
+---
+
+### ⚔️ **El Samurái**
+El **Samurái** encarna los valores más puros de la **disciplina**, el **respeto** y la **perfección**.  
+Es símbolo de la mente que domina el caos, del guerrero que no actúa por impulso sino por **propósito y control interior**.  
+
+Cada línea de código debe escribirse como un golpe de katana:  
+> **Preciso. Calculado. Con intención.** ⚔️  
+
+Su filosofía enseña que la **excelencia no es un acto, sino un hábito**.  
+Así como el samurái pule su espada día tras día, el desarrollador perfecciona su lógica, su estructura y su pensamiento.  
+
+El silencio, la calma y el enfoque representan ese estado mental donde el arte del código y la serenidad del alma se encuentran.  
+El samurái no solo lucha contra errores, **lucha contra sus propios límites**.
+
+> 🧘‍♂️ *“Quien domina su mente, domina su código.”*
+
+---
+
+### 🐺 **El Lobo**
+El **Lobo** es **fuerza**, **instinto** y **lealtad**.  
+Simboliza el espíritu del guerrero que camina entre sombras — **fiel a su manada, pero capaz de sobrevivir solo en la tormenta.** 🌑  
+
+Un lobo no teme los desafíos ni los cambios del entorno:  
+se adapta, observa y actúa con inteligencia natural.  
+Su mirada firme y su espíritu libre recuerdan que la **autenticidad** es tan valiosa como la lógica.  
+
+En el mundo del desarrollo, el lobo representa la **pasión**, la **constancia** y la **fidelidad al propósito**:  
+- 🐾 Fiel al equipo, pero también a sus ideales.  
+- 💪 Fuerte frente al error, pero humilde ante el aprendizaje.  
+- 🔥 Libre para crear, pero disciplinado para mejorar.  
+
+> 🌕 *“El lobo no busca aprobación, solo el camino correcto.”*
+
+---
+
+### 🌀 **La Fusión**
+La unión del **Samurái** y el **Lobo** da origen a una filosofía única:  
+**la armonía entre la mente racional y el alma salvaje.** ⚖️  
+
+El **Samurái** enseña el orden, el método y la disciplina.  
+El **Lobo** aporta el instinto, la lealtad y la fuerza interior.  
+Juntos representan el equilibrio entre **pensar y sentir**, entre **crear con lógica y construir con pasión**.  
+
+> 🗡️ *“El código es mi espada, la lógica mi escudo.  
+> El instinto mi guía, y la disciplina mi camino.”*
+
+Este portafolio refleja esa dualidad:  
+un desarrollador **disciplinado como un samurái**,  
+**fiel y valiente como un lobo**,  
+que no solo escribe código, sino que **traza su propio camino**. 🐺⚔️
+
+
 ## ⚙️ **Instalación y Ejecución en Otro Equipo**
 
 ```bash
@@ -31,63 +87,3 @@ npm install
 
 # 3️⃣ Ejecutar en entorno de desarrollo
 npm run dev
-
-
-
----
-
-## 🎨 **Inspiración del Diseño: El Samurái y el Lobo**
-
----
-
-### ⚔️ **El Samurái**
-El **Samurái** encarna los valores más puros de la disciplina, el respeto y la perfección.  
-Es símbolo de la mente que domina el caos, del guerrero que no actúa por impulso sino por **propósito y control interior**.  
-
-Cada línea de código debe escribirse como un golpe de katana:  
-> Preciso. Calculado. Con intención.  
-
-Su filosofía enseña que la **excelencia no es un acto, sino un hábito**.  
-Así como el samurái pule su espada día tras día, el desarrollador perfecciona su lógica, su estructura y su pensamiento.  
-
-El silencio, la calma y el enfoque representan ese estado mental donde el arte del código y la serenidad del alma se encuentran.  
-El samurái no solo lucha contra errores, lucha contra sus propios límites.
-
-> “Quien domina su mente, domina su código.”
-
----
-
-### 🐺 **El Lobo**
-El **Lobo** es fuerza, instinto y lealtad.  
-Simboliza el espíritu del guerrero que camina entre sombras, **fiel a su manada, pero capaz de sobrevivir solo en la tormenta**.  
-
-Un lobo no teme los desafíos ni los cambios del entorno:  
-se adapta, observa y actúa con inteligencia natural.  
-Su mirada firme y su espíritu libre recuerdan que la **autenticidad** es tan valiosa como la lógica.  
-
-En el mundo del desarrollo, el lobo representa la **pasión, la constancia y la fidelidad al propósito**:  
-- Fiel al equipo, pero también a sus ideales.  
-- Fuerte frente al error, pero humilde ante el aprendizaje.  
-- Libre para crear, pero disciplinado para mejorar.  
-
-> “El lobo no busca aprobación, solo el camino correcto.”
-
----
-
-### 🌀 **La Fusión**
-La unión del **Samurái** y el **Lobo** da origen a una filosofía:  
-**la armonía entre la mente racional y el alma salvaje.**
-
-El samurái enseña el orden, el método y la disciplina.  
-El lobo aporta el instinto, la lealtad y la fuerza interior.  
-Juntos representan el equilibrio entre **pensar y sentir**, entre **crear con lógica y construir con pasión**.
-
-> “El código es mi espada, la lógica mi escudo.  
-> El instinto mi guía, y la disciplina mi camino.”
-
-Este portafolio refleja esa dualidad:  
-un desarrollador **disciplinado como un samurái**,  
-**fiel y valiente como un lobo**,  
-que no solo escribe código, sino que **traza su propio camino**.
-
----
