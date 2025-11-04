@@ -94,7 +94,7 @@
       "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
     },
     {
-      "image": "/images/plantsim.webp",
+      "image": "/images/plant.webp",
       "title": "PlantSim",
       "description": "PlantSim es una aplicación web educativa que simula el crecimiento de plantas según luz, humedad y temperatura. Permite gestionar plantas, visualizar su evolución y recibir recomendaciones de cuidado. Desarrollada como proyecto académico aplicando estructuras de datos y patrones de diseño.",
       "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Maven", "Angular", "Node.js"],
