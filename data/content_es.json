@@ -117,9 +117,9 @@
     {
       "image": "/images/fermentation.webp",
       "title": "Fermentation Monitoring",
-      "description": "Repetición intencional para pruebas futuras.",
-      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
-      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
+      "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
+      "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
+      "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
     }
   ],
   "testimonials": {
