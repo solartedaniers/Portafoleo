@@ -113,7 +113,6 @@ export default function Navbar() {
         theme === "dark" ? "bg-black" : "bg-white"
       }`}
     >
-      {/* Menú móvil */}
       <div
         className="flex items-center justify-between px-5 py-3 md:hidden cursor-pointer"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -121,7 +120,6 @@ export default function Navbar() {
         <span className="font-bold text-lg text-[#d4af37]">☰ Menú</span>
       </div>
 
-      {/* Panel móvil */}
       <div
         className={`fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] flex flex-col justify-between bg-[#d4af37] transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -155,29 +153,29 @@ export default function Navbar() {
 
       {!isMobile && (
         <div className="hidden md:block">
-          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[2px] transition-all duration-500 overflow-hidden">
+          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[3px] transition-all duration-500">
             <div
-              className={`grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-11 justify-items-center items-center gap-[4px] w-full ${borderGold} rounded-xl p-[3px]`}
+              className={`flex items-center gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#d4af37] scrollbar-track-transparent ${borderGold} rounded-xl p-2`}
             >
               {navbarContent.menu.map((item, index) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={handleSelect}
-                  className={`flex flex-col items-center justify-center w-full min-h-[70px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 cursor-pointer hover:scale-105`}
+                  className={`flex flex-col items-center justify-center w-[120px] h-[110px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 cursor-pointer hover:scale-105 shrink-0`}
                 >
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#d4af37] text-black shrink-0">
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#d4af37] text-black">
                     {icons[index]}
                   </div>
-                  <span className="font-['Irish_Grover'] text-[0.7rem] text-center break-words">
+                  <span className="font-['Irish_Grover'] text-[0.7rem] text-center mt-2">
                     {item.label}
                   </span>
                 </a>
               ))}
 
-              {/* Botones de idioma y tema */}
+              {/* Botones idioma/tema */}
               <div
-                className={`flex flex-col items-center justify-center w-full min-h-[70px] rounded-xl ${cardBg} ${borderGold} overflow-hidden`}
+                className={`flex flex-col items-center justify-center w-[120px] h-[110px] rounded-xl ${cardBg} ${borderGold} shrink-0`}
               >
                 <button
                   onClick={toggleTheme}
@@ -185,10 +183,7 @@ export default function Navbar() {
                 >
                   {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
-                <button
-                  onClick={toggleLang}
-                  className={`p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}
-                >
+                <button onClick={toggleLang} className={`p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}>
                   🌐 {lang === "es" ? "EN" : "ES"}
                 </button>
               </div>

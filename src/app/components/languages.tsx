@@ -33,7 +33,8 @@ interface TechnologiesContent {
   video: string;
   list: Technology[];
 }
-// Hook para detectar si es móvil
+
+// Detectar si es móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -80,9 +81,11 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
     onMouseEnter={() => setHovered(tech.name)}
     onMouseLeave={() => !isMobile && setHovered(null)}
     onTouchStart={() => setHovered(tech.name)}
-    className={`flex flex-col items-center justify-center w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-xl border-4 p-4 transition duration-500 ${cardBase} ${
-      hovered === tech.name ? "border-yellow-500 shadow-lg scale-105 rotate-3" : "shadow-md"
-    }`}
+    className={`flex flex-col items-center justify-center 
+      ${isMobile ? "w-28 h-28 p-2" : "w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 p-4"} 
+      rounded-xl border-4 transition duration-500 ${cardBase} 
+      ${hovered === tech.name ? "border-yellow-500 shadow-lg scale-105 rotate-3" : "shadow-md"}
+    `}
   >
     <div className={`transition duration-300 ${hovered === tech.name ? "scale-110 rotate-6" : ""}`}>
       {iconMap[tech.icon] ?? <div className="text-gray-400">?</div>}
@@ -95,7 +98,7 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
           animate={{ opacity: 1, y: -2 }}
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.3 }}
-          className="mt-3 text-sm font-bold bg-white/90 text-black rounded-full px-3 py-1 border border-yellow-500 shadow"
+          className="mt-2 text-xs sm:text-sm font-bold bg-white/90 text-black rounded-full px-2 sm:px-3 py-1 border border-yellow-500 shadow"
           style={{
             WebkitTextStroke: "0.5px #facc15",
             textShadow: "0 0 4px #facc15",
@@ -146,26 +149,34 @@ export default function Languages() {
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
-      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-4 sm:px-6 gap-6">
+      <div className="relative z-10 flex flex-col items-center w-full h-full pt-6 sm:pt-10 px-2 sm:px-6 gap-6">
         <h2
           className={`text-2xl sm:text-4xl text-center px-4 py-2 rounded-full shadow-lg transition-all duration-500 font-['Irish_Grover'] cursor-pointer ${titleStyle}`}
         >
           {techData.title}
         </h2>
-
+        
         {isMobile && (
           <p
-            className={`block md:hidden italic text-base sm:text-lg px-6 py-3 rounded-full border-2 shadow-md transition-all duration-500 text-center ${quoteStyle}`}
+            className={`italic text-sm px-4 py-2 rounded-full border-2 shadow-md transition-all duration-500 text-center ${quoteStyle}`}
           >
             {techData.quote}
           </p>
         )}
 
-        {/* Carrusel */}
-        <div className="relative flex items-center justify-center w-full px-8 sm:px-12">
-          <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-1 sm:left-4" />
+        <div className="relative flex items-center justify-center w-full px-4 sm:px-12">
+          <div
+            className={`swiper-button-prev flex items-center justify-center text-white 
+            ${isMobile ? "w-7 h-7 left-1" : "w-10 h-10 sm:w-12 sm:h-12 left-4"} 
+            bg-black/40 rounded-full border-2 border-yellow-500 shadow-md 
+            transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute top-1/2 -translate-y-1/2`}
+          />
 
-          <div className="flex justify-center w-full max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
+          <div
+            className={`relative flex justify-center items-center w-full 
+              ${isMobile ? "max-w-[90%]" : "max-w-[85%] sm:max-w-[80%] md:max-w-[70%]"}
+            `}
+          >
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -173,16 +184,22 @@ export default function Languages() {
                 prevEl: ".swiper-button-prev",
               }}
               loop
-              centeredSlides
-              spaceBetween={40}
-              breakpoints={{
-                0: { slidesPerView: 1, spaceBetween: 50 },
-                640: { slidesPerView: 2, spaceBetween: 40 },
-                1024: { slidesPerView: 3, spaceBetween: 30 },
+              centeredSlides={true}
+              spaceBetween={isMobile ? 20 : 40}
+              slidesPerView={isMobile ? 1.1 : 3}
+              className="w-full flex justify-center items-center"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               {techData.list.map((tech, idx) => (
-                <SwiperSlide key={idx}>
+                <SwiperSlide
+                  key={idx}
+                  className="flex justify-center items-center !mx-auto"
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
                   <TechnologyCard
                     tech={tech}
                     hovered={hovered}
@@ -195,7 +212,12 @@ export default function Languages() {
             </Swiper>
           </div>
 
-          <div className="swiper-button-next flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute right-1 sm:right-4" />
+          <div
+            className={`swiper-button-next flex items-center justify-center text-white 
+            ${isMobile ? "w-7 h-7 right-1" : "w-10 h-10 sm:w-12 sm:h-12 right-4"} 
+            bg-black/40 rounded-full border-2 border-yellow-500 shadow-md 
+            transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute top-1/2 -translate-y-1/2`}
+          />
         </div>
 
         {!isMobile && (
