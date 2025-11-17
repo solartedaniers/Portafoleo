@@ -14,12 +14,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 
+// -- Interfaces
 interface Technology {
   name: string;
   icon: string;
   color?: string;
 }
-
 interface TechnologiesContent {
   title: string;
   quote: string;
@@ -27,6 +27,7 @@ interface TechnologiesContent {
   list: Technology[];
 }
 
+// -- Hook para detectar móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -38,7 +39,6 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-// Íconos
 const iconMap: Record<string, React.ReactNode> = {
   SiAngular: <SiAngular size={60} className="text-red-600" />,
   SiTailwindcss: <SiTailwindcss size={60} className="text-cyan-400" />,
@@ -53,6 +53,7 @@ const iconMap: Record<string, React.ReactNode> = {
   FaGithub: <FaGithub size={60} className="text-gray-800 dark:text-gray-300" />,
 };
 
+// -- Tarjeta individual
 interface TechnologyCardProps {
   tech: Technology;
   hovered: string | null;
@@ -60,7 +61,6 @@ interface TechnologyCardProps {
   isMobile: boolean;
   cardBase: string;
 }
-
 const TechnologyCard: React.FC<TechnologyCardProps> = ({
   tech,
   hovered,
@@ -162,18 +162,18 @@ export default function Languages() {
           </p>
         )}
 
-        {/* Carrusel */}
         <div className="relative flex items-center justify-center w-full px-4 sm:px-12">
           <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-0 sm:left-4" />
 
-          <div className={`flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] px-4 sm:px-8 md:px-16 ${isMobile ? "mx-auto" : ""}`}>
+          {/* CAMBIO CLAVE: margen lateral solo en móvil para centrar el carrusel entre las flechas */}
+          <div className={`flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] ${isMobile ? "pl-12 pr-12" : "px-4 sm:px-8 md:px-16"}`}>
             <Swiper
               modules={[Navigation]}
               navigation={{
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
               }}
-              loop={true} 
+              loop={true}
               centeredSlides
               breakpoints={{
                 0:    { slidesPerView: 1, spaceBetween: 8 },   
