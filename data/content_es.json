@@ -105,7 +105,7 @@
       "title": "Interface",
       "description": "Interfaz hecha en Next.js usando Flex y Grid para un diseño moderno.",
       "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
-      "gitUrl": "https://github.com/solartedaniers/interface.git"
+      "gitUrl": "https://github.com/solartedaniers/Responsive.git"
     },
     {
       "image": "/images/clock.webp",
@@ -115,7 +115,7 @@
       "gitUrl": "https://github.com/solartedaniers/Reloj.git"
     },
     {
-      "image": "/images/fermentation.webp",
+      "image": "/images/zombies.webp",
       "title": "Apocalipsis Zombie",
       "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
       "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],

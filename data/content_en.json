@@ -105,7 +105,7 @@
       "title": "Interface",
       "description": "Interface built in Next.js using Flex and Grid for a modern layout.",
       "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
-      "gitUrl": "https://github.com/solartedaniers/interface.git"
+      "gitUrl": "https://github.com/solartedaniers/Responsive.git"
     },
     {
       "image": "/images/clock.webp",
@@ -115,7 +115,7 @@
       "gitUrl": "https://github.com/solartedaniers/Reloj.git"
     },
     {
-      "image": "/images/fermentation.webp",
+      "image": "/images/zombies.webp",
       "title": "Zombie Apocalypse",
       "description": "Three-level game where the player must survive a horde of zombies to advance to the next stage. With each level, the enemies become tougher and more challenging.",
       "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
