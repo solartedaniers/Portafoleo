@@ -87,7 +87,11 @@ export default function Hero(): React.JSX.Element | null {
 
   return (
     <section
-      className={`relative w-full min-h-screen box-border border-[4px] sm:border-[6px] lg:border-[8px] ${borderColor} overflow-hidden transition-colors duration-500`}
+      className={`
+        relative w-full h-dvh
+        border-[4px] sm:border-[8px] lg:border-[12px] ${borderColor}
+        box-border overflow-hidden transition-colors duration-500
+      `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       aria-label="Hero section"
@@ -116,7 +120,7 @@ export default function Hero(): React.JSX.Element | null {
       />
 
       {/* Botones de control de idioma y tema */}
-      <div className="absolute top-3 sm:top-5 left-3 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
+      <div className="absolute top-2 sm:top-5 left-2 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
@@ -128,7 +132,6 @@ export default function Hero(): React.JSX.Element | null {
         >
           {isDark ? "🌙" : "☀️"}
         </button>
-
         <button
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
@@ -143,13 +146,17 @@ export default function Hero(): React.JSX.Element | null {
       </div>
 
       {/* Contenido principal */}
-      <div className="absolute inset-0 z-20 grid place-items-center px-3 sm:px-6 lg:px-12">
-        <div className="flex flex-col items-center text-center gap-3 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
+      <div className="absolute inset-0 z-20 grid place-items-center px-2 sm:px-6 lg:px-12">
+        <div className="flex flex-col items-center text-center gap-2 sm:gap-6 md:gap-8 max-w-[1100px] w-full">
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
-            className={`font-['Irish_Grover'] leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem]
-              transition-all duration-300 ${activeTouch === "brand" ? "scale-105" : "hover:scale-105"}
-              ${isDark ? "text-white" : "text-[#1c1b19]"}`}
+            className={`
+              font-['Irish_Grover'] leading-tight 
+              text-[2.1rem] sm:text-5xl lg:text-[4.25rem] xl:text-[5rem]
+              transition-all duration-300 py-1 sm:py-3 px-2 sm:px-4 mx-0
+              ${activeTouch === "brand" ? "scale-105" : "hover:scale-105"}
+              ${isDark ? "text-white" : "text-[#1c1b19]"}
+            `}
             style={{
               webkitTextStroke: "1.5px #d4af37",
               textShadow:
@@ -171,24 +178,27 @@ export default function Hero(): React.JSX.Element | null {
           >
             {t.brand}
           </h1>
-
           <div
             onTouchStart={() => handleTouchEffect("quote")}
-            className={`max-w-[95%] sm:max-w-[640px] md:max-w-[820px] px-4 sm:px-6 py-3 sm:py-4 rounded-[2.5rem]
+            className={`
+              max-w-[98vw] sm:max-w-[640px] md:max-w-[820px]
+              px-3 sm:px-6 py-2 sm:py-4 rounded-[2.5rem]
               ${isDark ? "bg-[rgba(18,18,18,0.8)] text-gray-200" : "bg-[rgba(234,230,217,0.85)] text-[#4a4a44]"}
-              text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed shadow-lg transition-transform duration-300
-              ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_rgba(255,215,0,0.25)]" : "hover:scale-102"}`}
+              text-xs sm:text-base md:text-lg lg:text-xl leading-relaxed shadow-lg transition-transform duration-300
+              ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_rgba(255,215,0,0.25)]" : "hover:scale-102"}
+            `}
             dangerouslySetInnerHTML={{ __html: t.quote }}
           />
-
           <div className="mt-2 sm:mt-4">
             <button
               onClick={handleViewClick}
               onTouchStart={() => handleTouchEffect("view")}
-              className={`inline-flex items-center justify-center gap-3 px-5 sm:px-8 md:px-10 py-2 sm:py-3 rounded-full border-[2px] sm:border-[3px] font-bold
+              className={`
+                inline-flex items-center justify-center gap-3 px-5 sm:px-8 md:px-10 py-2 sm:py-3 rounded-full border-[2px] sm:border-[3px] font-bold
                 transition-transform duration-300 text-sm sm:text-base md:text-lg
                 ${activeTouch === "view" ? "scale-110 border-[#d4af37]" : "hover:scale-110 hover:border-[#d4af37]"}
-                ${isDark ? "bg-[rgba(26,26,26,0.9)] text-[#d4af37]" : "bg-[rgba(220,216,200,0.9)] text-[#4a4520] border-red-600"}`}
+                ${isDark ? "bg-[rgba(26,26,26,0.9)] text-[#d4af37]" : "bg-[rgba(220,216,200,0.9)] text-[#4a4520] border-red-600"}
+              `}
             >
               {t.view}
             </button>

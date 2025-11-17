@@ -61,7 +61,6 @@ interface TechnologyCardProps {
   cardBase: string;
 }
 
-// Tarjeta responsive con margen muy pequeño para pantallas móviles pequeñas
 const TechnologyCard: React.FC<TechnologyCardProps> = ({
   tech,
   hovered,
@@ -173,11 +172,11 @@ export default function Languages() {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
               }}
-              loop={true} // Carrusel infinito!
+              loop={true} 
               centeredSlides
               breakpoints={{
-                0:    { slidesPerView: 1, spaceBetween: 8 },   // ultra móvil, menos espacio
-                320:  { slidesPerView: 1, spaceBetween: 12 },  // móvil pequeño
+                0:    { slidesPerView: 1, spaceBetween: 8 },   
+                320:  { slidesPerView: 1, spaceBetween: 12 },  
                 400:  { slidesPerView: 1, spaceBetween: 18 },
                 640:  { slidesPerView: 2, spaceBetween: 32 },
                 900:  { slidesPerView: 3, spaceBetween: 38 },
