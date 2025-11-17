@@ -5,15 +5,9 @@ import { useContent } from "./ContentProvider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import {
-  SiPython,
-  SiSharp,
-  SiMysql,
-  SiDjango,
-  SiAngular,
-  SiTailwindcss,
-  SiNextdotjs,
-  SiUnity,
-  SiSpringboot,
+  SiPython, SiSharp, SiMysql, SiDjango,
+  SiAngular, SiTailwindcss, SiNextdotjs,
+  SiUnity, SiSpringboot,
 } from "react-icons/si";
 import { FaJava, FaGithub } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,21 +27,18 @@ interface TechnologiesContent {
   list: Technology[];
 }
 
-// Hook para detectar si es móvil
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const checkDevice = () => setIsMobile(window.innerWidth < breakpoint);
     checkDevice();
     window.addEventListener("resize", checkDevice);
     return () => window.removeEventListener("resize", checkDevice);
   }, [breakpoint]);
-
   return isMobile;
 }
 
-// Mapeo de íconos
+// Íconos
 const iconMap: Record<string, React.ReactNode> = {
   SiAngular: <SiAngular size={60} className="text-red-600" />,
   SiTailwindcss: <SiTailwindcss size={60} className="text-cyan-400" />,
@@ -62,7 +53,6 @@ const iconMap: Record<string, React.ReactNode> = {
   FaGithub: <FaGithub size={60} className="text-gray-800 dark:text-gray-300" />,
 };
 
-// Tarjeta individual
 interface TechnologyCardProps {
   tech: Technology;
   hovered: string | null;
@@ -71,6 +61,7 @@ interface TechnologyCardProps {
   cardBase: string;
 }
 
+// Tarjeta responsive con margen muy pequeño para pantallas móviles pequeñas
 const TechnologyCard: React.FC<TechnologyCardProps> = ({
   tech,
   hovered,
@@ -82,11 +73,16 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
     onMouseEnter={() => setHovered(tech.name)}
     onMouseLeave={() => !isMobile && setHovered(null)}
     onTouchStart={() => setHovered(tech.name)}
-    className={`flex flex-col items-center justify-center w-48 h-48 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-xl border-4 p-4 transition duration-500 ${cardBase} ${
-      hovered === tech.name
+    className={`
+      flex flex-col items-center justify-center
+      w-[clamp(70px,60vw,150px)] h-[clamp(70px,60vw,150px)]
+      sm:w-[clamp(120px,45vw,200px)] sm:h-[clamp(120px,45vw,200px)]
+      xl:w-64 xl:h-64
+      rounded-xl border-4 p-4 transition duration-500 ${cardBase}
+      ${hovered === tech.name
         ? "border-yellow-500 shadow-lg scale-105 rotate-3"
         : "shadow-md"
-    }`}
+      }`}
   >
     <div
       className={`transition duration-300 ${
@@ -115,7 +111,6 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({
   </div>
 );
 
-// Componente principal
 export default function Languages() {
   const { theme } = useApp();
   const { content } = useContent();
@@ -123,7 +118,6 @@ export default function Languages() {
   const isMobile = useIsMobile();
 
   const techData = content?.technologies as TechnologiesContent | undefined;
-
   if (!techData) return null;
 
   const sectionBorder = "border-yellow-500";
@@ -172,21 +166,23 @@ export default function Languages() {
         {/* Carrusel */}
         <div className="relative flex items-center justify-center w-full px-4 sm:px-12">
           <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-0 sm:left-4" />
-
-          <div className="flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] px-12 sm:px-16">
+          <div className="flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] px-4 sm:px-8 md:px-16">
             <Swiper
               modules={[Navigation]}
               navigation={{
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
               }}
-              loop
+              loop={true} // Carrusel infinito!
               centeredSlides
-              spaceBetween={20}
               breakpoints={{
-                0: { slidesPerView: 1, spaceBetween: 20 },
-                640: { slidesPerView: 2, spaceBetween: 40 },
-                1024: { slidesPerView: 3, spaceBetween: 30 },
+                0:    { slidesPerView: 1, spaceBetween: 8 },   // ultra móvil, menos espacio
+                320:  { slidesPerView: 1, spaceBetween: 12 },  // móvil pequeño
+                400:  { slidesPerView: 1, spaceBetween: 18 },
+                640:  { slidesPerView: 2, spaceBetween: 32 },
+                900:  { slidesPerView: 3, spaceBetween: 38 },
+                1200: { slidesPerView: 3, spaceBetween: 48 },
+                1500: { slidesPerView: 4, spaceBetween: 56 },
               }}
               className="w-full"
             >
@@ -203,7 +199,6 @@ export default function Languages() {
               ))}
             </Swiper>
           </div>
-
           <div className="swiper-button-next flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute right-0 sm:right-4" />
         </div>
 
