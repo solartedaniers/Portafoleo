@@ -165,7 +165,8 @@ export default function Languages() {
         {/* Carrusel */}
         <div className="relative flex items-center justify-center w-full px-4 sm:px-12">
           <div className="swiper-button-prev flex items-center justify-center text-white w-10 h-10 sm:w-12 sm:h-12 bg-black/40 rounded-full border-2 border-yellow-500 shadow-md transition duration-300 hover:scale-110 hover:border-red-600 z-20 absolute left-0 sm:left-4" />
-          <div className="flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] px-4 sm:px-8 md:px-16">
+
+          <div className={`flex items-center justify-center w-full max-w-full sm:max-w-[80%] md:max-w-[70%] px-4 sm:px-8 md:px-16 ${isMobile ? "mx-auto" : ""}`}>
             <Swiper
               modules={[Navigation]}
               navigation={{
@@ -186,7 +187,7 @@ export default function Languages() {
               className="w-full"
             >
               {techData.list.map((tech, idx) => (
-                <SwiperSlide key={idx} className="flex justify-center">
+                <SwiperSlide key={idx} className="flex justify-center items-center">
                   <TechnologyCard
                     tech={tech}
                     hovered={hovered}
