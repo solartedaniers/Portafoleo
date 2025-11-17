@@ -76,6 +76,63 @@ un desarrollador **disciplinado como un samurái**,
 que no solo escribe código, sino que **traza su propio camino**. 🐺⚔️
 
 
+## **🚀 Tecnologías Utilizadas**
+## 📦 Dependencias
+
+⚡ Next.js — 15.5.4
+- Framework principal para la estructura, rutas y optimización del proyecto.
+
+⚛️ React — 19.1.0
+- Librería base para construir la interfaz y manejar componentes.
+
+🏛️ React DOM — 19.1.0
+- Encargado de renderizar los componentes React en el navegador.
+
+🎞️ Framer Motion — 12.23.22
+- Manejo de animaciones fluidas y transiciones profesionales.
+
+✨ Lucide React — 0.546.0
+- Paquete de iconos modernos, minimalistas y escalables.
+
+🔠 React Icons — 5.5.0
+- Librería que agrupa cientos de colecciones de iconos populares.
+
+🌀 Swiper — 12.0.2
+- Creación de sliders, carruseles y scroll táctil en móviles.
+
+## **🛠️ Dependencias de Desarrollo*
+
+🟦 TypeScript — ^5
+- Lenguaje con tipado estático para mejorar la calidad y seguridad del código.
+
+🎨 TailwindCSS — ^4
+- Framework CSS basado en utilidades para estilos rápidos y responsivos.
+
+🧹 ESLint — ^9
+- Analiza el código y asegura buenas prácticas de desarrollo.
+
+📏 ESLint Config Next — 15.5.4
+- Conjunto de reglas optimizadas para proyectos Next.js.
+
+🧩 @types/react — ^19
+- Tipos de React utilizados por TypeScript.
+
+🧩 @types/react-dom — ^19
+- Tipos de React DOM para TypeScript.
+
+🧩 @types/node — ^20
+- Tipos de Node.js necesarios para el entorno.
+
+🖌️ @tailwindcss/postcss — ^4
+- Integración de Tailwind con PostCSS para procesar estilos.
+
+📘 @eslint/eslintrc — ^3
+- Configuración adicional para manejar reglas avanzadas de ESLint.
+
+🌍 Cross-env — ^10.1.0
+- Permite ejecutar variables de entorno en Windows, Linux y macOS sin errores.
+
+
 ## ⚙️ **Instalación y Ejecución en Otro Equipo**
 
 ```bash
