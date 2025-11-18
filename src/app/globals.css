@@ -8,25 +8,16 @@
 @layer utilities {
   .text-stroke-gold {
     -webkit-text-stroke: 1px #c4af27;
-    text-stroke: 1px #c4af27;
   }
 
   .hover\:text-stroke-red:hover {
     -webkit-text-stroke: 1px #d72638;
-    text-stroke: 1px #d72638;
   }
 }
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
