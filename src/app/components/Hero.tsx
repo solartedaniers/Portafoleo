@@ -158,7 +158,7 @@ export default function Hero(): React.JSX.Element | null {
               ${isDark ? "text-white" : "text-[#1c1b19]"}
             `}
             style={{
-              webkitTextStroke: "1.5px #d4af37",
+              WebkitTextStroke: "1.5px #d4af37",
               textShadow:
                 "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)",
               transition: "all 0.4s ease-in-out",
@@ -166,6 +166,7 @@ export default function Hero(): React.JSX.Element | null {
             onMouseEnter={(e) => {
               const el = e.currentTarget.style;
               el.webkitTextStroke = "1.5px red";
+
               el.textShadow =
                 "0 0 12px rgba(255,0,0,0.7), 0 0 24px rgba(255,0,0,0.4)";
             }}
