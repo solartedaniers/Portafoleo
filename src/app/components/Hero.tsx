@@ -3,68 +3,52 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
+import { useIsMobile } from "@/hooks/useMediaQuery";
+import { playSound } from "@/hooks/useSound";
+import { SOUNDS } from "@/config/assets";
+import { TOUCH_FEEDBACK_MS } from "@/config/ui";
 
-interface HeroLang {
+interface HeroContent {
   brand: string;
   quote: string;
   view: string;
-  language: string;
   video: string;
 }
 
-interface SiteContent {
-  hero?: HeroLang;
-  [key: string]: unknown;
+interface UiContent {
+  switchLanguage: string;
+  themeToggle: string;
+  langToggle: string;
+  heroLabel: string;
 }
 
 export default function Hero(): React.JSX.Element | null {
-  const { lang, toggleLang, theme, toggleTheme } = useApp();
-  const { content } = useContent() as { content: SiteContent };
+  const { toggleLang, theme, toggleTheme } = useApp();
+  const { content } = useContent();
   const router = useRouter();
-  const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const isMobile = useIsMobile();
 
-  const [isMobile, setIsMobile] = useState(false);
   const [activeTouch, setActiveTouch] = useState<string | null>(null);
   const [hoverVideo, setHoverVideo] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
-  const t: HeroLang =
-    (content?.hero as HeroLang) ?? {
-      brand: "Daniers Solarte",
-      quote: "El código es mi espada,<br />la lógica mi escudo.",
-      view: "Ver Portafolio",
-      language: lang === "es" ? "English" : "Español",
-      video: "/videos/background-video.mp4",
-    };
+  const t = content.hero as HeroContent | undefined;
+  const ui = content.ui as UiContent;
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    const checkDevice = () => setIsMobile(window.innerWidth < 768);
-    checkDevice();
-    window.addEventListener("resize", checkDevice);
-    return () => window.removeEventListener("resize", checkDevice);
-  }, []);
-
-  const handleViewClick = async (): Promise<void> => {
-    if (audioRef.current) {
-      try {
-        audioRef.current.currentTime = 0;
-        await audioRef.current.play();
-      } catch {
-        console.warn("No se pudo reproducir el sonido.");
-      }
-    }
+  const handleViewClick = (): void => {
+    playSound(SOUNDS.sword);
     router.push("/portfolio");
   };
 
   const handleTouchEffect = (id: string): void => {
     if (!isMobile) return;
     setActiveTouch(id);
-    setTimeout(() => setActiveTouch(null), 400);
+    setTimeout(() => setActiveTouch(null), TOUCH_FEEDBACK_MS.short);
   };
 
   const handleMouseEnter = useCallback((): void => {
@@ -81,9 +65,9 @@ export default function Hero(): React.JSX.Element | null {
   }, []);
 
   const isDark = theme === "dark";
-  const borderColor = "border-[#d4af37]";
+  const borderColor = "border-gold";
 
-  if (!isMounted) return null;
+  if (!isMounted || !t) return null;
 
   return (
     <section
@@ -94,7 +78,7 @@ export default function Hero(): React.JSX.Element | null {
       `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      aria-label="Hero section"
+      aria-label={ui.heroLabel}
     >
       {/* Video de fondo */}
       <video
@@ -114,7 +98,7 @@ export default function Hero(): React.JSX.Element | null {
       {/* Capa de color según el tema */}
       <div
         className={`absolute inset-0 z-10 ${
-          isDark ? "bg-black/60" : "bg-[#eae6d9]/45"
+          isDark ? "bg-black/60" : "bg-parchment/45"
         } transition-opacity duration-500`}
         aria-hidden
       />
@@ -122,9 +106,10 @@ export default function Hero(): React.JSX.Element | null {
       {/* Botones de control de idioma y tema */}
       <div className="absolute top-2 sm:top-5 left-2 sm:left-6 z-30 flex gap-2 sm:gap-4 flex-wrap">
         <button
+          type="button"
           onClick={toggleTheme}
           onTouchStart={() => handleTouchEffect("theme")}
-          aria-label="Cambiar tema"
+          aria-label={ui.themeToggle}
           className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border-[2px] shadow-md 
             ${isDark ? "bg-white/8 text-white" : "bg-white/30 text-black"} ${borderColor}
             transition-transform duration-300 text-xs sm:text-sm md:text-base
@@ -133,15 +118,16 @@ export default function Hero(): React.JSX.Element | null {
           {isDark ? "🌙" : "☀️"}
         </button>
         <button
+          type="button"
           onClick={toggleLang}
           onTouchStart={() => handleTouchEffect("lang")}
-          aria-label="Cambiar idioma"
+          aria-label={ui.langToggle}
           className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border-[2px] shadow-md 
             ${isDark ? "bg-white/8 text-white" : "bg-white/30 text-black"} ${borderColor}
             transition-transform duration-300 text-xs sm:text-sm md:text-base
             ${activeTouch === "lang" ? "scale-110 border-red-600" : "hover:scale-110 hover:border-red-600"}`}
         >
-          🌐 {lang === "es" ? "EN" : "ES"}
+          🌐 {ui.switchLanguage}
         </button>
       </div>
 
@@ -151,16 +137,16 @@ export default function Hero(): React.JSX.Element | null {
           <h1
             onTouchStart={() => handleTouchEffect("brand")}
             className={`
-              font-['Irish_Grover'] leading-tight 
+              font-irish leading-tight 
               text-[2.1rem] sm:text-5xl lg:text-[4.25rem] xl:text-[5rem]
               transition-all duration-300 py-1 sm:py-3 px-2 sm:px-4 mx-0
               ${activeTouch === "brand" ? "scale-105" : "hover:scale-105"}
-              ${isDark ? "text-white" : "text-[#1c1b19]"}
+              ${isDark ? "text-white" : "text-charcoal"}
             `}
             style={{
-              WebkitTextStroke: "1.5px #d4af37",
+              WebkitTextStroke: "1.5px var(--gold)",
               textShadow:
-                "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)",
+                "0 0 10px color-mix(in srgb, var(--gold) 60%, transparent), 0 0 25px color-mix(in srgb, var(--gold) 30%, transparent)",
               transition: "all 0.4s ease-in-out",
             } as React.CSSProperties}
             onMouseEnter={(e) => {
@@ -168,13 +154,13 @@ export default function Hero(): React.JSX.Element | null {
               el.webkitTextStroke = "1.5px red";
 
               el.textShadow =
-                "0 0 12px rgba(255,0,0,0.7), 0 0 24px rgba(255,0,0,0.4)";
+                "0 0 12px color-mix(in srgb, var(--alert) 70%, transparent), 0 0 24px color-mix(in srgb, var(--alert) 40%, transparent)";
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget.style;
-              el.webkitTextStroke = "1.5px #d4af37";
+              el.webkitTextStroke = "1.5px var(--gold)";
               el.textShadow =
-                "0 0 10px rgba(212,175,55,0.6), 0 0 25px rgba(212,175,55,0.3)";
+                "0 0 10px color-mix(in srgb, var(--gold) 60%, transparent), 0 0 25px color-mix(in srgb, var(--gold) 30%, transparent)";
             }}
           >
             {t.brand}
@@ -184,9 +170,9 @@ export default function Hero(): React.JSX.Element | null {
             className={`
               max-w-[98vw] sm:max-w-[640px] md:max-w-[820px]
               px-3 sm:px-6 py-2 sm:py-4 rounded-[2.5rem]
-              ${isDark ? "bg-[rgba(18,18,18,0.8)] text-gray-200" : "bg-[rgba(234,230,217,0.85)] text-[#4a4a44]"}
+              ${isDark ? "bg-[color-mix(in_srgb,var(--ink-night)_80%,transparent)] text-gray-200" : "bg-[color-mix(in_srgb,var(--parchment)_85%,transparent)] text-olive-gray"}
               text-xs sm:text-base md:text-lg lg:text-xl leading-relaxed shadow-lg transition-transform duration-300
-              ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_rgba(255,215,0,0.25)]" : "hover:scale-102"}
+              ${activeTouch === "quote" ? "scale-102 shadow-[0_0_20px_color-mix(in_srgb,var(--sun)_25%,transparent)]" : "hover:scale-102"}
             `}
             dangerouslySetInnerHTML={{ __html: t.quote }}
           />
@@ -197,8 +183,8 @@ export default function Hero(): React.JSX.Element | null {
               className={`
                 inline-flex items-center justify-center gap-3 px-5 sm:px-8 md:px-10 py-2 sm:py-3 rounded-full border-[2px] sm:border-[3px] font-bold
                 transition-transform duration-300 text-sm sm:text-base md:text-lg
-                ${activeTouch === "view" ? "scale-110 border-[#d4af37]" : "hover:scale-110 hover:border-[#d4af37]"}
-                ${isDark ? "bg-[rgba(26,26,26,0.9)] text-[#d4af37]" : "bg-[rgba(220,216,200,0.9)] text-[#4a4520] border-red-600"}
+                ${activeTouch === "view" ? "scale-110 border-gold" : "hover:scale-110 hover:border-gold"}
+                ${isDark ? "bg-[color-mix(in_srgb,var(--ink-soft)_90%,transparent)] text-gold" : "bg-[color-mix(in_srgb,var(--parchment-deep)_90%,transparent)] text-olive-dark border-red-600"}
               `}
             >
               {t.view}
@@ -207,9 +193,6 @@ export default function Hero(): React.JSX.Element | null {
         </div>
       </div>
 
-      <audio ref={audioRef} preload="auto">
-        <source src="/sounds/sword.mp3" type="audio/mpeg" />
-      </audio>
     </section>
   );
 }

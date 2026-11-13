@@ -1,8 +1,15 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { DEFAULT_LANG, isSupportedLang, type Lang } from "@/config/content";
 
-type Lang = "en" | "es";
 type Theme = "light" | "dark";
+
+const STORAGE_KEYS = {
+  lang: "site-lang",
+  theme: "site-theme",
+} as const;
+
+const DARK_QUERY = "(prefers-color-scheme: dark)";
 
 interface AppContextType {
   lang: Lang;
@@ -11,87 +18,95 @@ interface AppContextType {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
-  isSystemTheme: boolean; // Indica si el tema sigue la preferencia del sistema
+  isSystemTheme: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+function readStorage(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {}
+}
+
+function detectBrowserLang(): Lang {
+  const browserLang = navigator.language?.slice(0, 2);
+  return isSupportedLang(browserLang) ? browserLang : DEFAULT_LANG;
+}
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lang, setLang] = useState<Lang>("en");
-  const [theme, setTheme] = useState<Theme>("light");
-  const [isSystemTheme, setIsSystemTheme] = useState(true); 
+  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+  const [theme, setThemeState] = useState<Theme>("light");
+  const [isSystemTheme, setIsSystemTheme] = useState(true);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const storedLang = readStorage(STORAGE_KEYS.lang);
+    setLangState(isSupportedLang(storedLang) ? storedLang : detectBrowserLang());
 
-    const storedLang = localStorage.getItem("site-lang") as Lang | null;
-    const storedTheme = localStorage.getItem("site-theme") as Theme | null;
-
-    if (storedLang) setLang(storedLang);
-
-    if (storedTheme) {
-      // El usuario fijó un tema manualmente
-      setTheme(storedTheme);
+    const storedTheme = readStorage(STORAGE_KEYS.theme);
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setThemeState(storedTheme);
       setIsSystemTheme(false);
     } else {
-      // No hay tema guardado → seguir configuración del sistema
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-      setIsSystemTheme(true);
+      setThemeState(window.matchMedia(DARK_QUERY).matches ? "dark" : "light");
     }
   }, []);
 
-  // Aplicar el tema global (solo guarda si fue seleccionado manualmente)
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
-
-    if (!isSystemTheme) {
-      localStorage.setItem("site-theme", theme);
-    }
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    if (!isSystemTheme) writeStorage(STORAGE_KEYS.theme, theme);
   }, [theme, isSystemTheme]);
 
-  // Guardar idioma seleccionado
   useEffect(() => {
-    localStorage.setItem("site-lang", lang);
+    document.documentElement.lang = lang;
   }, [lang]);
 
-  // Escuchar cambios del sistema si se usa el modo automático
+  // Mientras el usuario no elija tema, sigo al sistema operativo
   useEffect(() => {
     if (!isSystemTheme) return;
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const handler = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? "dark" : "light");
-    };
-
+    const mediaQuery = window.matchMedia(DARK_QUERY);
+    const handler = (e: MediaQueryListEvent) => setThemeState(e.matches ? "dark" : "light");
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
   }, [isSystemTheme]);
 
-  // Cambiar idioma
-  const toggleLang = () => setLang((s) => (s === "en" ? "es" : "en"));
-  // Cambiar tema
-  const toggleTheme = () => {
-    setIsSystemTheme(false);
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
-  };
+  const setLang = useCallback((next: Lang) => {
+    setLangState(next);
+    writeStorage(STORAGE_KEYS.lang, next);
+  }, []);
 
-  return (
-    <AppContext.Provider value={{ 
-      lang, 
-      setLang, 
-      toggleLang, 
-      theme, 
-      toggleTheme, 
-      setTheme,
-      isSystemTheme 
-    }}>
-      {children}
-    </AppContext.Provider>
+  const toggleLang = useCallback(() => {
+    setLangState((current) => {
+      const next: Lang = current === "en" ? "es" : "en";
+      writeStorage(STORAGE_KEYS.lang, next);
+      return next;
+    });
+  }, []);
+
+  const setTheme = useCallback((next: Theme) => {
+    setIsSystemTheme(false);
+    setThemeState(next);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setIsSystemTheme(false);
+    setThemeState((current) => (current === "dark" ? "light" : "dark"));
+  }, []);
+
+  const value = useMemo(
+    () => ({ lang, setLang, toggleLang, theme, toggleTheme, setTheme, isSystemTheme }),
+    [lang, setLang, toggleLang, theme, toggleTheme, setTheme, isSystemTheme]
   );
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const useApp = () => {

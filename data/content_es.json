@@ -1,4 +1,20 @@
 {
+  "meta": {
+    "title": "Daniers Solarte | Ingeniero de Software",
+    "description": "Portafolio de Daniers Alexander Solarte Limas, ingeniero de software backend y frontend."
+  },
+  "ui": {
+    "loading": "Cargando contenido...",
+    "empty": "No hay contenido disponible.",
+    "switchLanguage": "EN",
+    "themeToggle": "Cambiar tema",
+    "langToggle": "Cambiar idioma",
+    "menu": "☰ Menú",
+    "heroLabel": "Sección de inicio",
+    "speechToggle": "Escuchar narración",
+    "playNarration": "Reproducir narración",
+    "stopNarration": "Detener narración"
+  },
   "hero": {
     "brand": "Daniers Solarte",
     "quote": "El código es mi espada,<br />la lógica mi escudo.",
@@ -8,16 +24,46 @@
   },
   "navbar": {
     "menu": [
-      { "label": "Bienvenidos", "id": "bienvenidos" },
-      { "label": "Acerca de mí", "id": "acercademi" },
-      { "label": "Tecnologías", "id": "tecnologias" },
-      { "label": "Mis Proyectos", "id": "misproyectos" },
-      { "label": "Testimonios", "id": "testimonios" },
-      { "label": "CV", "id": "cv" },
-      { "label": "Experiencia Académica y Laboral", "id": "experiencia" },
-      { "label": "Mi Filosofía de Vida", "id": "filosofia" },
-      { "label": "Contacto", "id": "contacto" },
-      { "label": "Pie de Página", "id": "PieDePágina" }
+      {
+        "label": "Bienvenidos",
+        "id": "bienvenidos"
+      },
+      {
+        "label": "Acerca de mí",
+        "id": "acercademi"
+      },
+      {
+        "label": "Tecnologías",
+        "id": "tecnologias"
+      },
+      {
+        "label": "Mis Proyectos",
+        "id": "misproyectos"
+      },
+      {
+        "label": "Testimonios",
+        "id": "testimonios"
+      },
+      {
+        "label": "CV",
+        "id": "cv"
+      },
+      {
+        "label": "Experiencia Académica y Laboral",
+        "id": "experiencia"
+      },
+      {
+        "label": "Mi Filosofía de Vida",
+        "id": "filosofia"
+      },
+      {
+        "label": "Contacto",
+        "id": "contacto"
+      },
+      {
+        "label": "Pie de Página",
+        "id": "PieDePágina"
+      }
     ]
   },
   "welcome": {
@@ -28,7 +74,17 @@
       "Soy ingeniero de software y creo que la tecnología debe ir más allá de resolver problemas: debe transformar vidas.",
       "Me especializo en backend con Node.js, Spring Boot, Python y Java, y también disfruto los desafíos del frontend con React, Angular, Next.js y Tailwind CSS. Me apasiona crear aplicaciones seguras, escalables e intuitivas.",
       "Me inspiran la ciberseguridad, la inteligencia artificial y la realidad mixta, porque conectan lo digital con lo humano. <br />Te invito a explorar mi portafolio y descubrir cómo cada proyecto refleja mi pasión, mi aprendizaje y mi forma de ver el mundo del software."
-    ]
+    ],
+    "name": "Daniers Alexander Solarte Limas",
+    "profileAlt": "Foto de perfil de Daniers Solarte",
+    "background": "/images/temple.webp",
+    "homeIcon": "/images/fire.webp",
+    "profileImage": "/images/profile.webp",
+    "profileFocus": {
+      "x": "62%",
+      "y": "26%",
+      "zoom": 1.3
+    }
   },
   "about": {
     "title": "Acerca de mí",
@@ -58,70 +114,168 @@
         "audio": "/sounds/bible.mp3",
         "text": "Me gusta leer la Biblia, conversar y compartir con personas que me inspiran. Disfruto estar activo y ayudar a los demás, porque creo que crecer como persona es un camino que se construye con humildad y sabiendo escuchar."
       }
-    ]
+    ],
+    "background": "/images/forest-2.webp"
   },
   "technologies": {
     "title": "Tecnologías y Herramientas",
     "quote": "“Cada lenguaje, una técnica que perfecciono cada día.”",
     "video": "/videos/stellar-wolf.mp4",
     "list": [
-      { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
-      { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
-      { "name": "Next.js", "icon": "SiNextdotjs", "color": "#000000" },
-      { "name": "Django", "icon": "SiDjango", "color": "#092e20" },
-      { "name": "Python", "icon": "SiPython", "color": "#3776AB" },
-      { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
-      { "name": "Java", "icon": "FaJava", "color": "#f89820" },
-      { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
-      { "name": "Unity", "icon": "SiUnity", "color": "#000000" },
-      { "name": "Spring Boot", "icon": "SiSpringboot", "color": "#6DB33F" },
-      { "name": "GitHub", "icon": "FaGithub", "color": "#181717" }
+      {
+        "name": "Angular",
+        "icon": "SiAngular",
+        "color": "#dd0031"
+      },
+      {
+        "name": "Tailwind",
+        "icon": "SiTailwindcss",
+        "color": "#38bdf8"
+      },
+      {
+        "name": "Next.js",
+        "icon": "SiNextdotjs",
+        "color": "#000000",
+        "darkColor": "#ffffff"
+      },
+      {
+        "name": "Django",
+        "icon": "SiDjango",
+        "color": "#092e20",
+        "darkColor": "#44b78b"
+      },
+      {
+        "name": "Python",
+        "icon": "SiPython",
+        "color": "#3776AB"
+      },
+      {
+        "name": "MySQL",
+        "icon": "SiMysql",
+        "color": "#00758f",
+        "darkColor": "#4fa3c4"
+      },
+      {
+        "name": "Java",
+        "icon": "FaJava",
+        "color": "#f89820"
+      },
+      {
+        "name": "C#",
+        "icon": "SiSharp",
+        "color": "#9b4f96"
+      },
+      {
+        "name": "Unity",
+        "icon": "SiUnity",
+        "color": "#000000",
+        "darkColor": "#ffffff"
+      },
+      {
+        "name": "Spring Boot",
+        "icon": "SiSpringboot",
+        "color": "#6DB33F"
+      },
+      {
+        "name": "GitHub",
+        "icon": "FaGithub",
+        "color": "#181717",
+        "darkColor": "#f0f6fc"
+      }
+    ],
+    "previous": "Tecnología anterior",
+    "next": "Tecnología siguiente",
+    "goTo": "Ir a la tecnología"
+  },
+  "projects": {
+    "title": "Mis proyectos",
+    "toolsLabel": "Lenguajes y herramientas",
+    "repoLabel": "Repositorio en GitHub",
+    "background": "/images/samuray-car.webp",
+    "list": [
+      {
+        "image": "/images/fermentation.webp",
+        "title": "Fermentation Monitoring",
+        "description": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad.",
+        "tools": [
+          "TypeScript",
+          "HTML",
+          "CSS",
+          "Angular",
+          "Node.js"
+        ],
+        "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
+      },
+      {
+        "image": "/images/player.webp",
+        "title": "Reproductor de Música",
+        "description": "Aplicación web para reproducir música local en formato MP3, con funciones de búsqueda, favoritos y controles de reproducción. Incluye modo oscuro y manejo de canciones mediante API básica. Se ejecuta en servidor local con interfaz web intuitiva.",
+        "tools": [
+          "JavaScript",
+          "Python",
+          "HTML",
+          "Flask",
+          "CSS"
+        ],
+        "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
+      },
+      {
+        "image": "/images/plant.webp",
+        "title": "PlantSim",
+        "description": "PlantSim es una aplicación web educativa que simula el crecimiento de plantas según luz, humedad y temperatura. Permite gestionar plantas, visualizar su evolución y recibir recomendaciones de cuidado. Desarrollada como proyecto académico aplicando estructuras de datos y patrones de diseño.",
+        "tools": [
+          "HTML",
+          "Java",
+          "SCSS",
+          "TypeScript",
+          "Spring Boot",
+          "Maven",
+          "Angular",
+          "Node.js"
+        ],
+        "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
+      },
+      {
+        "image": "/images/interface.webp",
+        "title": "Interface",
+        "description": "Interfaz hecha en Next.js usando Flex y Grid para un diseño moderno.",
+        "tools": [
+          "TypeScript",
+          "JavaScript",
+          "CSS",
+          "Next.js",
+          "Tailwind"
+        ],
+        "gitUrl": "https://github.com/solartedaniers/Responsive.git"
+      },
+      {
+        "image": "/images/clock.webp",
+        "title": "Reloj Analogico",
+        "description": "Este proyecto muestra un reloj analógico 2D completamente funcional, con animación de agujas, sonido de tic y cambio automático de imagen cada hora. Incluye números romanos y se actualiza en tiempo real según la zona horaria seleccionada. El usuario puede cambiar entre países para ver la hora local al instante.",
+        "tools": [
+          "Python",
+          "Pygame",
+          "math",
+          "Listas doblemente enlazadas circulares",
+          "datetime, pytz"
+        ],
+        "gitUrl": "https://github.com/solartedaniers/Reloj.git"
+      },
+      {
+        "image": "/images/zombies.webp",
+        "title": "Apocalipsis Zombie",
+        "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
+        "tools": [
+          "C#",
+          "HLSL",
+          "ShaderLab",
+          "Unity",
+          "Blender"
+        ],
+        "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
+      }
     ]
   },
-  "projects": [
-    {
-      "image": "/images/fermentation.webp",
-      "title": "Fermentation Monitoring",
-      "description": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad.",
-      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
-      "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
-    },
-    {
-      "image": "/images/player.webp",
-      "title": "Reproductor de Música",
-      "description": "Aplicación web para reproducir música local en formato MP3, con funciones de búsqueda, favoritos y controles de reproducción. Incluye modo oscuro y manejo de canciones mediante API básica. Se ejecuta en servidor local con interfaz web intuitiva.",
-      "tools": ["JavaScript", "Python", "HTML", "Flask", "CSS"],
-      "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
-    },
-    {
-      "image": "/images/plant.webp",
-      "title": "PlantSim",
-      "description": "PlantSim es una aplicación web educativa que simula el crecimiento de plantas según luz, humedad y temperatura. Permite gestionar plantas, visualizar su evolución y recibir recomendaciones de cuidado. Desarrollada como proyecto académico aplicando estructuras de datos y patrones de diseño.",
-      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Maven", "Angular", "Node.js"],
-      "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
-    },
-    {
-      "image": "/images/interface.webp",
-      "title": "Interface",
-      "description": "Interfaz hecha en Next.js usando Flex y Grid para un diseño moderno.",
-      "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
-      "gitUrl": "https://github.com/solartedaniers/Responsive.git"
-    },
-    {
-      "image": "/images/clock.webp",
-      "title": "Reloj Analogico",
-      "description": "Este proyecto muestra un reloj analógico 2D completamente funcional, con animación de agujas, sonido de tic y cambio automático de imagen cada hora. Incluye números romanos y se actualiza en tiempo real según la zona horaria seleccionada. El usuario puede cambiar entre países para ver la hora local al instante.",
-      "tools": ["Python", "Pygame", "math", "Listas doblemente enlazadas circulares", "datetime, pytz"],
-      "gitUrl": "https://github.com/solartedaniers/Reloj.git"
-    },
-    {
-      "image": "/images/zombies.webp",
-      "title": "Apocalipsis Zombie",
-      "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
-      "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
-      "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
-    }
-  ],
   "testimonials": {
     "title": "Testimonios",
     "list": [
@@ -145,21 +299,42 @@
         "text": "Danier es un joven de valores sólidos, guiado por los principios de honestidad, respeto y solidaridad. Su compromiso y dedicación hacia su familia y amigos reflejan su gran corazón y su capacidad para crear vínculos genuinos y duraderos.Destaca especialmente el amor y la entrega que demuestra hacia su hermanita, siempre dispuesto a apoyarla y acompañarla en todo momento. Su sentido de responsabilidad, empatía en todo lo que se propone hacer y su disposición para ayudar a los demás lo convierten en un ejemplo digno de admiración.",
         "image": "/images/fredy.webp"
       }
-    ]
+    ],
+    "seeMore": "Ver más",
+    "seeLess": "Ver menos",
+    "background": "/images/parchment.webp"
   },
   "contact": {
     "background": "/images/village.webp",
     "title": "Contacto",
     "message": "“Si quieres construir algo increíble, no dudes en escribirme.<br />Siempre estoy dispuesto a aprender y aportar,<br />así que escríbeme y demos el primer paso.”",
-    "profile": { "default": "/images/profile1.webp", "hover": "/images/profile2.webp" },
+    "profile": {
+      "default": "/images/profile1.webp",
+      "hover": "/images/profile2.webp"
+    },
     "social": {
-      "linkedin": { "url": "https://www.linkedin.com/in/daniers-solarte-08716b381", "label": "LinkedIn" },
-      "whatsapp": { "url": "https://wa.me/3167969206", "label": "WhatsApp" }
+      "linkedin": {
+        "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
+        "label": "LinkedIn"
+      },
+      "whatsapp": {
+        "url": "https://wa.me/573167969206",
+        "label": "WhatsApp"
+      }
     },
     "fields": {
-      "email": { "label": "Email*", "placeholder": "Ejemplo@gmail.com" },
-      "name": { "label": "Nombre*", "placeholder": "Xavier" },
-      "content": { "label": "Contenido*", "placeholder": "Escriba aquí el motivo de su mensaje" },
+      "email": {
+        "label": "Email*",
+        "placeholder": "Ejemplo@gmail.com"
+      },
+      "name": {
+        "label": "Nombre*",
+        "placeholder": "Xavier"
+      },
+      "content": {
+        "label": "Contenido*",
+        "placeholder": "Escriba aquí el motivo de su mensaje"
+      },
       "send": "Enviar"
     },
     "errors": {
@@ -169,7 +344,8 @@
       "contenido": "Este espacio es obligatorio."
     },
     "success": "✅ Su mensaje fue enviado exitosamente.",
-    "error": "❌ Su mensaje no se pudo mandar. Inténtelo nuevamente."
+    "error": "❌ Su mensaje no se pudo mandar. Inténtelo nuevamente.",
+    "profileAlt": "Foto de perfil de Daniers Solarte"
   },
   "cv": {
     "background": "/images/background.webp",
@@ -180,12 +356,13 @@
       "view": "Ver CV",
       "close": "Cerrar CV",
       "download": "Descargar CV en PDF"
-    }
+    },
+    "downloadName": "CV_Daniers_Solarte_ES.pdf"
   },
   "experiencia": {
     "title": "Experiencia Académica y Laboral",
     "academic": "Experiencia Académica",
-    "academicText": "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
+    "academicText": "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 7° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
     "academicProjects": "Desarrollo de proyectos académicos:",
     "academicList": [
       "Simulador de crecimiento de plantas.",
@@ -200,7 +377,10 @@
       "Repartidor de frutas en carro – Frutas Gómez.",
       "Vendedor en tienda – Panadería Lima Pan.",
       "Apoyo en instalación de postes y cuerdas de luz."
-    ]
+    ],
+    "background": "/images/city.webp",
+    "academicImage": "/images/seminar.webp",
+    "academicImageAlt": "Seminario Nacional de Ingeniería de Software"
   },
   "filosofia": {
     "title": "Mi Filosofía de Vida",
@@ -211,26 +391,44 @@
       "Busco ayudar a los demás y aportar valor, porque la verdadera grandeza no está en lo que logramos, sino en mantener intactos los principios que nos definen."
     ],
     "image": "/images/samurai-tiger.webp",
-    "background": "/images/path.webp"
+    "background": "/images/path.webp",
+    "imageAlt": "Ilustración de mi filosofía de vida"
   },
   "footer": {
     "title": "Pie de página",
-    "credits": "© 2026 Damiers Alexander Solarte Limas - Ingeniero de Software",
+    "credits": "© 2026 Daniers Alexander Solarte Limas - Ingeniero de Software",
     "rights": "Todos los derechos reservados",
     "phrase": "“La verdadera grandeza está en crecer sin perder los principios que nos definen.”",
-    "author": "Portafolio creado con pasión por Damiers Solarte – 2025",
+    "author": "Portafolio creado con pasión por Daniers Solarte – 2025",
     "backgroundLeft": "/images/wolf.webp",
     "backgroundRight": "/images/samurai.webp",
     "social": {
-      "linkedin": { "label": "LinkedIn", 
-        "url": "https://www.linkedin.com/in/damiers-solarte-08716b381", 
-        "sound": "LinkedIn.mp3" },
-      "whatsapp": { "label": "WhatsApp", 
-        "url": "https://wa.me/573167969206", 
-        "sound": "whatsapp.mp3" },
-      "github": { "label": "GitHub", 
-        "url": "https://github.com/solartedaniers", 
-        "sound": "url.mp3" }
+      "linkedin": {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
+        "sound": "LinkedIn.mp3"
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "url": "https://wa.me/573167969206",
+        "sound": "whatsapp.mp3"
+      },
+      "github": {
+        "label": "GitHub",
+        "url": "https://github.com/solartedaniers",
+        "sound": "url.mp3"
+      }
+    }
+  },
+  "admin": {
+    "title": "📝 Editor de contenido",
+    "save": "Guardar",
+    "saved": "✅ Guardado con éxito",
+    "saveError": "❌ Error al guardar",
+    "invalidJson": "⚠️ Error: JSON inválido",
+    "languages": {
+      "es": "Español",
+      "en": "Inglés"
     }
   }
 }
