@@ -361,7 +361,7 @@
   "experiencia": {
     "title": "Academic and Work Experience",
     "academic": "Academic Experience",
-    "academicText": "I am a Software Engineering student at the Universidad Cooperativa de Colombia, Pasto Campus (currently in 5th semester). I participated in the First National Seminar on Software Engineering.",
+    "academicText": "I am a Software Engineering student at the Universidad Cooperativa de Colombia, Pasto Campus (currently in 7th semester). I participated in the First National Seminar on Software Engineering.",
     "academicProjects": "Development of academic projects:",
     "academicList": [
       "Plant growth simulator.",
@@ -376,7 +376,10 @@
       "Fruit delivery driver – Frutas Gómez.",
       "Store clerk – Lima Pan Bakery.",
       "Assistant in installing light poles and wiring."
-    ]
+    ],
+    "background": "/images/city.webp",
+    "academicImage": "/images/seminar.webp",
+    "academicImageAlt": "National Software Engineering Seminar"
   },
   "filosofia": {
     "title": "My Life Philosophy",

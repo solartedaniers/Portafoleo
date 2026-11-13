@@ -361,7 +361,7 @@
   "experiencia": {
     "title": "Experiencia Académica y Laboral",
     "academic": "Experiencia Académica",
-    "academicText": "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 5° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
+    "academicText": "Soy estudiante de Ingeniería de Software en la Universidad Cooperativa de Colombia, Campus Pasto (actualmente cursando 7° semestre). Participación en el Primer Seminario Nacional de Ingeniería de Software.",
     "academicProjects": "Desarrollo de proyectos académicos:",
     "academicList": [
       "Simulador de crecimiento de plantas.",
@@ -376,7 +376,10 @@
       "Repartidor de frutas en carro – Frutas Gómez.",
       "Vendedor en tienda – Panadería Lima Pan.",
       "Apoyo en instalación de postes y cuerdas de luz."
-    ]
+    ],
+    "background": "/images/city.webp",
+    "academicImage": "/images/seminar.webp",
+    "academicImageAlt": "Seminario Nacional de Ingeniería de Software"
   },
   "filosofia": {
     "title": "Mi Filosofía de Vida",
