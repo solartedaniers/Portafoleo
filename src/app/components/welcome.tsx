@@ -78,7 +78,7 @@ export default function Welcome() {
   const router = useRouter();
   const { lang, theme } = useApp();
   const { content, loading } = useContent();
-  const t = (content as WelcomeData | null)?.welcome;
+  const t = (content as unknown as WelcomeData | null)?.welcome;
 
   const { rotation, containerRef, onMouseMove, onMouseLeave } = useRotation3D();
   const { isSpeaking, toggleSpeech } = useSpeechSynthesis(
