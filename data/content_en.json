@@ -114,7 +114,8 @@
         "audio": "/sounds/bible.mp3",
         "text": "I enjoy reading the Bible, having conversations, and sharing with people who inspire me. I like staying active and helping others because I believe that personal growth is a journey built with humility and the ability to listen."
       }
-    ]
+    ],
+    "background": "/images/forest-2.webp"
   },
   "technologies": {
     "title": "Technologies and Tools",

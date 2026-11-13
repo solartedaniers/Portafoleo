@@ -114,7 +114,8 @@
         "audio": "/sounds/bible.mp3",
         "text": "Me gusta leer la Biblia, conversar y compartir con personas que me inspiran. Disfruto estar activo y ayudar a los demás, porque creo que crecer como persona es un camino que se construye con humildad y sabiendo escuchar."
       }
-    ]
+    ],
+    "background": "/images/forest-2.webp"
   },
   "technologies": {
     "title": "Tecnologías y Herramientas",
