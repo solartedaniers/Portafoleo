@@ -74,7 +74,17 @@
       "Soy ingeniero de software y creo que la tecnología debe ir más allá de resolver problemas: debe transformar vidas.",
       "Me especializo en backend con Node.js, Spring Boot, Python y Java, y también disfruto los desafíos del frontend con React, Angular, Next.js y Tailwind CSS. Me apasiona crear aplicaciones seguras, escalables e intuitivas.",
       "Me inspiran la ciberseguridad, la inteligencia artificial y la realidad mixta, porque conectan lo digital con lo humano. <br />Te invito a explorar mi portafolio y descubrir cómo cada proyecto refleja mi pasión, mi aprendizaje y mi forma de ver el mundo del software."
-    ]
+    ],
+    "name": "Daniers Alexander Solarte Limas",
+    "profileAlt": "Foto de perfil de Daniers Solarte",
+    "background": "/images/temple.webp",
+    "homeIcon": "/images/fire.webp",
+    "profileImage": "/images/profile.webp",
+    "profileFocus": {
+      "x": "62%",
+      "y": "26%",
+      "zoom": 1.3
+    }
   },
   "about": {
     "title": "Acerca de mí",
