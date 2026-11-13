@@ -419,5 +419,16 @@
         "sound": "url.mp3"
       }
     }
+  },
+  "admin": {
+    "title": "📝 Content editor",
+    "save": "Save",
+    "saved": "✅ Saved successfully",
+    "saveError": "❌ Could not save",
+    "invalidJson": "⚠️ Error: invalid JSON",
+    "languages": {
+      "es": "Spanish",
+      "en": "English"
+    }
   }
 }

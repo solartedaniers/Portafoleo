@@ -419,5 +419,16 @@
         "sound": "url.mp3"
       }
     }
+  },
+  "admin": {
+    "title": "📝 Editor de contenido",
+    "save": "Guardar",
+    "saved": "✅ Guardado con éxito",
+    "saveError": "❌ Error al guardar",
+    "invalidJson": "⚠️ Error: JSON inválido",
+    "languages": {
+      "es": "Español",
+      "en": "Inglés"
+    }
   }
 }
