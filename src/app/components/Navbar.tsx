@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaSmile } from "react-icons/fa";
 import {
   GiFeather,
@@ -15,95 +15,59 @@ import {
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
 import { Sun, Moon } from "lucide-react";
+import { useIsMobile } from "@/hooks/useMediaQuery";
+import { useSound } from "@/hooks/useSound";
+import { SOUNDS } from "@/config/assets";
 
-// Sonido clic del menú
-const clickSound = typeof Audio !== "undefined" ? new Audio("/sounds/menu.mp3") : null;
-
-// Hook para detectar si es móvil
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [breakpoint]);
-  return isMobile;
-}
+const ICONS_BY_SECTION: Record<string, React.ReactNode> = {
+  bienvenidos: <FaSmile />,
+  acercademi: <GiFeather />,
+  tecnologias: <GiBookshelf />,
+  misproyectos: <GiScrollUnfurled />,
+  testimonios: <GiTalk />,
+  cv: <GiOpenBook />,
+  experiencia: <GiGraduateCap />,
+  filosofia: <GiBrain />,
+  contacto: <GiQuillInk />,
+  PieDePágina: <GiArchiveResearch />,
+};
 
 interface MenuItem {
   label: string;
   id: string;
 }
 
-interface NavbarLangContent {
+interface NavbarContent {
   menu: MenuItem[];
 }
 
-export default function Navbar() {
-  const { lang, theme, toggleTheme, toggleLang } = useApp();
-  const { content } = useContent() as { content: { navbar?: NavbarLangContent } };
+interface UiContent {
+  menu: string;
+  switchLanguage: string;
+  themeToggle: string;
+  langToggle: string;
+}
 
+export default function Navbar() {
+  const { theme, toggleTheme, toggleLang } = useApp();
+  const { content } = useContent();
+  const navbar = content.navbar as NavbarContent | undefined;
+  const ui = content.ui as UiContent;
   const isMobile = useIsMobile();
+  const playMenuSound = useSound(SOUNDS.menu);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const defaultMenus: Record<string, NavbarLangContent> = {
-    es: {
-      menu: [
-        { label: "Bienvenidos", id: "bienvenidos" },
-        { label: "Acerca de mí", id: "acercademi" },
-        { label: "Tecnologías", id: "tecnologias" },
-        { label: "Mis Proyectos", id: "misproyectos" },
-        { label: "Testimonios", id: "testimonios" },
-        { label: "CV", id: "cv" },
-        { label: "Experiencia", id: "experiencia" },
-        { label: "Filosofía", id: "filosofia" },
-        { label: "Contacto", id: "contacto" },
-        { label: "Pie de Página", id: "pie" },
-      ],
-    },
-    en: {
-      menu: [
-        { label: "Welcome", id: "bienvenidos" },
-        { label: "About Me", id: "acercademi" },
-        { label: "Technologies", id: "tecnologias" },
-        { label: "My Projects", id: "misproyectos" },
-        { label: "Testimonials", id: "testimonios" },
-        { label: "Cv", id: "cv" },
-        { label: "Experience", id: "experiencia" },
-        { label: "Philosophy", id: "filosofia" },
-        { label: "Contact", id: "contacto" },
-        { label: "Footer", id: "pie" },
-      ],
-    },
-  };
-
-  const navbarContent = content?.navbar ?? defaultMenus[lang];
-  const icons = [
-    <FaSmile key="1" />,
-    <GiFeather key="2" />,
-    <GiBookshelf key="3" />,
-    <GiScrollUnfurled key="4" />,
-    <GiTalk key="5" />,
-    <GiOpenBook key="6" />,
-    <GiGraduateCap key="7" />,
-    <GiBrain key="8" />,
-    <GiQuillInk key="9" />,
-    <GiArchiveResearch key="10" />,
-  ];
+  if (!navbar) return null;
 
   const cardBg = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
-  const borderGold = "border-[2px] border-[#d4af37]";
+  const borderGold = "border-[2px] border-gold";
   const buttonBase =
     theme === "dark"
-      ? "bg-black text-[#d4af37] hover:bg-red-600 hover:text-white"
+      ? "bg-black text-gold hover:bg-red-600 hover:text-white"
       : "bg-gray-100 text-black hover:bg-red-600 hover:text-white";
 
   const handleSelect = () => {
-    if (clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(() => {});
-    }
+    playMenuSound();
     if (isMobile) setMenuOpen(false);
   };
 
@@ -113,78 +77,81 @@ export default function Navbar() {
         theme === "dark" ? "bg-black" : "bg-white"
       }`}
     >
-      <div
-        className="flex items-center justify-between px-5 py-3 md:hidden cursor-pointer"
-        onClick={() => setMenuOpen(!menuOpen)}
+      <button
+        type="button"
+        aria-expanded={menuOpen}
+        className="flex w-full items-center justify-between px-5 py-3 md:hidden cursor-pointer"
+        onClick={() => setMenuOpen((open) => !open)}
       >
-        <span className="font-bold text-lg text-[#d4af37]">☰ Menú</span>
-      </div>
+        <span className="font-bold text-lg text-gold">{ui.menu}</span>
+      </button>
 
       <div
-        className={`fixed top-[60px] left-0 w-full h-[calc(100vh-60px)] flex flex-col justify-between bg-[#d4af37] transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-[60px] left-0 w-full h-[calc(100dvh-60px)] flex flex-col justify-between bg-gold transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col gap-3 p-4 flex-1 overflow-hidden justify-center">
-          {navbarContent.menu.map((item, index) => (
+        <div className="flex flex-col gap-3 p-4 flex-1 overflow-y-auto justify-center">
+          {navbar.menu.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
               onClick={handleSelect}
               className={`flex items-center gap-3 px-4 py-2 rounded-xl ${borderGold} ${cardBg} transition-all duration-300 hover:border-red-600 hover:scale-105`}
             >
-              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#d4af37] text-black shrink-0">
-                {icons[index]}
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gold text-black shrink-0">
+                {ICONS_BY_SECTION[item.id]}
               </div>
-              <span className="font-['Irish_Grover'] text-sm break-words">{item.label}</span>
+              <span className="font-irish text-sm break-words">{item.label}</span>
             </a>
           ))}
         </div>
 
         <div className="flex justify-center items-center gap-4 mb-8 flex-wrap px-4">
-          <button onClick={toggleTheme} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
+          <button type="button" aria-label={ui.themeToggle} onClick={toggleTheme} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
             {theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button onClick={toggleLang} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
-            🌐 {lang === "es" ? "EN" : "ES"}
+          <button type="button" aria-label={ui.langToggle} onClick={toggleLang} className={`p-3 rounded-xl ${buttonBase} w-28 sm:w-auto`}>
+            🌐 {ui.switchLanguage}
           </button>
         </div>
       </div>
 
       {!isMobile && (
         <div className="hidden md:block">
-          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-[#d4af37] p-[3px] transition-all duration-500">
+          <div className="max-w-[98%] mx-auto my-[4px] rounded-xl shadow-md bg-gold p-[3px] transition-all duration-500">
             <div
-              className={`flex items-center gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-[#d4af37] scrollbar-track-transparent ${borderGold} rounded-xl p-2`}
+              className={`flex items-center gap-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gold scrollbar-track-transparent ${borderGold} rounded-xl p-2`}
             >
-              {navbarContent.menu.map((item, index) => (
+              {navbar.menu.map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={handleSelect}
                   className={`flex flex-col items-center justify-center w-[120px] h-[110px] rounded-xl ${cardBg} ${borderGold} shadow-md transition-all duration-300 cursor-pointer hover:scale-105 shrink-0`}
                 >
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#d4af37] text-black">
-                    {icons[index]}
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gold text-black">
+                    {ICONS_BY_SECTION[item.id]}
                   </div>
-                  <span className="font-['Irish_Grover'] text-[0.7rem] text-center mt-2">
+                  <span className="font-irish text-[0.7rem] text-center mt-2">
                     {item.label}
                   </span>
                 </a>
               ))}
 
-              {/* Botones idioma/tema */}
               <div
                 className={`flex flex-col items-center justify-center w-[120px] h-[110px] rounded-xl ${cardBg} ${borderGold} shrink-0`}
               >
                 <button
+                  type="button"
+                  aria-label={ui.themeToggle}
                   onClick={toggleTheme}
                   className={`mb-2 p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}
                 >
                   {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
-                <button onClick={toggleLang} className={`p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}>
-                  🌐 {lang === "es" ? "EN" : "ES"}
+                <button type="button" aria-label={ui.langToggle} onClick={toggleLang} className={`p-2 rounded-lg ${buttonBase} w-full max-w-[70px]`}>
+                  🌐 {ui.switchLanguage}
                 </button>
               </div>
             </div>
