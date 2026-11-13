@@ -8,16 +8,46 @@
   },
   "navbar": {
     "menu": [
-      { "label": "Welcome", "id": "bienvenidos" },
-      { "label": "About Me", "id": "acercademi" },
-      { "label": "Technologies", "id": "tecnologias" },
-      { "label": "My Projects", "id": "misproyectos" },
-      { "label": "Testimonials", "id": "testimonios" },
-      { "label": "CV", "id": "cv" },
-      { "label": "Academic and Work Experience", "id": "experiencia" },
-      { "label": "My Life Philosophy", "id": "filosofia" },
-      { "label": "Contact", "id": "contacto" },
-      { "label": "Footer", "id": "PieDePágina" }
+      {
+        "label": "Welcome",
+        "id": "bienvenidos"
+      },
+      {
+        "label": "About Me",
+        "id": "acercademi"
+      },
+      {
+        "label": "Technologies",
+        "id": "tecnologias"
+      },
+      {
+        "label": "My Projects",
+        "id": "misproyectos"
+      },
+      {
+        "label": "Testimonials",
+        "id": "testimonios"
+      },
+      {
+        "label": "CV",
+        "id": "cv"
+      },
+      {
+        "label": "Academic and Work Experience",
+        "id": "experiencia"
+      },
+      {
+        "label": "My Life Philosophy",
+        "id": "filosofia"
+      },
+      {
+        "label": "Contact",
+        "id": "contacto"
+      },
+      {
+        "label": "Footer",
+        "id": "PieDePágina"
+      }
     ]
   },
   "welcome": {
@@ -65,17 +95,61 @@
     "quote": "“Each language, a technique that I perfect every day.”",
     "video": "/videos/stellar-wolf.mp4",
     "list": [
-      { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
-      { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
-      { "name": "Next.js", "icon": "SiNextdotjs", "color": "#000000" },
-      { "name": "Django", "icon": "SiDjango", "color": "#092e20" },
-      { "name": "Python", "icon": "SiPython", "color": "#3776AB" },
-      { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
-      { "name": "Java", "icon": "FaJava", "color": "#f89820" },
-      { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
-      { "name": "Unity", "icon": "SiUnity", "color": "#000000" },
-      { "name": "Spring Boot", "icon": "SiSpringboot", "color": "#6DB33F" },
-      { "name": "GitHub", "icon": "FaGithub", "color": "#181717" }
+      {
+        "name": "Angular",
+        "icon": "SiAngular",
+        "color": "#dd0031"
+      },
+      {
+        "name": "Tailwind",
+        "icon": "SiTailwindcss",
+        "color": "#38bdf8"
+      },
+      {
+        "name": "Next.js",
+        "icon": "SiNextdotjs",
+        "color": "#000000"
+      },
+      {
+        "name": "Django",
+        "icon": "SiDjango",
+        "color": "#092e20"
+      },
+      {
+        "name": "Python",
+        "icon": "SiPython",
+        "color": "#3776AB"
+      },
+      {
+        "name": "MySQL",
+        "icon": "SiMysql",
+        "color": "#00758f"
+      },
+      {
+        "name": "Java",
+        "icon": "FaJava",
+        "color": "#f89820"
+      },
+      {
+        "name": "C#",
+        "icon": "SiSharp",
+        "color": "#9b4f96"
+      },
+      {
+        "name": "Unity",
+        "icon": "SiUnity",
+        "color": "#000000"
+      },
+      {
+        "name": "Spring Boot",
+        "icon": "SiSpringboot",
+        "color": "#6DB33F"
+      },
+      {
+        "name": "GitHub",
+        "icon": "FaGithub",
+        "color": "#181717"
+      }
     ]
   },
   "projects": [
@@ -83,42 +157,81 @@
       "image": "/images/fermentation.webp",
       "title": "Fermentation Monitoring",
       "description": "The Coffee Fermentation Monitoring System tracks critical parameters of the coffee fermentation process in real time, such as temperature, pH, and humidity.",
-      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+      "tools": [
+        "TypeScript",
+        "HTML",
+        "CSS",
+        "Angular",
+        "Node.js"
+      ],
       "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
     },
     {
       "image": "/images/player.webp",
       "title": "Music Player",
       "description": "Web application for playing local MP3 music, featuring search, favorites, and playback controls. Includes dark mode and basic API for managing songs. Runs on a local server with an intuitive web interface.",
-      "tools": ["JavaScript", "Python", "HTML", "Flask", "CSS"],
+      "tools": [
+        "JavaScript",
+        "Python",
+        "HTML",
+        "Flask",
+        "CSS"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
     },
     {
       "image": "/images/plant.webp",
       "title": "PlantSim",
       "description": "PlantSim is an educational web application that simulates plant growth based on light, humidity, and temperature. It allows users to manage plants, track their development, and receive care recommendations. Built as an academic project applying data structures and software design patterns.",
-      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Maven", "Angular", "Node.js"],
+      "tools": [
+        "HTML",
+        "Java",
+        "SCSS",
+        "TypeScript",
+        "Spring Boot",
+        "Maven",
+        "Angular",
+        "Node.js"
+      ],
       "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
     },
     {
       "image": "/images/interface.webp",
       "title": "Interface",
       "description": "Interface built in Next.js using Flex and Grid for a modern layout.",
-      "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
+      "tools": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "Next.js",
+        "Tailwind"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Responsive.git"
     },
     {
       "image": "/images/clock.webp",
       "title": "Analog Watch",
       "description": "This project displays a fully functional 2D analog clock with animated hands, ticking sound, and automatic image rotation every hour. It features Roman numerals and updates in real time according to the selected timezone. Users can switch between countries to instantly view the local time.",
-      "tools": ["Python", "Pygame", "math", "Circular doubly linked lists", "datetime, pytz"],
+      "tools": [
+        "Python",
+        "Pygame",
+        "math",
+        "Circular doubly linked lists",
+        "datetime, pytz"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Reloj.git"
     },
     {
       "image": "/images/zombies.webp",
       "title": "Zombie Apocalypse",
       "description": "Three-level game where the player must survive a horde of zombies to advance to the next stage. With each level, the enemies become tougher and more challenging.",
-      "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
+      "tools": [
+        "C#",
+        "HLSL",
+        "ShaderLab",
+        "Unity",
+        "Blender"
+      ],
       "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
     }
   ],
@@ -151,15 +264,33 @@
     "background": "/images/village.webp",
     "title": "Contact",
     "message": "“If you want to build something amazing, don’t hesitate to reach out.<br />I’m always willing to learn and contribute,<br />so message me and let’s take the first step.”",
-    "profile": { "default": "/images/profile1.webp", "hover": "/images/profile2.webp" },
+    "profile": {
+      "default": "/images/profile1.webp",
+      "hover": "/images/profile2.webp"
+    },
     "social": {
-      "linkedin": { "url": "https://www.linkedin.com/in/daniers-solarte-08716b381", "label": "LinkedIn" },
-      "whatsapp": { "url": "https://wa.me/3167969206", "label": "WhatsApp" }
+      "linkedin": {
+        "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
+        "label": "LinkedIn"
+      },
+      "whatsapp": {
+        "url": "https://wa.me/3167969206",
+        "label": "WhatsApp"
+      }
     },
     "fields": {
-      "email": { "label": "Email*", "placeholder": "Example@gmail.com" },
-      "name": { "label": "Name*", "placeholder": "Xavier" },
-      "content": { "label": "Message*", "placeholder": "Write your message here" },
+      "email": {
+        "label": "Email*",
+        "placeholder": "Example@gmail.com"
+      },
+      "name": {
+        "label": "Name*",
+        "placeholder": "Xavier"
+      },
+      "content": {
+        "label": "Message*",
+        "placeholder": "Write your message here"
+      },
       "send": "Send"
     },
     "errors": {

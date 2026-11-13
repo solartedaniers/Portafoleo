@@ -8,16 +8,46 @@
   },
   "navbar": {
     "menu": [
-      { "label": "Bienvenidos", "id": "bienvenidos" },
-      { "label": "Acerca de mí", "id": "acercademi" },
-      { "label": "Tecnologías", "id": "tecnologias" },
-      { "label": "Mis Proyectos", "id": "misproyectos" },
-      { "label": "Testimonios", "id": "testimonios" },
-      { "label": "CV", "id": "cv" },
-      { "label": "Experiencia Académica y Laboral", "id": "experiencia" },
-      { "label": "Mi Filosofía de Vida", "id": "filosofia" },
-      { "label": "Contacto", "id": "contacto" },
-      { "label": "Pie de Página", "id": "PieDePágina" }
+      {
+        "label": "Bienvenidos",
+        "id": "bienvenidos"
+      },
+      {
+        "label": "Acerca de mí",
+        "id": "acercademi"
+      },
+      {
+        "label": "Tecnologías",
+        "id": "tecnologias"
+      },
+      {
+        "label": "Mis Proyectos",
+        "id": "misproyectos"
+      },
+      {
+        "label": "Testimonios",
+        "id": "testimonios"
+      },
+      {
+        "label": "CV",
+        "id": "cv"
+      },
+      {
+        "label": "Experiencia Académica y Laboral",
+        "id": "experiencia"
+      },
+      {
+        "label": "Mi Filosofía de Vida",
+        "id": "filosofia"
+      },
+      {
+        "label": "Contacto",
+        "id": "contacto"
+      },
+      {
+        "label": "Pie de Página",
+        "id": "PieDePágina"
+      }
     ]
   },
   "welcome": {
@@ -65,17 +95,61 @@
     "quote": "“Cada lenguaje, una técnica que perfecciono cada día.”",
     "video": "/videos/stellar-wolf.mp4",
     "list": [
-      { "name": "Angular", "icon": "SiAngular", "color": "#dd0031" },
-      { "name": "Tailwind", "icon": "SiTailwindcss", "color": "#38bdf8" },
-      { "name": "Next.js", "icon": "SiNextdotjs", "color": "#000000" },
-      { "name": "Django", "icon": "SiDjango", "color": "#092e20" },
-      { "name": "Python", "icon": "SiPython", "color": "#3776AB" },
-      { "name": "MySQL", "icon": "SiMysql", "color": "#00758f" },
-      { "name": "Java", "icon": "FaJava", "color": "#f89820" },
-      { "name": "C#", "icon": "SiSharp", "color": "#9b4f96" },
-      { "name": "Unity", "icon": "SiUnity", "color": "#000000" },
-      { "name": "Spring Boot", "icon": "SiSpringboot", "color": "#6DB33F" },
-      { "name": "GitHub", "icon": "FaGithub", "color": "#181717" }
+      {
+        "name": "Angular",
+        "icon": "SiAngular",
+        "color": "#dd0031"
+      },
+      {
+        "name": "Tailwind",
+        "icon": "SiTailwindcss",
+        "color": "#38bdf8"
+      },
+      {
+        "name": "Next.js",
+        "icon": "SiNextdotjs",
+        "color": "#000000"
+      },
+      {
+        "name": "Django",
+        "icon": "SiDjango",
+        "color": "#092e20"
+      },
+      {
+        "name": "Python",
+        "icon": "SiPython",
+        "color": "#3776AB"
+      },
+      {
+        "name": "MySQL",
+        "icon": "SiMysql",
+        "color": "#00758f"
+      },
+      {
+        "name": "Java",
+        "icon": "FaJava",
+        "color": "#f89820"
+      },
+      {
+        "name": "C#",
+        "icon": "SiSharp",
+        "color": "#9b4f96"
+      },
+      {
+        "name": "Unity",
+        "icon": "SiUnity",
+        "color": "#000000"
+      },
+      {
+        "name": "Spring Boot",
+        "icon": "SiSpringboot",
+        "color": "#6DB33F"
+      },
+      {
+        "name": "GitHub",
+        "icon": "FaGithub",
+        "color": "#181717"
+      }
     ]
   },
   "projects": [
@@ -83,42 +157,81 @@
       "image": "/images/fermentation.webp",
       "title": "Fermentation Monitoring",
       "description": "El Sistema de Monitoreo de Fermentación en el Café es una aplicación diseñada para seguir en tiempo real los parámetros críticos del proceso de fermentación del café, como la temperatura, el pH y la humedad.",
-      "tools": ["TypeScript", "HTML", "CSS", "Angular", "Node.js"],
+      "tools": [
+        "TypeScript",
+        "HTML",
+        "CSS",
+        "Angular",
+        "Node.js"
+      ],
       "gitUrl": "https://github.com/solartedaniers/software-Patrones.git"
     },
     {
       "image": "/images/player.webp",
       "title": "Reproductor de Música",
       "description": "Aplicación web para reproducir música local en formato MP3, con funciones de búsqueda, favoritos y controles de reproducción. Incluye modo oscuro y manejo de canciones mediante API básica. Se ejecuta en servidor local con interfaz web intuitiva.",
-      "tools": ["JavaScript", "Python", "HTML", "Flask", "CSS"],
+      "tools": [
+        "JavaScript",
+        "Python",
+        "HTML",
+        "Flask",
+        "CSS"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Reproductor_mp3.git"
     },
     {
       "image": "/images/plant.webp",
       "title": "PlantSim",
       "description": "PlantSim es una aplicación web educativa que simula el crecimiento de plantas según luz, humedad y temperatura. Permite gestionar plantas, visualizar su evolución y recibir recomendaciones de cuidado. Desarrollada como proyecto académico aplicando estructuras de datos y patrones de diseño.",
-      "tools": ["HTML", "Java", "SCSS", "TypeScript", "Spring Boot", "Maven", "Angular", "Node.js"],
+      "tools": [
+        "HTML",
+        "Java",
+        "SCSS",
+        "TypeScript",
+        "Spring Boot",
+        "Maven",
+        "Angular",
+        "Node.js"
+      ],
       "gitUrl": "https://github.com/Pipemora1324/BigProyect.git"
     },
     {
       "image": "/images/interface.webp",
       "title": "Interface",
       "description": "Interfaz hecha en Next.js usando Flex y Grid para un diseño moderno.",
-      "tools": ["TypeScript", "JavaScript", "CSS", "Next.js", "Tailwind"],
+      "tools": [
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "Next.js",
+        "Tailwind"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Responsive.git"
     },
     {
       "image": "/images/clock.webp",
       "title": "Reloj Analogico",
       "description": "Este proyecto muestra un reloj analógico 2D completamente funcional, con animación de agujas, sonido de tic y cambio automático de imagen cada hora. Incluye números romanos y se actualiza en tiempo real según la zona horaria seleccionada. El usuario puede cambiar entre países para ver la hora local al instante.",
-      "tools": ["Python", "Pygame", "math", "Listas doblemente enlazadas circulares", "datetime, pytz"],
+      "tools": [
+        "Python",
+        "Pygame",
+        "math",
+        "Listas doblemente enlazadas circulares",
+        "datetime, pytz"
+      ],
       "gitUrl": "https://github.com/solartedaniers/Reloj.git"
     },
     {
       "image": "/images/zombies.webp",
       "title": "Apocalipsis Zombie",
       "description": "Juego de tres niveles en el que el jugador debe sobrevivir a una horda de zombis para avanzar al siguiente nivel. En cada etapa, los enemigos se vuelven más resistentes y desafiantes.",
-      "tools": ["C#", "HLSL", "ShaderLab", "Unity", "Blender"],
+      "tools": [
+        "C#",
+        "HLSL",
+        "ShaderLab",
+        "Unity",
+        "Blender"
+      ],
       "gitUrl": "https://github.com/solartedaniers/zombie_V1.git"
     }
   ],
@@ -151,15 +264,33 @@
     "background": "/images/village.webp",
     "title": "Contacto",
     "message": "“Si quieres construir algo increíble, no dudes en escribirme.<br />Siempre estoy dispuesto a aprender y aportar,<br />así que escríbeme y demos el primer paso.”",
-    "profile": { "default": "/images/profile1.webp", "hover": "/images/profile2.webp" },
+    "profile": {
+      "default": "/images/profile1.webp",
+      "hover": "/images/profile2.webp"
+    },
     "social": {
-      "linkedin": { "url": "https://www.linkedin.com/in/daniers-solarte-08716b381", "label": "LinkedIn" },
-      "whatsapp": { "url": "https://wa.me/3167969206", "label": "WhatsApp" }
+      "linkedin": {
+        "url": "https://www.linkedin.com/in/daniers-solarte-08716b381",
+        "label": "LinkedIn"
+      },
+      "whatsapp": {
+        "url": "https://wa.me/3167969206",
+        "label": "WhatsApp"
+      }
     },
     "fields": {
-      "email": { "label": "Email*", "placeholder": "Ejemplo@gmail.com" },
-      "name": { "label": "Nombre*", "placeholder": "Xavier" },
-      "content": { "label": "Contenido*", "placeholder": "Escriba aquí el motivo de su mensaje" },
+      "email": {
+        "label": "Email*",
+        "placeholder": "Ejemplo@gmail.com"
+      },
+      "name": {
+        "label": "Nombre*",
+        "placeholder": "Xavier"
+      },
+      "content": {
+        "label": "Contenido*",
+        "placeholder": "Escriba aquí el motivo de su mensaje"
+      },
       "send": "Enviar"
     },
     "errors": {
@@ -222,15 +353,21 @@
     "backgroundLeft": "/images/wolf.webp",
     "backgroundRight": "/images/samurai.webp",
     "social": {
-      "linkedin": { "label": "LinkedIn", 
-        "url": "https://www.linkedin.com/in/damiers-solarte-08716b381", 
-        "sound": "LinkedIn.mp3" },
-      "whatsapp": { "label": "WhatsApp", 
-        "url": "https://wa.me/573167969206", 
-        "sound": "whatsapp.mp3" },
-      "github": { "label": "GitHub", 
-        "url": "https://github.com/solartedaniers", 
-        "sound": "url.mp3" }
+      "linkedin": {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/damiers-solarte-08716b381",
+        "sound": "LinkedIn.mp3"
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "url": "https://wa.me/573167969206",
+        "sound": "whatsapp.mp3"
+      },
+      "github": {
+        "label": "GitHub",
+        "url": "https://github.com/solartedaniers",
+        "sound": "url.mp3"
+      }
     }
   }
 }
