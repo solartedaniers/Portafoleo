@@ -355,7 +355,8 @@
       "view": "View CV",
       "close": "Close CV",
       "download": "Download CV in PDF"
-    }
+    },
+    "downloadName": "CV_Daniers_Solarte_EN.pdf"
   },
   "experiencia": {
     "title": "Academic and Work Experience",

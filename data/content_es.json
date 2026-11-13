@@ -355,7 +355,8 @@
       "view": "Ver CV",
       "close": "Cerrar CV",
       "download": "Descargar CV en PDF"
-    }
+    },
+    "downloadName": "CV_Daniers_Solarte_ES.pdf"
   },
   "experiencia": {
     "title": "Experiencia Académica y Laboral",
