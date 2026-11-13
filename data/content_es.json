@@ -299,7 +299,10 @@
         "text": "Danier es un joven de valores sólidos, guiado por los principios de honestidad, respeto y solidaridad. Su compromiso y dedicación hacia su familia y amigos reflejan su gran corazón y su capacidad para crear vínculos genuinos y duraderos.Destaca especialmente el amor y la entrega que demuestra hacia su hermanita, siempre dispuesto a apoyarla y acompañarla en todo momento. Su sentido de responsabilidad, empatía en todo lo que se propone hacer y su disposición para ayudar a los demás lo convierten en un ejemplo digno de admiración.",
         "image": "/images/fredy.webp"
       }
-    ]
+    ],
+    "seeMore": "Ver más",
+    "seeLess": "Ver menos",
+    "background": "/images/parchment.webp"
   },
   "contact": {
     "background": "/images/village.webp",

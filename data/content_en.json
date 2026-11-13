@@ -299,7 +299,10 @@
         "text": "Danier is a young man with strong values, guided by the principles of honesty, respect, and solidarity. His commitment and dedication to his family and friends reflect his great heart and his ability to create genuine and lasting bonds.He particularly stands out for the love and devotion he shows toward his little sister, always willing to support and accompany her at all times. His sense of responsibility, empathy in everything he sets out to do, and willingness to help others make him an admirable example.",
         "image": "/images/fredy.webp"
       }
-    ]
+    ],
+    "seeMore": "See more",
+    "seeLess": "See less",
+    "background": "/images/parchment.webp"
   },
   "contact": {
     "background": "/images/village.webp",
