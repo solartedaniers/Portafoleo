@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import {
   FaLinkedin,
@@ -10,12 +10,19 @@ import {
 } from "react-icons/fa";
 import { useApp } from "./ThemeLangContext";
 import { useContent } from "./ContentProvider";
+import { useHasHover } from "@/hooks/useMediaQuery";
+import { useSound } from "@/hooks/useSound";
+import { CONTACT_ENDPOINT, SOUNDS } from "@/config/assets";
+import { TOUCH_FEEDBACK_MS } from "@/config/ui";
+
+const MESSAGE_TIMEOUT_MS = 4000;
 
 type ContactContent = {
   background: string;
   title: string;
   message: string;
   profile: { default: string; hover: string };
+  profileAlt: string;
   social: {
     linkedin: { url: string; label: string };
     whatsapp: { url: string; label: string };
@@ -46,23 +53,17 @@ export default function Contact() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [hovered, setHovered] = useState(false);
-  const [hasHover, setHasHover] = useState(true);
+  const [sending, setSending] = useState(false);
+  const hasHover = useHasHover();
+  const playLinkedInSound = useSound(SOUNDS.linkedin);
+  const playWhatsAppSound = useSound(SOUNDS.whatsapp);
+  const playSendSound = useSound(SOUNDS.send);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHasHover(window.matchMedia("(hover: hover)").matches);
-    }
-  }, []);
+  const c = content.contact as ContactContent | undefined;
+  if (!c) return null;
 
-  if (!content?.contact) return null;
-  const c = content.contact as ContactContent;
-
-  const playLinkedInSound = () => new Audio("/sounds/LinkedIn.mp3").play();
-  const playWhatsAppSound = () => new Audio("/sounds/whatsapp.mp3").play();
-  const playSendSound = () => new Audio("/sounds/blow.mp3").play();
-
-  const boxBg = theme === "dark" ? "bg-[#111111]" : "bg-[#f5f5f5]";
-  const textMain = theme === "dark" ? "text-[#e6e6e6]" : "text-[#5c4c4c]";
+  const boxBg = theme === "dark" ? "bg-ink" : "bg-paper";
+  const textMain = theme === "dark" ? "text-mist" : "text-umber";
   const inputText = theme === "dark" ? "text-white" : "text-black";
   const placeholderColor =
     theme === "dark" ? "placeholder-gray-400" : "placeholder-gray-500";
@@ -93,39 +94,39 @@ export default function Contact() {
     e.preventDefault();
     setSuccessMsg(null);
 
-    if (validateForm()) {
-      playSendSound();
-      try {
-        const res = await fetch(
-          "https://formsubmit.co/ajax/solartedaniers@gmail.com",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, nombre, contenido }),
-          }
-        );
+    if (sending || !validateForm()) return;
 
-        if (res.ok) {
-          setSuccessMsg(c.success);
-          setEmail("");
-          setNombre("");
-          setContenido("");
-        } else {
-          setSuccessMsg(c.error);
-        }
-      } catch {
+    playSendSound();
+    setSending(true);
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email, nombre, contenido }),
+      });
+
+      if (res.ok) {
+        setSuccessMsg(c.success);
+        setEmail("");
+        setNombre("");
+        setContenido("");
+      } else {
         setSuccessMsg(c.error);
       }
-
-      setTimeout(() => setSuccessMsg(null), 4000);
+    } catch {
+      setSuccessMsg(c.error);
+    } finally {
+      setSending(false);
     }
+
+    setTimeout(() => setSuccessMsg(null), MESSAGE_TIMEOUT_MS);
   };
 
   // Control del efecto hover en dispositivos táctiles
   const handleHoverToggle = () => {
     if (!hasHover) {
       setHovered((prev) => !prev);
-      setTimeout(() => setHovered(false), 1200);
+      setTimeout(() => setHovered(false), TOUCH_FEEDBACK_MS.long);
     }
   };
 
@@ -135,17 +136,17 @@ export default function Contact() {
       style={{ backgroundImage: `url(${c.background})` }}
     >
       {/* Título */}
-      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-6 py-2 mb-6 rounded-full shadow-lg bg-red-600/80 text-white font-['Irish_Grover'] hover:bg-[#d4af37] hover:text-black transition-all duration-500">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-6 py-2 mb-6 rounded-full shadow-lg bg-red-600/80 text-white font-irish hover:bg-gold hover:text-black transition-all duration-500">
         {c.title}
       </h2>
 
       {/* Mensaje informativo */}
       <div className="hidden md:block mb-10 w-full max-w-3xl mx-auto">
         <div
-          className={`${boxBg} p-6 rounded-2xl shadow-md border hover:border-red-600 hover:shadow-[#d4af37] transition-all duration-300`}
+          className={`${boxBg} p-6 rounded-2xl shadow-md border hover:border-red-600 hover:shadow-gold transition-all duration-300`}
         >
           <p
-            className={`font-['Esteban'] ${textMain} text-lg leading-relaxed text-center`}
+            className={`font-esteban ${textMain} text-lg leading-relaxed text-center`}
             dangerouslySetInnerHTML={{ __html: c.message }}
           />
         </div>
@@ -165,7 +166,7 @@ export default function Contact() {
           >
             <Image
               src={hovered ? c.profile.hover : c.profile.default}
-              alt="Perfil"
+              alt={c.profileAlt}
               width={300}
               height={300}
               className="w-full h-full object-cover"
@@ -185,7 +186,7 @@ export default function Contact() {
               className={`${boxBg} flex items-center justify-center gap-3 w-full sm:w-auto p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaLinkedin className="text-2xl sm:text-3xl text-blue-600" />
-              <span className={`font-['Esteban'] ${textMain} text-base sm:text-lg`}>
+              <span className={`font-esteban ${textMain} text-base sm:text-lg`}>
                 {c.social.linkedin.label}
               </span>
             </a>
@@ -198,7 +199,7 @@ export default function Contact() {
               className={`${boxBg} flex items-center justify-center gap-3 w-full sm:w-auto p-4 rounded-xl border shadow-md hover:border-yellow-500 hover:scale-105 transition-all duration-300`}
             >
               <FaWhatsapp className="text-2xl sm:text-3xl text-green-600" />
-              <span className={`font-['Esteban'] ${textMain} text-base sm:text-lg`}>
+              <span className={`font-esteban ${textMain} text-base sm:text-lg`}>
                 {c.social.whatsapp.label}
               </span>
             </a>
@@ -210,15 +211,17 @@ export default function Contact() {
             className="flex flex-col gap-4 w-full max-w-md text-left"
           >
             {/* Campo: Email */}
-            <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
+            <label htmlFor="contact-email" className="font-esteban text-base sm:text-lg text-slate-200">
               {c.fields.email.label}
             </label>
             <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600`}>
               <FaEnvelope className="text-gray-500" />
               <input
+                id="contact-email"
                 type="email"
+                autoComplete="email"
                 placeholder={c.fields.email.placeholder}
-                className={`bg-transparent w-full outline-none font-['Esteban'] ${placeholderColor} ${inputText}`}
+                className={`bg-transparent w-full outline-none font-esteban ${placeholderColor} ${inputText}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -228,15 +231,17 @@ export default function Contact() {
             )}
 
             {/* Campo: Nombre */}
-            <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
+            <label htmlFor="contact-name" className="font-esteban text-base sm:text-lg text-slate-200">
               {c.fields.name.label}
             </label>
             <div className={`${boxBg} flex items-center gap-2 p-3 rounded-xl border-2 border-red-600`}>
               <FaUser className="text-gray-500" />
               <input
+                id="contact-name"
                 type="text"
+                autoComplete="name"
                 placeholder={c.fields.name.placeholder}
-                className={`bg-transparent w-full outline-none font-['Esteban'] ${placeholderColor} ${inputText}`}
+                className={`bg-transparent w-full outline-none font-esteban ${placeholderColor} ${inputText}`}
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
               />
@@ -246,12 +251,13 @@ export default function Contact() {
             )}
 
             {/* Campo: Contenido */}
-            <label className="font-['Esteban'] text-base sm:text-lg text-slate-200">
+            <label htmlFor="contact-content" className="font-esteban text-base sm:text-lg text-slate-200">
               {c.fields.content.label}
             </label>
             <textarea
+              id="contact-content"
               placeholder={c.fields.content.placeholder}
-              className={`${boxBg} p-3 rounded-xl border-2 border-red-600 w-full h-28 font-['Esteban'] ${placeholderColor} ${inputText}`}
+              className={`${boxBg} p-3 rounded-xl border-2 border-red-600 w-full h-28 font-esteban ${placeholderColor} ${inputText}`}
               value={contenido}
               onChange={(e) => setContenido(e.target.value)}
             />
@@ -262,10 +268,11 @@ export default function Contact() {
             {/* Botón de envío */}
             <button
               type="submit"
+              disabled={sending}
               className={`${boxBg} flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-red-600 hover:border-yellow-500 hover:shadow-lg hover:scale-105 transition-all duration-300`}
             >
               <FaPaperPlane className={`${inputText} animate-pulse`} />
-              <span className={`font-['Esteban'] ${inputText}`}>
+              <span className={`font-esteban ${inputText}`}>
                 {c.fields.send}
               </span>
             </button>

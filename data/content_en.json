@@ -318,7 +318,7 @@
         "label": "LinkedIn"
       },
       "whatsapp": {
-        "url": "https://wa.me/3167969206",
+        "url": "https://wa.me/573167969206",
         "label": "WhatsApp"
       }
     },
@@ -344,7 +344,8 @@
       "contenido": "This field is required."
     },
     "success": "✅ Your message was sent successfully.",
-    "error": "❌ Your message could not be sent. Please try again."
+    "error": "❌ Your message could not be sent. Please try again.",
+    "profileAlt": "Profile photo of Daniers Solarte"
   },
   "cv": {
     "background": "/images/background.webp",
