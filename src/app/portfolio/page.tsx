@@ -12,7 +12,7 @@ import Filosofia from "../components/philosophy";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
-// Lista de secciones para mapear
+// El id de cada sección debe coincidir con los ids del menú en los JSON de contenido
 const sections = [
   { id: "bienvenidos", component: <Welcome /> },
   { id: "acercademi", component: <AboutMe /> },
@@ -31,18 +31,18 @@ export default function PortfolioPage() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col scroll-smooth ${
+      className={`min-h-screen flex flex-col overflow-x-hidden ${
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
       <Navbar />
 
-      <main className="flex flex-col gap-10 px-4 py-6 pt-24 md:pt-28 lg:pt-32">
+      <main className="flex flex-col gap-6 sm:gap-10 px-2 sm:px-4 py-6 pt-20 md:pt-32 lg:pt-36">
         {sections.map(({ id, component }) => (
           <section
             key={id}
             id={id}
-            className="scroll-mt-24 border-[15px] border-[#d4af37] p-4 box-border"
+            className="scroll-mt-20 md:scroll-mt-36 border-[6px] sm:border-[10px] lg:border-[15px] border-gold p-1 sm:p-3 lg:p-4 box-border"
           >
             {component}
           </section>
