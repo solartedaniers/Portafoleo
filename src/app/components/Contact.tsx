@@ -48,8 +48,8 @@ export default function Contact() {
   const { content } = useContent();
 
   const [email, setEmail] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [contenido, setContenido] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [hovered, setHovered] = useState(false);
@@ -77,14 +77,14 @@ export default function Contact() {
     if (!email) newErrors.email = c.errors.email;
     else if (!emailRegex.test(email)) newErrors.email = c.errors.email;
 
-    if (!nombre) newErrors.nombre = c.errors.nombre;
-    else if (!nameRegex.test(nombre)) {
-      newErrors.nombre = /\d/.test(nombre)
+    if (!name) newErrors.name = c.errors.nombre;
+    else if (!nameRegex.test(name)) {
+      newErrors.name = /\d/.test(name)
         ? c.errors.onlyLetters
         : c.errors.nombre;
     }
 
-    if (!contenido.trim()) newErrors.contenido = c.errors.contenido;
+    if (!message.trim()) newErrors.message = c.errors.contenido;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -102,14 +102,14 @@ export default function Contact() {
       const res = await fetch(CONTACT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ email, nombre, contenido }),
+        body: JSON.stringify({ email, nombre: name, contenido: message }),
       });
 
       if (res.ok) {
         setSuccessMsg(c.success);
         setEmail("");
-        setNombre("");
-        setContenido("");
+        setName("");
+        setMessage("");
       } else {
         setSuccessMsg(c.error);
       }
@@ -242,12 +242,12 @@ export default function Contact() {
                 autoComplete="name"
                 placeholder={c.fields.name.placeholder}
                 className={`bg-transparent w-full outline-none font-esteban ${placeholderColor} ${inputText}`}
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
-            {errors.nombre && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.nombre}</p>
+            {errors.name && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.name}</p>
             )}
 
             {/* Campo: Contenido */}
@@ -258,11 +258,11 @@ export default function Contact() {
               id="contact-content"
               placeholder={c.fields.content.placeholder}
               className={`${boxBg} p-3 rounded-xl border-2 border-red-600 w-full h-28 font-esteban ${placeholderColor} ${inputText}`}
-              value={contenido}
-              onChange={(e) => setContenido(e.target.value)}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
-            {errors.contenido && (
-              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.contenido}</p>
+            {errors.message && (
+              <p className="bg-gray-200 text-black text-sm px-3 py-1 rounded-md">{errors.message}</p>
             )}
 
             {/* Botón de envío */}

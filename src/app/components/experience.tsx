@@ -10,7 +10,7 @@ import { TOUCH_FEEDBACK_MS } from "@/config/ui";
 
 type ExperienceKind = "academico" | "laboral";
 
-interface ExperienciaData {
+interface ExperienceData {
   title: string;
   background: string;
   academic: string;
@@ -29,16 +29,16 @@ interface UiContent {
   stopNarration: string;
 }
 
-export default function Experiencia() {
+export default function Experience() {
   const { content } = useContent();
   const { lang, theme } = useApp();
   const hasHover = useHasHover();
   const { speakingKey, toggle } = useSpeech<ExperienceKind>(lang);
   const [hovered, setHovered] = useState<ExperienceKind | null>(null);
 
-  const experiencia = content.experiencia as ExperienciaData | undefined;
+  const experience = content.experiencia as ExperienceData | undefined;
   const ui = content.ui as UiContent;
-  if (!experiencia) return null;
+  if (!experience) return null;
 
   const isDark = theme === "dark";
   const cardBg = isDark ? "bg-ink-soft" : "bg-white";
@@ -125,13 +125,13 @@ export default function Experiencia() {
   return (
     <section
       className="w-full min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 md:px-12 py-10 bg-cover bg-center transition-all duration-500"
-      style={{ backgroundImage: `url('${experiencia.background}')` }}
+      style={{ backgroundImage: `url('${experience.background}')` }}
     >
       <h2
         className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center px-4 sm:px-6 py-2 rounded-full shadow-md font-irish transition-all duration-300
           bg-red-600 text-white hover:bg-gold-muted hover:text-black hover:shadow-[0_0_25px_var(--gold-muted)]`}
       >
-        {experiencia.title}
+        {experience.title}
       </h2>
 
       <div className="w-full flex flex-col items-center gap-10 mt-10">
@@ -139,18 +139,18 @@ export default function Experiencia() {
           "academico",
           <div className="flex items-center justify-center">
             <Image
-              src={experiencia.academicImage}
-              alt={experiencia.academicImageAlt}
+              src={experience.academicImage}
+              alt={experience.academicImageAlt}
               width={48}
               height={48}
               className="w-12 sm:w-14 md:w-16 h-auto object-cover rounded-md border-2 border-red-600 transition-transform duration-200 hover:scale-110 hover:border-gold-muted"
             />
           </div>,
-          experiencia.academic,
-          experiencia.academicText,
-          experiencia.academicList,
+          experience.academic,
+          experience.academicText,
+          experience.academicList,
           "academico",
-          experiencia.academicProjects
+          experience.academicProjects
         )}
 
         {renderCard(
@@ -158,9 +158,9 @@ export default function Experiencia() {
           <div className="flex items-center justify-center">
             <FaBriefcase className="text-3xl sm:text-4xl md:text-5xl text-red-600 transition-transform duration-200 hover:scale-110 hover:text-gold-muted" />
           </div>,
-          experiencia.work,
-          experiencia.workText,
-          experiencia.workList,
+          experience.work,
+          experience.workText,
+          experience.workList,
           "laboral"
         )}
       </div>

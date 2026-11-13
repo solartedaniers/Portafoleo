@@ -7,8 +7,8 @@ import Lenguajes from "../components/languages";
 import Projects from "../components/Projects";
 import Testimonials from "../components/Testimonials";
 import CvSection from "../components/CvSection";
-import Experiencia from "../components/experience";
-import Filosofia from "../components/philosophy";
+import Experience from "../components/experience";
+import Philosophy from "../components/philosophy";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
@@ -20,8 +20,8 @@ const sections = [
   { id: "misproyectos", component: <Projects /> },
   { id: "testimonios", component: <Testimonials /> },
   { id: "cv", component: <CvSection /> },
-  { id: "experiencia", component: <Experiencia /> },
-  { id: "filosofia", component: <Filosofia /> },
+  { id: "experiencia", component: <Experience /> },
+  { id: "filosofia", component: <Philosophy /> },
   { id: "contacto", component: <Contact /> },
   { id: "PieDePágina", component: <Footer /> },
 ];

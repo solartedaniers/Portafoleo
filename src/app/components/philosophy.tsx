@@ -8,7 +8,7 @@ import { useHasHover } from "@/hooks/useMediaQuery";
 import { useSpeech } from "@/hooks/useSpeech";
 import { TOUCH_FEEDBACK_MS } from "@/config/ui";
 
-interface FilosofiaData {
+interface PhilosophyData {
   title: string;
   text: string[];
   image: string;
@@ -22,7 +22,7 @@ interface UiContent {
 
 const SPEECH_KEY = "philosophy";
 
-export default function Filosofia() {
+export default function Philosophy() {
   const { lang, theme } = useApp();
   const { content } = useContent();
   const hasHover = useHasHover();
@@ -30,7 +30,7 @@ export default function Filosofia() {
   const [hovered, setHovered] = useState(false);
   const [iconHovered, setIconHovered] = useState(false);
 
-  const data = content.filosofia as FilosofiaData | undefined;
+  const data = content.filosofia as PhilosophyData | undefined;
   const ui = content.ui as UiContent;
   const speaking = speakingKey === SPEECH_KEY;
 
