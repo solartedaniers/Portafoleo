@@ -1,34 +1,107 @@
-@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Esteban&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Labrada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Esteban&family=Instrument+Serif&family=Labrada&display=swap');
 
 @import "tailwindcss";
 
-@layer utilities {
-  .text-stroke-gold {
-    -webkit-text-stroke: 1px #c4af27;
-  }
+@custom-variant dark (&:where(.dark, .dark *));
 
-  .hover\:text-stroke-red:hover {
-    -webkit-text-stroke: 1px #d72638;
-  }
-}
-
+/* Paleta única del portafolio: todos los colores salen de aquí */
 :root {
-  --background: #ffffff;
+  --gold: #d4af37;
+  --gold-muted: #c4af37;
+  --goldenrod: #daa520;
+  --sun: #ffd700;
+  --amber: #facc15;
+  --blood: #d72638;
+  --alert: #ff0000;
+  --sky: #3b82f6;
+
+  --white: #ffffff;
+  --black: #000000;
+  --paper: #f5f5f5;
+  --paper-light: #fafafa;
+  --mist: #e6e6e6;
+  --parchment: #eae6d9;
+  --parchment-light: #f3efe2;
+  --parchment-deep: #dcd8c8;
+
+  --ink-black: #0a0a0a;
+  --ink-deep: #0e0e0e;
+  --ink: #111111;
+  --ink-night: #121212;
+  --ink-soft: #1a1a1a;
+  --ink-raised: #222222;
+  --ink-muted: #333333;
+  --charcoal: #1c1b19;
+  --umber: #5c4c4c;
+  --umber-dark: #4b423f;
+  --olive-gray: #4a4a44;
+  --olive-dark: #4a4520;
+
+  --background: var(--white);
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.dark {
+  --background: var(--ink-black);
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-gold: var(--gold);
+  --color-gold-muted: var(--gold-muted);
+  --color-goldenrod: var(--goldenrod);
+  --color-sun: var(--sun);
+  --color-amber: var(--amber);
+  --color-blood: var(--blood);
+  --color-alert: var(--alert);
+  --color-sky: var(--sky);
+  --color-paper: var(--paper);
+  --color-paper-light: var(--paper-light);
+  --color-mist: var(--mist);
+  --color-parchment: var(--parchment);
+  --color-parchment-light: var(--parchment-light);
+  --color-parchment-deep: var(--parchment-deep);
+  --color-ink-black: var(--ink-black);
+  --color-ink-deep: var(--ink-deep);
+  --color-ink: var(--ink);
+  --color-ink-night: var(--ink-night);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-muted: var(--ink-muted);
+  --color-charcoal: var(--charcoal);
+  --color-umber: var(--umber);
+  --color-umber-dark: var(--umber-dark);
+  --color-olive-gray: var(--olive-gray);
+  --color-olive-dark: var(--olive-dark);
+
+  --font-irish: "Irish Grover", cursive;
+  --font-esteban: "Esteban", serif;
+  --font-labrada: "Labrada", serif;
+  --font-instrument: "Instrument Serif", serif;
+}
+
+@layer utilities {
+  .text-stroke-gold {
+    -webkit-text-stroke: 1px var(--gold-muted);
   }
+
+  .hover\:text-stroke-red:hover {
+    -webkit-text-stroke: 1px var(--blood);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
