@@ -3,6 +3,18 @@
     "title": "Daniers Solarte | Software Engineer",
     "description": "Portfolio of Daniers Alexander Solarte Limas, backend and frontend software engineer."
   },
+  "ui": {
+    "loading": "Loading content...",
+    "empty": "No content available.",
+    "switchLanguage": "ES",
+    "themeToggle": "Toggle theme",
+    "langToggle": "Change language",
+    "menu": "☰ Menu",
+    "heroLabel": "Home section",
+    "speechToggle": "Listen to narration",
+    "playNarration": "Play narration",
+    "stopNarration": "Stop narration"
+  },
   "hero": {
     "brand": "Daniers Solarte",
     "quote": "The code is my sword,<br />logic is my shield.",

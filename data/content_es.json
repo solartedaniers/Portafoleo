@@ -3,6 +3,18 @@
     "title": "Daniers Solarte | Ingeniero de Software",
     "description": "Portafolio de Daniers Alexander Solarte Limas, ingeniero de software backend y frontend."
   },
+  "ui": {
+    "loading": "Cargando contenido...",
+    "empty": "No hay contenido disponible.",
+    "switchLanguage": "EN",
+    "themeToggle": "Cambiar tema",
+    "langToggle": "Cambiar idioma",
+    "menu": "☰ Menú",
+    "heroLabel": "Sección de inicio",
+    "speechToggle": "Escuchar narración",
+    "playNarration": "Reproducir narración",
+    "stopNarration": "Detener narración"
+  },
   "hero": {
     "brand": "Daniers Solarte",
     "quote": "El código es mi espada,<br />la lógica mi escudo.",
