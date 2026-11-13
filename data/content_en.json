@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Daniers Solarte | Software Engineer",
+    "description": "Portfolio of Daniers Alexander Solarte Limas, backend and frontend software engineer."
+  },
   "hero": {
     "brand": "Daniers Solarte",
     "quote": "The code is my sword,<br />logic is my shield.",
