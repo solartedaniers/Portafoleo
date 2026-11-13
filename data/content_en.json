@@ -390,7 +390,8 @@
       "I seek to help others and add value because true greatness lies not in what we achieve, but in keeping intact the principles that define us."
     ],
     "image": "/images/samurai-tiger.webp",
-    "background": "/images/path.webp"
+    "background": "/images/path.webp",
+    "imageAlt": "Illustration of my life philosophy"
   },
   "footer": {
     "title": "Footer",

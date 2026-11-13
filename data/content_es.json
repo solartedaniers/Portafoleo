@@ -390,7 +390,8 @@
       "Busco ayudar a los demás y aportar valor, porque la verdadera grandeza no está en lo que logramos, sino en mantener intactos los principios que nos definen."
     ],
     "image": "/images/samurai-tiger.webp",
-    "background": "/images/path.webp"
+    "background": "/images/path.webp",
+    "imageAlt": "Ilustración de mi filosofía de vida"
   },
   "footer": {
     "title": "Pie de página",
